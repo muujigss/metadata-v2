@@ -72,7 +72,7 @@ const IndicatorListByUser = ({
           {userInfo?.user_level != 1 && (
             <>
               {userInfo?.user_level == 2 &&
-              ((actions?.action_type == 1 && actions?.action_type == 4) ||
+              ((actions?.action_type == 1 && actions?.action_type == 4 && actions?.action_type == 7) ||
                 actions == null) ? (
                 <>
                   {item?.is_classification && (
@@ -90,6 +90,7 @@ const IndicatorListByUser = ({
               ) : (
                 (actions?.action_type == 1 ||
                   actions?.action_type == 4 ||
+                  actions?.action_type == 7 ||
                   actions == null) &&
                 userInfo?.roles?.find((role: any) => {
                   return role.id == 3;

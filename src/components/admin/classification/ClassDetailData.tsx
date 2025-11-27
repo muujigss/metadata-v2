@@ -95,7 +95,7 @@ const ClassDetailData = ({
           {userInfo?.user_level != 1 && (
             <>
               {userInfo?.user_level == 2 &&
-              ((actions?.action_type == 1 && actions?.action_type == 4) ||
+              ((actions?.action_type == 1 && actions?.action_type == 4 && actions?.action_type == 7) ||
                 actions == null) ? (
                 <>
                   {!sidebarStatus && (
@@ -112,6 +112,7 @@ const ClassDetailData = ({
               ) : (
                 (actions?.action_type == 1 ||
                   actions?.action_type == 4 ||
+                  actions?.action_type == 7 ||
                   actions == null) && (
                   <>
                     {!sidebarStatus && (

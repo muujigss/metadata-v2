@@ -27,7 +27,7 @@ const updateActionService = async (data: IAction) => {
   //Баталгаажуулах //тухайн хэрэглэгч рүү явуулах
   //Буцаагдсан //тухайн хэрэглэгч рүү явуулах
 
-  const info = await getUserInfoModel(data.user_id);
+  const info = await getUserInfoModel(parseInt(data.user_id));
   const userInfoAdmin = await getUserInfoByLevelModel(1);
 
   let mailObj = {};
@@ -56,7 +56,7 @@ const updateActionService = async (data: IAction) => {
       };
     }
 
-    let aa = sendMail(mailObj);
+    // let aa = sendMail(mailObj);
   }
 
   if (!res.ok) {

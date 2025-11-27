@@ -89,7 +89,7 @@ const DataGridComponent = ({
                             color={
                               item?.actions == 1
                                 ? "primary"
-                                : item?.actions == 2
+                                : item?.actions == 2 || item?.actions == 4 || item?.actions == 5 || item?.actions == 6 || item?.actions == 7 || item?.actions == 8 || item?.actions == 10
                                 ? "warning"
                                 : item?.actions == 3
                                 ? "success"

@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import {
   getOrganization,
   getOrganizationById,
+  getOrgRoleCount,
 } from "@/services/OrganizationService";
 
 import { getSector } from "@/services/SectorService";
@@ -141,6 +142,14 @@ export const useGetActionType = () => {
   });
 };
 
+export const useGetChangeActionType = () => {
+  return useQuery({
+    queryKey: ["fetch changeactiontype"],
+    queryFn: () => getLibraryService("changeactiontype"),
+    refetchOnWindowFocus: true,
+  });
+};
+
 export const imageUpload = async (img_url: any) => {
   const formData = new FormData();
   const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/upload`;
@@ -188,5 +197,14 @@ export const useGetOrgInfo = (id: any) => {
     queryKey: ["fetch org" + id],
     queryFn: () => getOrganizationById(id),
     refetchOnWindowFocus: true,
+  });
+};
+
+export const useOrgRoleCount = (id: any) => {
+  return useQuery({
+    queryKey: ["fetch orgRoleCount" + id],
+    queryFn: () => getOrgRoleCount(id),
+    refetchOnWindowFocus: true,
+    enabled: id > 0,
   });
 };

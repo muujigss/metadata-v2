@@ -683,3 +683,13 @@ model log_action {
   updated_user    Int?
   lib_action_type lib_action_type? @relation(fields: [action_type], references: [id])
 }
+
+model md_file {
+  id              Int              @id @default(autoincrement())
+  filename        String
+  type            String?
+  path            String?
+  size            Int?
+  created_date    DateTime?        @default(now())
+  created_user    Int?
+}

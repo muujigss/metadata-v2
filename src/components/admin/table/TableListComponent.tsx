@@ -69,7 +69,7 @@ const TableDetailList = ({ tblId }: { tblId: number }) => {
             {userInfo?.user_level != 1 && (
               <Box>
                 {userInfo?.user_level == 2 &&
-                ((actions?.action_type == 1 && actions?.action_type == 4) ||
+                ((actions?.action_type == 1 && actions?.action_type == 4 && actions?.action_type == 7) ||
                   actions == null) ? (
                   <Button
                     className="text-primary-default inline-flex items-center"
@@ -81,6 +81,7 @@ const TableDetailList = ({ tblId }: { tblId: number }) => {
                 ) : (
                   (actions?.action_type == 1 ||
                     actions?.action_type == 4 ||
+                    actions?.action_type == 7 ||
                     actions == null) &&
                   userInfo?.roles?.find((role: any) => {
                     return role.id == 3 || role.id == 1;

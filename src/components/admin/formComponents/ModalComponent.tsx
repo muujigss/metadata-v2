@@ -4,6 +4,7 @@ import { Modal, ModalBody, ModalHeader } from "flowbite-react";
 import ClassificationCreate from "../classification/ClassificationCreate";
 import CreateDatabase from "../database/CreateDatabase";
 import CreateIndicator from "../indicator/CreateIndicator";
+import DatabaseChangeRequest from "../database/DatabaseChangeRequest";
 
 const ModalComponent = ({
   userId,
@@ -40,6 +41,10 @@ const ModalComponent = ({
             ? "Өгөгдлийн сан нэмэх"
             : type == "indicator"
             ? "Үзүүлэлт нэмэх"
+            : type == "DatabaseChangeRequest" && id === 5
+            ? "Өгөгдлийн санд өөрчлөлт оруулах хүсэлт"
+            : type == "DatabaseChangeRequest" && id === 6
+            ? "Өгөгдлийн санг ашиглалтаас гаргах хүсэлт"
             : "Код нэмэх"}
         </p>
       </ModalHeader>
@@ -81,6 +86,14 @@ const ModalComponent = ({
             setAlertMsg={setAlert}
             setOpen={setOpen}
             userId={userId}
+          />
+        ) : type === "DatabaseChangeRequest" ? (
+          <DatabaseChangeRequest
+            actionTypeId={id}
+            userId={userId}
+            setAlert={setAlert}
+            setOpen={setOpen}
+            database={data}
           />
         ) : (
           <p>Код нэмэх</p>

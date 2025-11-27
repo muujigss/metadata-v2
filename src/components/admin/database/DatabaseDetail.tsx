@@ -12,6 +12,7 @@ import { sidebarTheme } from "../../componentTheme/SidebarTheme";
 import Loader from "../../Loader";
 import SidebarComponents from "../SideBarComponents";
 import CreateDatabase from "./CreateDatabase";
+import ActionTypeRequest from "@/components/ActionTypeRequest";
 const DatabaseDetail = ({
   id,
   setOpen,
@@ -68,6 +69,7 @@ const DatabaseDetail = ({
               {userInfo?.user_level == 2 &&
               (data?.actions?.action_type == 1 ||
                 data?.actions?.action_type == 4 ||
+                data?.actions?.action_type == 7 ||
                 data?.actions == null) ? (
                 <Tooltip title="Засах">
                   <Button
@@ -81,6 +83,7 @@ const DatabaseDetail = ({
               ) : (
                 (data?.actions?.action_type == 1 ||
                   data?.actions?.action_type == 4 ||
+                  data?.actions?.action_type == 7 ||
                   data?.actions == null) &&
                 userInfo?.roles?.find((role: any) => {
                   return role.id == 3;
@@ -113,6 +116,15 @@ const DatabaseDetail = ({
             action_type={data?.actions?.action_type}
           />
         )}
+        { userInfo?.user_level != 1 && data?.actions?.action_type === 3 && (
+          <ActionTypeRequest
+            orgId={Number(id)}
+            user_level={userInfo?.user_level || 0}
+            dbId={dbId}
+            userId={data?.actions?.user_id || 0}
+            action_type={data?.actions?.action_type}
+          />
+        ) }
         {sidebarStatus ? (
           <CreateDatabase
             setOpen={setOpenModal}

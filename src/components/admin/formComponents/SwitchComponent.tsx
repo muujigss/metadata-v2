@@ -8,12 +8,14 @@ type ISwitchProps = {
   name: string;
   label: string;
   defaultChecked: boolean;
+  desabled?: boolean;
 };
 const SwitchComponent = ({
   label,
   name,
   defaultChecked,
   onChange,
+  desabled,
 }: ISwitchProps) => {
   return (
     <Box
@@ -31,6 +33,8 @@ const SwitchComponent = ({
         }}
         checked={defaultChecked}
         onChange={onChange}
+        disabled={desabled}
+        className={`${desabled && "cursor-not-allowed bg-gray-300"}`}
       />
     </Box>
   );

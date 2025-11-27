@@ -5,12 +5,16 @@ const getLibActionTypeModel = async () => {
   const lib_action = await prisma.lib_action_type.findMany();
   return lib_action;
 };
+const getLibChangeActionTypeModel = async () => {
+  const lib_action = await prisma.lib_action_type.findMany({ where: { id: { in: [5, 6] } } });
+  return lib_action;
+};
 const getActionsModel = async () => {
   try {
     const md_action = await prisma.md_action.findMany({
       where: {
         action_type: {
-          in: [2],
+          in: [2, 5, 6, 8],
         },
       },
       select: {
@@ -72,7 +76,18 @@ const updateActionsModel = async (
       },
     });
 
-    const log_md_action = await prisma.log_action.create({
+    // if (action_type == 10) {
+    //   await prisma.md_database.update({
+    //     where: { id: db_id },
+    //     data: {
+    //       is_active: false,
+    //       updatedDate: updated_date,
+    //       updatedUser: user_id,
+    //     },
+    //   });
+    // }
+
+    await prisma.log_action.create({
       data: {
         log_type: "UPDATE",
         action_id: md_action.id,
@@ -90,4 +105,4 @@ const updateActionsModel = async (
     throw new Error("Failed to updateActions Model");
   }
 };
-export { getActionsModel, updateActionsModel, getLibActionTypeModel };
+export { getLibChangeActionTypeModel, getActionsModel, updateActionsModel, getLibActionTypeModel };

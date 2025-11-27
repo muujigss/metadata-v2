@@ -7,8 +7,9 @@ import {
   useGetOrgs,
   useGetUserLevel,
   useGetUserRole,
+  useOrgRoleCount,
 } from "@/utils/customHooks";
-import { Alert, Box, Button, Input } from "@mui/material";
+import { Alert, Box, Button, Input, Snackbar, Typography, alertClasses } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { useContext, useState } from "react";
@@ -23,10 +24,14 @@ import {
 } from "../admin/formComponents";
 import TooltipComponent from "../admin/formComponents/TooltipComponent";
 import Loader from "../Loader";
+import { createFileService } from "@/services/FileService";
 
 const CreateUserForm = ({ userData }: { userData?: IUser }) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [alertMessage, setAlertMessage] = useState("");
   const [statusCode, setStatusCode] = useState("");
+  const [openAlert, setOpenAlert] = useState(false);
+  const [warningMessage, setWarningMessage] = useState("");
   const { userInfo } = useContext(CurrentUserContext) as ICurrentUserContext;
   let userLevel = userInfo?.user_level || 0;
   let orgId = userInfo?.org_id || 0;
@@ -38,6 +43,11 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
   const { data: orgData, isLoading } = useGetOrgs();
   const { data: userLevels, isLoading: userLevelLoading } = useGetUserLevel();
   const { data: userRoles, isLoading: userRoleLoading } = useGetUserRole();
+  const {
+    data: orgRoles,
+    isLoading: orgRoleLoading,
+    isError: orgRoleError,
+  } = useOrgRoleCount(userInfo?.org_id || 0);
 
   const validationSchema = Yup.object({
     org_id: Yup.string().required("Байгууллага сонгоно уу."),
@@ -99,10 +109,32 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
     return <Loader />;
   }
 
-  const userCustomLevels =
-    userLevel != 1
-      ? userLevels.filter((item: any) => item.id != 1)
-      : userLevels.filter((item: any) => item.id != 3);
+  const userCustomLevels = userLevel.toString() === "1" ? userLevels : (userLevels.filter((item: any) => item.id != 1));
+
+  const handleWarning = (level: number) => {
+    /**
+     * User Level
+     * 1	Системийн зохиуцуулагч
+     * 2	Мэдээлэл хариуцагч админ
+     * 3	Мэдээлэл хариуцагч хэрэглэгч
+     *
+    */
+   const levelCodes = [2, 3];
+   if (!levelCodes.includes(level)) return;
+   let msg = ""
+    const count = orgRoles.filter((role: any) => role.user_level == level);
+    if (level == 2) {
+      msg = "Мэдээлэл хариуцагч админ бүртгэлтэй байна."
+    }
+    if (level == 3) {
+      msg = "Мэдээлэл хариуцагч хэрэглэгч бүртгэлтэй байна."
+    }
+    if (count.length > 0) {
+      setOpenAlert(true)
+      setWarningMessage(msg);
+      return;
+    }
+  };
 
   return (
     <>
@@ -113,10 +145,37 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
           <Alert severity="success">{alertMessage}</Alert>
         ) : null}
       </Box>
+      <Snackbar
+        open={openAlert}
+        autoHideDuration={3000}
+        onClose={() => setOpenAlert(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      >
+        <Box>
+          <Alert
+            severity="error"
+            sx={{
+              width: "100%",
+              [`& .${alertClasses.icon}`]: {
+                top: 0,
+              },
+            }}
+          >
+            {warningMessage}
+          </Alert>
+        </Box>
+      </Snackbar>
       <Formik
         initialValues={initValues}
         validationSchema={validationSchema}
         onSubmit={async (values) => {
+          // const formData = new FormData();
+          // formData.append("created_user", userInfo?.id);
+          // if (selectedFile) {
+          //   formData.append("file", selectedFile);
+          // }
+          // const responseFile = (await createFileService(formData)).data;
+
           const data: IUser = {
             user_id: Number(values?.user_id),
             org_id: values.user_level != 1 ? values?.org_id : 17,
@@ -152,8 +211,18 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
       >
         {({ handleSubmit, values, setFieldValue, errors }) => {
           return (
-            <Form method="post" onSubmit={handleSubmit}>
+            <Form method="post" onSubmit={handleSubmit} encType="multipart/form-data">
               <Input type="hidden" value={values?.user_id} />
+              {/* <Button variant="contained" component="label">
+                Choose File
+                <input
+                  type="file"
+                  hidden
+                  onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null) }
+                />
+              </Button> */}
+
+              {selectedFile && <Typography variant="body2">Selected file: {selectedFile.name}</Typography>}
               <FormBox>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <LabelComponent label="Хэрэглэгчийн түвшин" />
@@ -161,10 +230,12 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
                 </Box>
                 <SelectComponent
                   options={userCustomLevels}
+                  desabled={values?.user_id && userInfo?.user_level === 2 && userInfo?.id === values?.user_id ? true : false}
                   defaultValue={values.user_level}
                   label="Хэрэглэгчийн түвшин"
                   name="user_level"
                   onChange={(e: any, value: any) => {
+                    handleWarning(value)
                     setFieldValue("user_level", value);
                   }}
                   errors={errors?.user_level}
@@ -327,6 +398,7 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
                   name="is_active"
                   label="Идэвхтэй эсэх"
                   defaultChecked={values?.is_active}
+                  desabled={values?.user_id && userInfo?.user_level === 2 && userInfo?.id === values?.user_id ? true : false}
                   onChange={(e) => {
                     setFieldValue("is_active", e.target.checked);
                   }}

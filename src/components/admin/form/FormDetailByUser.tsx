@@ -62,6 +62,7 @@ const FormDetailByUser = ({
             {userInfo?.user_level == 2 &&
             (data?.database?.actions?.action_type == 1 ||
               data?.database?.actions?.action_type == 4 ||
+              data?.database?.actions?.action_type == 7 ||
               data?.database?.actions == null) ? (
               <div>
                 {!sidebarStatus && (
@@ -95,6 +96,7 @@ const FormDetailByUser = ({
               userInfo?.user_level == 3 &&
               (data?.database?.actions?.action_type == 1 ||
                 data?.database?.actions?.action_type == 4 ||
+                data?.database?.actions?.action_type == 7 ||
                 data?.database?.actions == null) &&
               userInfo?.roles?.find((role: any) => {
                 return role.id == 3;

@@ -105,3 +105,27 @@ export const createOrganizationModel = async (data: any) => {
     throw new Error("Failed to fetch forms");
   }
 };
+export const getOrgRoleCount = async (org_id: number) => {
+  try {
+    const result = await prisma.$queryRaw<{
+      org_id: number;
+      user_level: string;
+      user_count: bigint;
+    }[]>`
+      SELECT org_id, user_level, COUNT(*) AS user_count
+      FROM md_users
+      WHERE org_id = ${org_id} AND is_active = true
+      GROUP BY org_id, user_level;
+    `;
+
+    const data = result.map(row => ({
+      ...row,
+      user_count: Number(row.user_count),
+    }));
+    
+    return data;
+  } catch (error) {
+    console.error("Error in getOrgRoleCount:", error);
+    throw new Error("Failed to fetch getOrgRoleCount");
+  }
+};

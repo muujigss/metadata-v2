@@ -29,12 +29,13 @@ const ActionType = ({
   if (loading) return <Loader />;
   if (actionTypeLoading) return <Loader />;
 
-  let txtAction = actionType.find((item: any) => item.id == action_type)?.name;
+  const txtAction = actionType.find((item: any) => item.id == action_type)?.name;
+  const txtActionEditEnd = actionType.find((item: any) => item.id == 8)?.name;
 
-  let txtStatusColor =
+  const txtStatusColor =
     action_type == 1
       ? "primary"
-      : action_type == 2
+      : action_type == 2 || action_type == 5 || action_type == 6 || action_type == 7 || action_type == 8 || action_type == 9
       ? "warning"
       : action_type == 3
       ? "success"
@@ -42,19 +43,16 @@ const ActionType = ({
 
   const onSendActions = async (actionType: number) => {
     try {
+      if (!actionType) return setAlertMessage("Төлөв заавал сонгоно уу");
       setLoading(true);
 
-      let res = await updateActionService({
+      console.log({ dbId, user_id, actionType });
+      await updateActionService({
         item_id: dbId,
         user_id: user_id,
         action_type: actionType,
       });
-
-      if (!res?.status) {
-        return setAlertMessage(res?.message);
-      } else {
-        window.location.reload();
-      }
+      window.location.reload();
     } catch (error) {
     } finally {
       console.log("finally");
@@ -81,7 +79,7 @@ const ActionType = ({
       />
 
       {user_level == 3 || user_level == 2 ? (
-        action_type == 1 || action_type == 4 ? (
+        action_type == 1 || action_type == 4 || action_type == 7 ? (
           <>
             {userInfo?.roles?.find(
               (item: any) => item.id == 3 || item.id == 1
@@ -90,9 +88,9 @@ const ActionType = ({
                 variant="outlined"
                 color={txtStatusColor}
                 size="small"
-                onClick={() => onSendActions(2)}
+                onClick={() => onSendActions(action_type === 7 ? 8 : 2)}
               >
-                {action_type == 4 ? " Хүсэлт дахин илгээх" : txtAction}
+                {action_type == 4 ? " Хүсэлт дахин илгээх" : (action_type == 7 ? txtActionEditEnd : txtAction)}
               </Button>
             )}
           </>
@@ -115,7 +113,6 @@ const ActionType = ({
               <SelectComponent
                 options={actionType.filter((item: any) => {
                   console.log({ item });
-                  // && action_type == 2
                   if (action_type == 2) {
                     if (item.id == 3 || item.id == 4) {
                       return {
@@ -125,6 +122,28 @@ const ActionType = ({
                     }
                   } else if (action_type == 3) {
                     if (item.id == 4) {
+                      return {
+                        id: item.id,
+                        name: item.name,
+                      };
+                    }
+                  } else if (action_type == 5) {
+                    if (item.id == 7 || item.id == 4) {
+                      return {
+                        id: item.id,
+                        name: item.name,
+                      };
+                    }
+                  } else if (action_type == 6) {
+                    if (item.id == 7 || item.id == 4 || item.id == 10) {
+                      return {
+                        id: item.id,
+                        name: item.name,
+                      };
+                    }
+                  } else if (action_type == 8) {
+                    // if (item.id == 3 || item.id == 9) {
+                    if (item.id == 3) {
                       return {
                         id: item.id,
                         name: item.name,

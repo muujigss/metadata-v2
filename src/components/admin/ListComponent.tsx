@@ -69,7 +69,8 @@ const ListComponent = ({ orgId, dbId }: { orgId: number; dbId: number }) => {
               <Box>
                 {userInfo?.user_level == 2 &&
                 ((data?.actions?.action_type == 1 &&
-                  data?.actions?.action_type == 4) ||
+                  data?.actions?.action_type == 4 &&
+                  data?.actions?.action_type == 7) ||
                   data?.actions == null) ? (
                   <Button onClick={handleClick} className="">
                     <AddLineIcon size={16} />
@@ -78,6 +79,7 @@ const ListComponent = ({ orgId, dbId }: { orgId: number; dbId: number }) => {
                 ) : (
                   (data?.actions?.action_type == 1 ||
                     data?.actions?.action_type == 4 ||
+                    data?.actions?.action_type == 7 ||
                     data?.actions == null) &&
                   userInfo?.roles?.find((role: any) => {
                     return role.id == 3 || role.id == 1;

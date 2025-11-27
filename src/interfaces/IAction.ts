@@ -12,6 +12,7 @@ export type IAction = {
   created_user?: number;
   updated_date?: string;
   updated_user?: number;
-  databases: IDatabase;
-  user: IUser;
+  databases?: IDatabase;
+  user?: IUser;
+  file_id?: number;
 };

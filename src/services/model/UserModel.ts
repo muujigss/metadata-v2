@@ -278,6 +278,7 @@ const getUserInfoModel = async (user_id: number) => {
       },
       select: {
         id: true,
+        is_active: true,
         org_id: true,
         user_level: true,
         userLevel: {

@@ -99,6 +99,7 @@ const IndicatorDetail = ({ indId, setOpen }: IndicatorDetailProps) => {
               {userInfo?.user_level == 2 &&
               (actions?.action_type == 1 ||
                 actions?.action_type == 4 ||
+                actions?.action_type == 7 ||
                 actions == null) ? (
                 <>
                   {!sidebarStatus && (
@@ -131,6 +132,7 @@ const IndicatorDetail = ({ indId, setOpen }: IndicatorDetailProps) => {
               ) : (
                 (actions?.action_type == 1 ||
                   actions?.action_type == 4 ||
+                  actions?.action_type == 7 ||
                   actions == null) &&
                 userInfo?.roles?.find((role: any) => {
                   return role.id == 3 || role.id == 1;

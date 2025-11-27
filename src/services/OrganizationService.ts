@@ -36,4 +36,16 @@ const createOrganization = async (data: any) => {
   return res;
 };
 
-export { getOrganization, getOrganizationById, createOrganization };
+const getOrgRoleCount = async (id: any) => {
+  const res = await fetch(`${process.env.BASE_URL}/api/organization/role-count/${id}`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
+export { getOrganization, getOrganizationById, createOrganization, getOrgRoleCount };

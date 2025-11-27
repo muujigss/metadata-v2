@@ -1,4 +1,4 @@
-import { getLibActionTypeModel } from "@/services/model/ActionModel";
+import { getLibActionTypeModel, getLibChangeActionTypeModel } from "@/services/model/ActionModel";
 import { getSourcesModel } from "@/services/model/LibSourceModel";
 import { getUnitModel } from "@/services/model/LibUnitModel";
 import { getUserLevelModel } from "@/services/model/LibUserLevelModel";
@@ -25,6 +25,8 @@ export async function GET(request: Request, { params: { slug } }: Props) {
     dt = await getUserLevelModel();
   } else if (slug == "actiontype") {
     dt = await getLibActionTypeModel();
+  } else if (slug == "changeactiontype") {
+    dt = await getLibChangeActionTypeModel();
   }
 
   return NextResponse.json(dt);

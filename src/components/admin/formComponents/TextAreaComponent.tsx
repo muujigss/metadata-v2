@@ -8,6 +8,7 @@ const TextAreaComponent = ({
   name,
   value,
   errors,
+  desabled,
 }: {
   onChange: any;
   label: string;
@@ -15,6 +16,7 @@ const TextAreaComponent = ({
   name: string;
   value?: any;
   errors?: any;
+  desabled?: any;
 }) => {
   return (
     <Box
@@ -37,6 +39,8 @@ const TextAreaComponent = ({
         value={value}
         onChange={onChange}
         minRows={2}
+        disabled={desabled}
+        className={`${desabled && "cursor-not-allowed bg-gray-300"}`}
       />
       {errors && (
         <p className="text-red-600 text-text-body-small mt-2 p-1">{errors}</p>
