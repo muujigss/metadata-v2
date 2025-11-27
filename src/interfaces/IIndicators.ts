@@ -1,0 +1,36 @@
+import { IIndicatorClassification } from "./IIndicatorsClassifications";
+import { IFrequency, ISecurity, IUnit, IValueType } from "./ILib";
+import { ITable } from "./ITable";
+
+export type IIndicator = {
+  id: number;
+  tbl_id: number;
+  code: string;
+  name: string;
+  frequency_id: number;
+  unit_id: number;
+  value_type_id: number;
+  security_level_id: number;
+  is_methodology: boolean;
+  methodology: string;
+  is_methodology_confirm: boolean;
+  methodology_decree_num: string;
+  methodology_date: string;
+  confirmed_organtization: string;
+  generated_date: number;
+  is_classification: boolean;
+  classification_count: number;
+  created_date?: string;
+  created_user?: number;
+  updated_date?: string;
+  updated_user?: number;
+  frequency_other: string;
+  table?: ITable;
+  frequency?: IFrequency;
+  unit?: IUnit;
+  value_type?: IValueType;
+  security_level?: ISecurity;
+  indicators_classifications?: IIndicatorClassification[];
+  is_active: boolean;
+  version: string;
+};

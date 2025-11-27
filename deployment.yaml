@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/dockerconfigjson
+metadata:
+  name: gitlab-secret
+  namespace: metadata
+data:
+  .dockerconfigjson: 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metadata-deployment
+  namespace: metadata
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metadata
+  template:
+    metadata:
+      labels:
+        app: metadata
+    spec:
+      containers:
+        - name: metadata
+          image: 
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+      imagePullSecrets:
+        - name: gitlab-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: metadata-svc
+  namespace: metadata
+spec:
+  selector:
+    app: metadata
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: metadata-ingress
+  namespace: metadata
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: metadata.app.nso.mn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: metadata-svc
+                port:
+                  number: 80

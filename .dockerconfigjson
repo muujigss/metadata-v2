@@ -1,0 +1,10 @@
+{
+  "auths": {
+    "https://gitlab.nso.mn:5050": {
+      "username": "",
+      "password": "",
+      "email": "",
+      "auth": ""
+    }
+  }
+}

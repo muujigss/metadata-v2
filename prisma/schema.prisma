@@ -1,0 +1,685 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins", "fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model md_database {
+  id                 Int                @id @default(autoincrement())
+  org_id             Int
+  name               String?
+  description        String?
+  spec               Json?
+  spec_other         String?
+  db_type            Int?
+  db_type_other      String?
+  sector             Int?
+  sector_other       String?
+  db_location        Int?
+  db_location_other  String?
+  licence_type       Int?
+  licence_type_other String?
+  opendata_url       String?
+  table_count        Int?
+  start_date         Int?
+  is_form            Boolean?
+  is_active          Boolean?
+  is_integrated      Boolean?
+  integrated         Int?
+  integrated_other   String?
+  version            String?
+  createdDate        DateTime           @default(now())
+  createdUser        Int?
+  updatedDate        DateTime           @default(now())
+  updatedUser        Int?
+  forms              md_form[]
+  organization       md_organization    @relation(fields: [org_id], references: [id])
+  tables             md_table[]
+  databaseType       lib_db_type?       @relation(fields: [db_type], references: [id])
+  databaseLocation   lib_db_location?   @relation(fields: [db_location], references: [id])
+  sectors            lib_sector?        @relation(fields: [sector], references: [id])
+  licenceType        lib_licence_type?  @relation(fields: [licence_type], references: [id])
+  md_user_database   md_user_database[]
+  actions            md_action?         @relation(fields: [id], references: [item_id])
+}
+
+model log_database {
+  id                 Int      @id @default(autoincrement())
+  type               String
+  db_id              Int
+  org_id             Int
+  name               String?
+  description        String?
+  spec               Json?
+  spec_other         String?
+  db_type            Int?
+  db_type_other      String?
+  sector             Int?
+  sector_other       String?
+  db_location        Int?
+  db_location_other  String?
+  licence_type       Int?
+  licence_type_other String?
+  opendata_url       String?
+  table_count        Int?
+  start_date         Int?
+  is_form            Boolean?
+  is_active          Boolean?
+  is_integrated      Boolean?
+  integrated         Int?
+  integrated_other   String?
+  version            String?
+  createdDate        DateTime @default(now())
+  createdUser        Int?
+  updatedDate        DateTime @default(now())
+  updatedUser        Int?
+}
+
+model md_form {
+  id                      Int                      @id @default(autoincrement())
+  db_id                   Int
+  code                    String
+  name                    String
+  decree_num              String?
+  confirmed_date          DateTime?
+  confirmed_org1          String?
+  confirmed_org2          String?
+  sector_id               Int?
+  sector_other            String?
+  sub_sector              String?
+  coorperate_org          String?
+  description             String?
+  source_id               Json?
+  source_other            String?
+  collection_method_id    Json?
+  collection_method_other String?
+  frequency_id            Int?
+  frequency_other         String?
+  collection_started_date Int?
+  dissimenation_level_id  Int?
+  is_form_guide           Boolean?
+  form_guide_decree_num   String?
+  collected_officer       String?
+  security_level_id       Int?
+  owner_department        String?
+  owner_email             String?
+  owner_phone             String?
+  form_generated_date     String?
+  form_updated_date       String?
+  form_table_count        Int?
+  estimated_indicators    String?
+  keywords                String?
+  files                   String?
+  is_active               Boolean?
+  version                 String?
+  created_date            DateTime                 @default(now())
+  created_user            Int?
+  updated_date            DateTime                 @default(now())
+  updated_user            Int?
+  database                md_database              @relation(fields: [db_id], references: [id])
+  sector                  lib_sector?              @relation(fields: [sector_id], references: [id])
+  dissimenation_level     lib_dissimenation_level? @relation(fields: [dissimenation_level_id], references: [id])
+  security_level          lib_security_level?      @relation(fields: [security_level_id], references: [id])
+  frequency               lib_frequency?           @relation(fields: [frequency_id], references: [id])
+}
+
+model log_form {
+  id                      Int       @id @default(autoincrement())
+  type                    String
+  form_id                 Int
+  db_id                   Int
+  code                    String
+  name                    String
+  decree_num              String?
+  confirmed_date          DateTime?
+  confirmed_org1          String?
+  confirmed_org2          String?
+  sector_id               Int?
+  sector_other            String?
+  sub_sector              String?
+  coorperate_org          String?
+  description             String?
+  source_id               Json?
+  source_other            String?
+  collection_method_id    Json?
+  collection_method_other String?
+  frequency_id            Int?
+  frequency_other         String?
+  collection_started_date Int?
+  dissimenation_level_id  Int?
+  is_form_guide           Boolean?
+  form_guide_decree_num   String?
+  collected_officer       String?
+  security_level_id       Int?
+  owner_department        String?
+  owner_email             String?
+  owner_phone             String?
+  form_generated_date     String?
+  form_updated_date       String?
+  form_table_count        Int?
+  estimated_indicators    String?
+  keywords                String?
+  files                   String?
+  is_active               Boolean?
+  version                 String?
+  created_date            DateTime  @default(now())
+  created_user            Int?
+  updated_date            DateTime  @default(now())
+  updated_user            Int?
+}
+
+model md_table {
+  id                   Int            @id @default(autoincrement())
+  db_id                Int
+  form_id              Int?
+  code                 String?
+  name                 String
+  description          String?
+  source               Json?
+  source_other         String?
+  security_level       Json?
+  licence_type         Int?
+  licence_type_other   String?
+  opendata_licence_url String?
+  started_date         String?
+  is_active            Boolean?
+  version              String?
+  created_date         DateTime       @default(now())
+  created_user         Int?
+  updated_date         DateTime       @default(now())
+  updated_user         Int?
+  database             md_database    @relation(fields: [db_id], references: [id])
+  indicators           md_indicator[]
+}
+
+model log_table {
+  id                   Int      @id @default(autoincrement())
+  type                 String
+  tbl_id               Int
+  db_id                Int
+  form_id              Int?
+  code                 String?
+  name                 String
+  description          String?
+  source               Json?
+  source_other         String?
+  security_level       Json?
+  licence_type         Int?
+  licence_type_other   String?
+  opendata_licence_url String?
+  started_date         String?
+  is_active            Boolean?
+  version              String?
+  created_date         DateTime @default(now())
+  created_user         Int?
+  updated_date         DateTime @default(now())
+  updated_user         Int?
+}
+
+model lib_specification {
+  id           Int      @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model lib_db_type {
+  id           Int           @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime      @default(now())
+  created_user Int?
+  updated_date DateTime      @default(now())
+  updated_user Int?
+  databases    md_database[]
+}
+
+model lib_sector {
+  id           Int           @id @default(autoincrement())
+  code         String        @unique
+  name         String
+  img_url      String?
+  feature      Int?
+  is_active    Boolean?
+  created_date DateTime      @default(now())
+  created_user Int?
+  updated_date DateTime      @default(now())
+  updated_user Int?
+  databases    md_database[]
+  Form         md_form[]
+}
+
+model lib_db_location {
+  id           Int           @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime      @default(now())
+  created_user Int?
+  updated_date DateTime      @default(now())
+  updated_user Int?
+  databases    md_database[]
+}
+
+model lib_licence_type {
+  id           Int           @id @default(autoincrement())
+  code         String        @unique
+  name         String
+  created_date DateTime      @default(now())
+  created_user Int?
+  updated_date DateTime      @default(now())
+  updated_user Int?
+  databases    md_database[]
+}
+
+model md_classification {
+  id                      Int                           @id @default(autoincrement())
+  code                    String
+  name                    String
+  definition              String?
+  is_confirm              Boolean?
+  confirmed_decree_name   String?
+  confirmed_decree_num    String?
+  confirmed_decree_date   DateTime?
+  confirmed_organization1 String?
+  confirmed_organization2 String?
+  confirmed_organization3 String?
+  implemented_date        DateTime?
+  last_updated_date       DateTime?
+  is_active               Boolean?
+  version                 String?
+  created_date            DateTime                      @default(now())
+  created_user            Int?
+  updated_date            DateTime                      @default(now())
+  updated_user            Int?
+  classificationCode      md_classification_code[]
+  indicators              md_indicator_classification[]
+}
+
+model log_classification {
+  id                      Int       @id @default(autoincrement())
+  type                    String
+  class_id                Int
+  code                    String
+  name                    String
+  definition              String?
+  is_confirm              Boolean?
+  confirmed_decree_name   String?
+  confirmed_decree_num    String?
+  confirmed_decree_date   DateTime?
+  confirmed_organization1 String?
+  confirmed_organization2 String?
+  confirmed_organization3 String?
+  implemented_date        DateTime?
+  last_updated_date       DateTime?
+  is_active               Boolean?
+  version                 String?
+  created_date            DateTime  @default(now())
+  created_user            Int?
+  updated_date            DateTime  @default(now())
+  updated_user            Int?
+}
+
+model md_classification_code {
+  id                Int                @id @default(autoincrement())
+  classification_id Int                @unique
+  code              String?
+  definition        String?
+  is_active         Boolean?
+  version           String?
+  created_date      DateTime           @default(now())
+  created_user      Int?
+  updated_date      DateTime           @default(now())
+  updated_user      Int?
+  classification    md_classification? @relation(fields: [classification_id], references: [id])
+}
+
+model log_classification_code {
+  id                Int      @id @default(autoincrement())
+  type              String
+  class_code_id     Int
+  classification_id Int      @unique
+  code              String?
+  definition        String?
+  is_active         Boolean?
+  version           String?
+  created_date      DateTime @default(now())
+  created_user      Int?
+  updated_date      DateTime @default(now())
+  updated_user      Int?
+}
+
+model owner_info {
+  owner_id     Int      @id @default(autoincrement())
+  org_id       Int?
+  firstname    String?
+  lastname     String?
+  department   String?
+  position     String?
+  email        String?
+  phone_number String?
+  mobile       String?
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model md_organization {
+  id             Int           @id @default(autoincrement())
+  name           String?
+  phone          String?
+  email          String?
+  address        String?
+  website        String?
+  org_short_name String?
+  img_url        String?
+  is_active      Boolean?
+  version        String?
+  created_date   DateTime      @default(now())
+  created_user   Int?
+  updated_date   DateTime      @default(now())
+  updated_user   Int?
+  databases      md_database[]
+  users          md_users[]
+}
+
+model md_indicator {
+  id                         Int                           @id @default(autoincrement())
+  tbl_id                     Int
+  code                       String?
+  name                       String?
+  frequency_id               Int?
+  frequency_other            String?
+  unit_id                    Int?
+  value_type_id              Int?
+  security_level_id          Int?
+  is_methodology             Boolean?
+  methodology                String?
+  is_methodology_confirm     Boolean?
+  methodology_decree_num     String?
+  methodology_date           DateTime?
+  confirmed_organtization    String?
+  generated_date             Int?
+  is_classification          Boolean?
+  classification_count       Int?
+  is_active                  Boolean?
+  version                    String?
+  created_date               DateTime                      @default(now())
+  created_user               Int?
+  updated_date               DateTime                      @default(now())
+  updated_user               Int?
+  table                      md_table?                     @relation(fields: [tbl_id], references: [id])
+  frequency                  lib_frequency?                @relation(fields: [frequency_id], references: [id])
+  security_level             lib_security_level?           @relation(fields: [security_level_id], references: [id])
+  unit                       lib_unit?                     @relation(fields: [unit_id], references: [id])
+  value_type                 lib_value_type?               @relation(fields: [value_type_id], references: [id])
+  indicators_classifications md_indicator_classification[]
+}
+
+model log_indicator {
+  id                      Int       @id @default(autoincrement())
+  type                    String
+  ind_id                  Int
+  tbl_id                  Int
+  code                    String?
+  name                    String?
+  frequency_id            Int?
+  frequency_other         String?
+  unit_id                 Int?
+  value_type_id           Int?
+  security_level_id       Int?
+  is_methodology          Boolean?
+  methodology             String?
+  is_methodology_confirm  Boolean?
+  methodology_decree_num  String?
+  methodology_date        DateTime?
+  confirmed_organtization String?
+  generated_date          Int?
+  is_classification       Boolean?
+  classification_count    Int?
+  is_active               Boolean?
+  version                 String?
+  created_date            DateTime  @default(now())
+  created_user            Int?
+  updated_date            DateTime  @default(now())
+  updated_user            Int?
+}
+
+model md_indicator_classification {
+  id                Int                @id @default(autoincrement())
+  indicator_id      Int?
+  classification_id Int?
+  version           String?
+  created_date      DateTime           @default(now())
+  created_user      Int?
+  updated_date      DateTime           @default(now())
+  updated_user      Int?
+  classification    md_classification? @relation(fields: [classification_id], references: [id])
+  indicator         md_indicator?      @relation(fields: [indicator_id], references: [id])
+}
+model log_indicator_classification {
+  id                    Int      @id @default(autoincrement())
+  type                    String
+  indicator_classification_id Int
+  indicator_id                Int? 
+  classification_id           Int? 
+  version                  String? 
+  created_date             DateTime @default(now())
+  created_user             Int?
+  updated_date             DateTime @default(now())
+  updated_user             Int?
+}
+model lib_frequency {
+  id           Int      @id @default(autoincrement())
+  code         String
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+
+  indicator md_indicator[]
+  Form      md_form[]
+}
+
+model lib_value_type {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+
+  indicator md_indicator[]
+}
+
+model lib_security_level {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+
+  indicator md_indicator[]
+  Form      md_form[]
+}
+
+model lib_unit {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+
+  indicator md_indicator[]
+}
+
+model lib_dissimenation_level {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+
+  Form md_form[]
+}
+
+model lib_collection_method {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model lib_source {
+  id           Int      @id @default(autoincrement())
+  code         String   @unique
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model md_users {
+  id               Int                @id @default(autoincrement())
+  user_level       Int
+  org_id           Int
+  firstname        String?
+  lastname         String?
+  department       String?
+  position         String?
+  email            String?
+  phone_number     String?
+  password         String?
+  mobile           String?
+  profile_img_url  String?
+  roles            Json?
+  last_login_date  DateTime
+  login_attempts   Int?
+  is_active        Boolean?
+  created_date     DateTime           @default(now())
+  created_user     Int?
+  updated_date     DateTime           @default(now())
+  updated_user     Int?
+  organization     md_organization    @relation(fields: [org_id], references: [id])
+  md_user_database md_user_database[]
+  userLevel        lib_user_level     @relation(fields: [user_level], references: [id])
+  md_action        md_action[]
+}
+
+model lib_integrated {
+  id           Int      @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model lib_action_type {
+  id           Int          @id @default(autoincrement())
+  code         String
+  name         String
+  created_date DateTime     @default(now())
+  created_user Int?
+  updated_date DateTime     @default(now())
+  updated_user Int?
+  actions      md_action[]
+  log_action   log_action[]
+}
+
+model md_action {
+  id           Int             @id @default(autoincrement())
+  user_id      Int
+  action_type  Int
+  item_id      Int             @unique
+  item_type    String
+  description  String?
+  created_date DateTime?       @default(now())
+  created_user Int?
+  updated_date DateTime?       @default(now())
+  updated_user Int?
+  actionType   lib_action_type @relation(fields: [action_type], references: [id])
+  databases    md_database[]
+  user         md_users        @relation(fields: [user_id], references: [id])
+}
+
+model md_user_database {
+  id           Int         @id @default(autoincrement())
+  user_id      Int
+  database_id  Int
+  created_date DateTime    @default(now())
+  created_user Int?
+  updated_date DateTime    @default(now())
+  updated_user Int?
+  database     md_database @relation(fields: [database_id], references: [id])
+  user         md_users    @relation(fields: [user_id], references: [id])
+}
+
+model log_user_database {
+  id           Int      @id @default(autoincrement())
+  type         String
+  ud_id        Int
+  user_id      Int
+  database_id  Int
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model lib_user_level {
+  id           Int        @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime   @default(now())
+  created_user Int?
+  updated_date DateTime   @default(now())
+  updated_user Int?
+  md_users     md_users[]
+}
+
+model lib_user_role {
+  id           Int      @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
+model log_action {
+  id              Int              @id @default(autoincrement())
+  log_type        String
+  action_id       Int?
+  user_id         Int?
+  action_type     Int?
+  item_id         Int?             @unique
+  item_type       String?
+  description     String?
+  created_date    DateTime?        @default(now())
+  created_user    Int?
+  updated_date    DateTime?        @default(now())
+  updated_user    Int?
+  lib_action_type lib_action_type? @relation(fields: [action_type], references: [id])
+}

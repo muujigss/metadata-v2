@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+.breadcrumb-list {
+  list-style: none;
+  display: flex flex-wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 12px;
+  font-weight: 200;
+  line-height: 12px;
+}
+
+.site-table table > tbody > tr > td:nth-child(2) {
+  width: 70%;
+}
+.site-table table > tbody > tr > td.tbody-code {
+  width: 30%;
+}
+
+.site-table table > tbody > tr > td.tbl_name {
+  width: 70%;
+}
+
+.menu-active {
+  color: #005baa;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  margin-top: 20px;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+
+  justify-content: center;
+  align-items: center;
+}
+
+.truncated {
+  display: none;
+}
+
+.truncated:nth-child(20) {
+  display: block;
+  border: none;
+  width: 34px;
+
+  /* + .truncated {
+    display: none;
+  } */
+}
+
+.list-desc {
+  display: -webkit-box;
+  max-width: 100%;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
