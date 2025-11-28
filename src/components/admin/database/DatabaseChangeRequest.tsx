@@ -1,8 +1,7 @@
-import { getOneDatabase } from "@/services/DatabaseService";
 import {
   useGetUserLevel,
 } from "@/utils/customHooks";
-import { Alert, Button, Input, Box, Snackbar } from "@mui/material";
+import { Alert, Button, Input, Box, Snackbar, Typography } from "@mui/material";
 import { Sidebar } from "flowbite-react";
 import { Formik } from "formik";
 import { useContext, useState } from "react";
@@ -19,7 +18,6 @@ import { sidebarTheme } from "@/components/componentTheme/SidebarTheme";
 import TooltipComponent from "../formComponents/TooltipComponent";
 import CurrentUserContext, { ICurrentUserContext } from "@/utils/context";
 import { IAction } from "@/interfaces/IAction";
-import { useQuery } from "@tanstack/react-query";
 import FileComponent from "../formComponents/FIle";
 import { updateActionService } from "@/services/ActionService";
 import { IDatabase } from "@/interfaces/IDatabase";
@@ -30,12 +28,16 @@ const DatabaseChangeRequest = ({
   actionTypeId,
   userId,
   database,
+  modalStatus,
+  savedFile,
   setOpen,
   setAlert,
 }: {
   actionTypeId: number;
   userId?: number;
   database?: IDatabase;
+  modalStatus?: string;
+  savedFile?: any;
   setOpen: (open: boolean) => void;
   setAlert: (status: string) => {};
 }) => {
@@ -160,15 +162,38 @@ const DatabaseChangeRequest = ({
                     <LabelComponent label="Тушаал" />
                     <TooltipComponent content="Тушаал" />
                   </Box>
-                  <FileComponent
-                    label="Тушаал"
-                    name="file"
-                    onChange={(fileData: any) => {
-                      setSelectedFile(fileData);
-                    }}
-                    value={values?.file_id}
-                    desabled={false}
-                  />
+                  {
+                    modalStatus === "view" ? (
+                      !savedFile
+                        ? <Typography variant="body2">Тушаал хавсаргаагүй байна.</Typography>
+                        : (
+                          <Box>
+                            <a
+                              href={`/api/download/${savedFile?.filename}`}
+                            >
+                              <Button variant="contained">Файл татах</Button>
+                            </a>
+                            {/* <a
+                              href={`/uploads/requests/${savedFile?.filename}`}
+                              download={savedFile?.filename}
+                            >
+                              <Button variant="contained">
+                                Файл татах
+                              </Button>
+                            </a> */}
+                            <Typography variant="body2" className="ml-5">{savedFile?.filename}</Typography>
+                          </Box>
+                        )
+                    ) : <FileComponent
+                          label="Тушаал"
+                          name="file"
+                          onChange={(fileData: any) => {
+                            setSelectedFile(fileData);
+                          }}
+                          value={values?.file_id}
+                          desabled={false}
+                        />
+                  }
                 </FormBox>
                 <FormBox>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -180,21 +205,25 @@ const DatabaseChangeRequest = ({
                     name="lastname"
                     value={userInfo?.lastname && userInfo?.firstname ? (`${userInfo?.lastname} ${userInfo?.firstname}`) : ""}
                     label="Овог"
+                    desabled={true}
                     onChange={(e: any) => {}}
                   />
                 </FormBox>
 
-                <div className="flex justify-end p-3">
-                  <Button
-                    className="text-primary-default bg-primary-medium bg-opacity-50 hover:bg-tertirary-background hover:text-tertirary-default"
-                    variant="contained"
-                    color="success"
-                    type="submit"
-                    size="small"
-                  >
-                    Илгээх
-                  </Button>
-                </div>
+                {
+                  modalStatus === "view" ? null : 
+                    <div className="flex justify-end p-3">
+                      <Button
+                        className="text-primary-default bg-primary-medium bg-opacity-50 hover:bg-tertirary-background hover:text-tertirary-default"
+                        variant="contained"
+                        color="success"
+                        type="submit"
+                        size="small"
+                      >
+                        Илгээх
+                      </Button>
+                    </div>
+                }
               </form>
             );
           }}
