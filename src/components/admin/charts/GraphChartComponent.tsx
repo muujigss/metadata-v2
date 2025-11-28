@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { SearchService } from "@/services/SearchService";
 import Loader from "@/components/Loader";
 import TreeView from "../dashboard/TreeView";
-import { Box, Button, Typography, Select, MenuItem, FormControl, InputLabel, TextField } from "@mui/material";
+import { Box, Button, Typography, TextField, Autocomplete } from "@mui/material";
 
 const GraphChartComponent = ({
   dataList,
@@ -15,18 +15,18 @@ const GraphChartComponent = ({
   dataList: any;
   allOrg: any;
 }) => {
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState<string | null>(null);
   const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
-  const [searchType, setSearchType] = useState("org");
   const [clickTree, setClickTree] = useState(1);
   const [allData, setAllData] = useState(false);
 
   const graphData = getConvertDataHome(dataList);
+  const orgOptions = graphData.map((org: any) => org.name);
 
   // Debounce search value
   React.useEffect(() => {
     const timer = setTimeout(() => {
-      setDebouncedSearchValue(searchValue);
+      setDebouncedSearchValue(searchValue || "");
     }, 500);
 
     return () => clearTimeout(timer);
@@ -41,39 +41,9 @@ const GraphChartComponent = ({
     if (!debouncedSearchValue) return graphData;
     const lowerSearch = debouncedSearchValue.toLowerCase();
 
-    if (searchType === "org") {
-      return graphData.filter((org: any) =>
-        org.name.toLowerCase().includes(lowerSearch)
-      );
-    } else if (searchType === "db") {
-      return graphData.reduce((acc: any, org: any) => {
-        const matchingDBs = org.children?.filter((db: any) =>
-          db.name.toLowerCase().includes(lowerSearch)
-        );
-        if (matchingDBs && matchingDBs.length > 0) {
-          acc.push({ ...org, children: matchingDBs });
-        }
-        return acc;
-      }, []);
-    } else if (searchType === "table") {
-      return graphData.reduce((acc: any, org: any) => {
-        const matchingDBs = org.children?.reduce((dbAcc: any, db: any) => {
-          const matchingTables = db.children?.filter((tbl: any) =>
-            tbl.name.toLowerCase().includes(lowerSearch)
-          );
-          if (matchingTables && matchingTables.length > 0) {
-            dbAcc.push({ ...db, children: matchingTables });
-          }
-          return dbAcc;
-        }, []);
-
-        if (matchingDBs && matchingDBs.length > 0) {
-          acc.push({ ...org, children: matchingDBs });
-        }
-        return acc;
-      }, []);
-    }
-    return graphData;
+    return graphData.filter((org: any) =>
+      org.name.toLowerCase().includes(lowerSearch)
+    );
   };
 
   const filteredGraphData = getFilteredData();
@@ -288,27 +258,23 @@ const GraphChartComponent = ({
             <Typography variant="body1">Үзүүлэлт</Typography>
           </Box>
         </Box>
-
         {/* Search Controls */}
         <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, gap: 2, alignItems: 'center' }}>
-          <FormControl size="small" sx={{ minWidth: 150 }}>
-            <InputLabel>Хайх төрөл</InputLabel>
-            <Select
-              value={searchType}
-              label="Хайх төрөл"
-              onChange={(e) => setSearchType(e.target.value)}
-            >
-              <MenuItem value="org">Байгууллага</MenuItem>
-              <MenuItem value="db">Өгөгдлийн сан</MenuItem>
-              <MenuItem value="table">Хүснэгт</MenuItem>
-            </Select>
-          </FormControl>
-          <TextField
-            size="small"
-            placeholder="Хайх утга..."
+          <Autocomplete
+            options={orgOptions}
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
-            sx={{ width: 300 }}
+            onChange={(event: any, newValue: string | null) => {
+              setSearchValue(newValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Байгууллага хайх"
+                size="small"
+                sx={{ width: 400 }}
+              />
+            )}
+            sx={{ width: 400 }}
           />
         </Box>
       </Box>
@@ -329,10 +295,10 @@ const GraphChartComponent = ({
           />
         </div>
         <div className="w-1/2 flex flex-col">
-          {searchValue != "" && (
+          {searchValue && (
             <TreeView data={groupedData} activeName={searchValue} />
           )}
-          {searchValue != "" && allOrgData.length > 10 && (
+          {searchValue && allOrgData.length > 10 && (
             <Box
               sx={{
                 display: "flex",
