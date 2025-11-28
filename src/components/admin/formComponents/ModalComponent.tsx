@@ -11,17 +11,21 @@ const ModalComponent = ({
   id,
   data,
   open,
-  setOpen,
   type,
+  status,
+  file,
+  setOpen,
   setAlert,
 }: {
   userId?: number;
   id: number;
-  open: boolean;
-  setOpen: any;
-  type: string;
-  setAlert?: any;
   data?: any;
+  open: boolean;
+  type: string;
+  status?: string;
+  file?: any;
+  setAlert?: any;
+  setOpen: any;
 }) => {
   const handleClose = () => {
     setOpen(false);
@@ -89,9 +93,11 @@ const ModalComponent = ({
           />
         ) : type === "DatabaseChangeRequest" ? (
           <DatabaseChangeRequest
+          modalStatus={status}
             actionTypeId={id}
             userId={userId}
             database={data}
+            savedFile={file}
             setAlert={setAlert}
             setOpen={setOpen}
           />

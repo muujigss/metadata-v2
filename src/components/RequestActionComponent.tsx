@@ -148,10 +148,12 @@ const RequestActionComponent = ({
             userId={selected?.user_id}
             id={Number(selected?.id)}
             open={openModal}
-            setOpen={setOpenModal}
             type={"DatabaseChangeRequest"}
-            setAlert={setShowAlert}
             data={selected?.databases[0]}
+            status={"view"}
+            file={selected?.file}
+            setOpen={setOpenModal}
+            setAlert={setShowAlert}
           />
       }
     </Box>

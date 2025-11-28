@@ -8,6 +8,7 @@ const InputComponent = ({
   value,
   onChange,
   errors,
+  desabled,
 }: {
   type: string;
   name: string;
@@ -15,6 +16,7 @@ const InputComponent = ({
   value?: any;
   onChange: any;
   errors?: any;
+  desabled?: boolean;
 }) => {
   return (
     <Box
@@ -30,7 +32,9 @@ const InputComponent = ({
     >
       <StyledInput
         name={name}
-        className={"input"}
+        // className={"input"}
+        disabled={desabled}
+        className={`${desabled && "cursor-not-allowed bg-gray-300"} input`}
         id={`outlined-${name}`}
         type={type}
         defaultValue={value}
