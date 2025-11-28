@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { IAction } from "@/interfaces/IAction";
 import {
   Box,
@@ -10,13 +10,16 @@ import {
   TableCell,
   TableBody,
   Typography,
+  Button,
 } from "@mui/material";
 import moment from "moment";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import Link from "next/link";
 import ArrowRightSLineIcon from "remixicon-react/ArrowRightSLineIcon";
 import { useQuery } from "@tanstack/react-query";
 import getLibraryService from "@/services/LibLibraryService";
 import Loader from "./Loader";
+import ModalComponent from "./admin/formComponents/ModalComponent";
 
 const RequestActionComponent = ({
   columns,
@@ -30,6 +33,40 @@ const RequestActionComponent = ({
     queryKey: ["actiontype for admin"],
     queryFn: () => getLibraryService("actiontype"),
   });
+
+  const [openModal, setOpenModal] = useState(false);
+  const [showAlert, setShowAlert] = useState("");
+  const [selected, setSelected] = useState<IAction | null>(null);
+
+  const handleViewDetail = (item: any) => {
+    console.log("view detail", item);
+    setSelected(item)
+    setOpenModal(true);
+  };
+
+  
+  const viewActionType = (action_type: number) => {
+    const txtStatusColor =
+      action_type == 1
+        ? "primary"
+        : action_type == 2 || action_type == 5 || action_type == 6 || action_type == 7 || action_type == 8 || action_type == 9
+        ? "warning"
+        : action_type == 3
+        ? "success"
+        : "error";
+    return <Typography
+      color={txtStatusColor}
+      sx={{
+        display: "flex",
+      }}
+    >
+      {
+        actionType?.find((x: any) => x.id === action_type)
+          ?.name
+      }
+    </Typography>;
+  }
+
   if (isLoading) return <Loader />;
   return (
     <Box>
@@ -81,13 +118,23 @@ const RequestActionComponent = ({
                   <TableCell> {item.user?.department}</TableCell>
                   <TableCell> {item.user?.position}</TableCell>
                   <TableCell>
-                    {
-                      actionType?.find((x: any) => x.id === item.action_type)
-                        ?.name
-                    }
+                    {viewActionType(item.action_type)}
                   </TableCell>
                   <TableCell>
                     {moment(item.updated_date).format("YYYY-MM-DD HH:mm:ss")}
+                  </TableCell>
+                  <TableCell align="center">
+                    <div className="flex justify-center gap-2">
+                       <Button
+                        variant="outlined"
+                        color="info"
+                        size="small"
+                        startIcon={<VisibilityIcon />}
+                        onClick={() => handleViewDetail(item)}
+                      >
+                        Харах
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               );
@@ -95,6 +142,18 @@ const RequestActionComponent = ({
           </TableBody>
         </Table>
       </TableContainer>
+
+      { openModal && selected && 
+          <ModalComponent
+            userId={selected?.user_id}
+            id={Number(selected?.id)}
+            open={openModal}
+            setOpen={setOpenModal}
+            type={"DatabaseChangeRequest"}
+            setAlert={setShowAlert}
+            data={selected?.databases[0]}
+          />
+      }
     </Box>
   );
 };

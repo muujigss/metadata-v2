@@ -91,9 +91,9 @@ const ModalComponent = ({
           <DatabaseChangeRequest
             actionTypeId={id}
             userId={userId}
+            database={data}
             setAlert={setAlert}
             setOpen={setOpen}
-            database={data}
           />
         ) : (
           <p>Код нэмэх</p>

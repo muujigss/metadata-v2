@@ -614,6 +614,7 @@ model md_action {
   item_id      Int             @unique
   item_type    String
   description  String?
+  file_id      Int?
   created_date DateTime?       @default(now())
   created_user Int?
   updated_date DateTime?       @default(now())
@@ -621,6 +622,7 @@ model md_action {
   actionType   lib_action_type @relation(fields: [action_type], references: [id])
   databases    md_database[]
   user         md_users        @relation(fields: [user_id], references: [id])
+  file         md_file?        @relation(fields: [file_id], references: [id])
 }
 
 model md_user_database {
@@ -692,4 +694,5 @@ model md_file {
   size            Int?
   created_date    DateTime?        @default(now())
   created_user    Int?
+  actions         md_action[]
 }

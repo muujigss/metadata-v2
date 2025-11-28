@@ -1,7 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useContext, useState } from "react";
-import CurrentUserContext, { ICurrentUserContext } from "@/utils/context";
-import { createFileService } from "@/services/FileService";
+import { useState } from "react";
 
 const FileComponent = ({
   onChange,
@@ -19,16 +17,10 @@ const FileComponent = ({
   desabled?: any;
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const { userInfo } = useContext(CurrentUserContext) as ICurrentUserContext;
   
   const onSubmit = async (e: any) => {
     setSelectedFile(e.target.files?.[0] ?? null)
-    const formData = new FormData();
-    formData.append("created_user", userInfo?.id?.toString() || "");
-    formData.append("file", e.target.files?.[0]);
-    const responseFile = (await createFileService(formData)).data;
-    console.log('----responseFile-----', responseFile)
-    onChange(responseFile)
+    onChange(e.target.files?.[0]);
   };
 
   return (

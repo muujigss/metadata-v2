@@ -51,7 +51,7 @@ const AuthLogin = () => {
 
         setUserInfo(response.user);
 
-        router.push("/admin/dashboard");
+        router.push("/admin/user");
       } else {
         setStatus("error");
       }

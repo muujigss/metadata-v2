@@ -24,6 +24,7 @@ import FileComponent from "../formComponents/FIle";
 import { updateActionService } from "@/services/ActionService";
 import { IDatabase } from "@/interfaces/IDatabase";
 import Loader from "@/components/Loader";
+import { createFileService } from "@/services/FileService";
 
 const DatabaseChangeRequest = ({
   actionTypeId,
@@ -45,7 +46,7 @@ const DatabaseChangeRequest = ({
   const { data: userLevels, isLoading: userLevelLoading } = useGetUserLevel();
   const { userInfo } = useContext(CurrentUserContext) as ICurrentUserContext;
   const userCustomLevels = userLevels;
-
+  
   const initData = {
     id: 0,
     user_id: userInfo?.id || 0,
@@ -56,20 +57,45 @@ const DatabaseChangeRequest = ({
   const onSubmit = async (values: IAction) => {
     try {
       setLoading(true);
-      const actionBody: IAction = {
-        item_id: database?.id,
-        user_id: userInfo?.id,
-        action_type: actionTypeId
+
+      const formData = new FormData();
+      formData.append("created_user", userInfo?.id?.toString() || "");
+      if (selectedFile) {
+        formData.append("file", selectedFile);
       }
-      await updateActionService(actionBody);
-      window.location.reload();
+      const responseFile = await saveFile();
+
+      if (responseFile && responseFile.file) {
+        const actionBody: IAction = {
+          item_id: database?.id,
+          user_id: userInfo?.id,
+          action_type: actionTypeId,
+          file_id: responseFile.file.id,
+        }
+        await updateActionService(actionBody);
+        window.location.reload();
+      }
     } catch (err) {
       setStatus("error");
       setAlert("error");
+    } finally {
       setLoading(false);
       setOpen(false);
     }
   };
+  const saveFile = async () => {
+    try {
+      if (!selectedFile) return;
+      const formData = new FormData();
+      formData.append("created_user", userInfo?.id?.toString() || "");
+      formData.append("file", selectedFile);
+      const responseFile = (await createFileService(formData)).data;
+      setLoading(false);
+      return responseFile;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   if (loading) return <Loader />;
   return (
@@ -138,8 +164,7 @@ const DatabaseChangeRequest = ({
                     label="Тушаал"
                     name="file"
                     onChange={(fileData: any) => {
-                      console.log('----fileData-----', fileData)
-                      setSelectedFile(fileData.file);
+                      setSelectedFile(fileData);
                     }}
                     value={values?.file_id}
                     desabled={false}

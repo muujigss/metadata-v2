@@ -23,6 +23,7 @@ const getActionsModel = async () => {
         item_type: true,
         action_type: true,
         user_id: true,
+        file_id: true,
         created_date: true,
         updated_date: true,
         user: {
@@ -46,6 +47,7 @@ const getActionsModel = async () => {
             },
           },
         },
+        file: true,
       },
     });
     return md_action;
@@ -58,22 +60,35 @@ const getActionsModel = async () => {
 const updateActionsModel = async (
   db_id: number,
   action_type: number,
-  user_id: number
+  user_id: number,
+  file_id: any,
 ) => {
   try {
     const now = new Date();
     const created_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();
     const updated_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();
 
+    const updatedFields: {
+      action_type: number;
+      file_id?: number | null;
+      updated_date: string;
+      updated_user: number;
+    } = {
+      action_type,
+      updated_date,
+      updated_user: user_id,
+    };
+    if (file_id !== undefined && file_id !== null) {
+      updatedFields.file_id = parseInt(file_id.toString());
+    } else {
+      updatedFields.file_id = null;
+    }
+
     const md_action = await prisma.md_action.update({
       where: {
         item_id: db_id,
       },
-      data: {
-        action_type: action_type,
-        updated_date,
-        updated_user: user_id,
-      },
+      data: updatedFields,
     });
 
     // if (action_type == 10) {
