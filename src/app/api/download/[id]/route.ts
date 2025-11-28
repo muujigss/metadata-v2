@@ -8,8 +8,11 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { path: string[] } }
 ) {
+  console.log("BASE_DIR PATH:", BASE_DIR);
+  console.log("params:", params);
   const filename = params.id;
   const absolutePath = path.join(BASE_DIR, filename);
+  console.log("DOWNLOAD PATH:", absolutePath);
 
   // Check if file exists
   if (!fs.existsSync(absolutePath)) {
