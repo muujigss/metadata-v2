@@ -8,6 +8,7 @@ import Building2FillIcon from "remixicon-react/Building2FillIcon";
 import DashboardFillIcon from "remixicon-react/DashboardFillIcon";
 import Database2FillIcon from "remixicon-react/Database2FillIcon";
 import QuestionLineIcon from "remixicon-react/QuestionLineIcon";
+import ChatHistoryLineIcon from "remixicon-react/ChatHistoryLineIcon";
 import VideoLineIcon from "remixicon-react/VideoLineIcon";
 import InformationFillIcon from "remixicon-react/InformationFillIcon";
 import User2FillIcon from "remixicon-react/User2FillIcon";
@@ -119,6 +120,22 @@ const MainList = () => {
                 <GitPullRequestFillIcon color="#518df9" />
               </ListItemIcon>   
               <ListItemText primary={"Байгууллагын хүсэлт"} />
+            </ListItemButton>
+          </Tooltip>
+        </Link>
+      )}
+      {userInfo?.user_level == 1 && (
+        <Link href={"/admin/log"}>
+          <Tooltip title={"Лог"}>
+            <ListItemButton
+              sx={{
+                backgroundColor: pathname == "/admin/log" ? "aliceblue" : "",
+              }}
+            >
+              <ListItemIcon>
+                <ChatHistoryLineIcon color="#518df9" />
+              </ListItemIcon>
+              <ListItemText primary={"Лог"} />
             </ListItemButton>
           </Tooltip>
         </Link>

@@ -45,6 +45,8 @@ model md_database {
   licenceType        lib_licence_type?  @relation(fields: [licence_type], references: [id])
   md_user_database   md_user_database[]
   actions            md_action?         @relation(fields: [id], references: [item_id])
+  log_database       log_database[]
+  log_user_database  log_user_database[]
 }
 
 model log_database {
@@ -77,6 +79,9 @@ model log_database {
   createdUser        Int?
   updatedDate        DateTime @default(now())
   updatedUser        Int?
+  md_database        md_database @relation(fields: [db_id], references: [id])
+  md_organization    md_organization @relation(fields: [org_id], references: [id])
+  ld_created_user    md_users? @relation(fields: [createdUser], references: [id])
 }
 
 model md_form {
@@ -388,6 +393,7 @@ model md_organization {
   updated_user   Int?
   databases      md_database[]
   users          md_users[]
+  log_database   log_database[]
 }
 
 model md_indicator {
@@ -583,6 +589,8 @@ model md_users {
   md_user_database md_user_database[]
   userLevel        lib_user_level     @relation(fields: [user_level], references: [id])
   md_action        md_action[]
+  ld_created_user  log_database[]
+  lud_created_user log_user_database[]
 }
 
 model lib_integrated {
@@ -635,6 +643,7 @@ model md_user_database {
   updated_user Int?
   database     md_database @relation(fields: [database_id], references: [id])
   user         md_users    @relation(fields: [user_id], references: [id])
+  user_database log_user_database[]
 }
 
 model log_user_database {
@@ -647,6 +656,9 @@ model log_user_database {
   created_user Int?
   updated_date DateTime @default(now())
   updated_user Int?
+  user_database md_user_database @relation(fields: [ud_id], references: [id])
+  database      md_database? @relation(fields: [database_id], references: [id])
+  lud_created_user md_users? @relation(fields: [created_user], references: [id])
 }
 
 model lib_user_level {

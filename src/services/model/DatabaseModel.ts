@@ -562,7 +562,7 @@ const createDatabaseModel = async (data: IDatabase) => {
           version,
         },
       });
-      const logDataBase = await prisma.log_database.create({
+      await prisma.log_database.create({
         data: {
           type: "UPDATE",
           db_id: database.id,
@@ -590,6 +590,27 @@ const createDatabaseModel = async (data: IDatabase) => {
           createdUser: database.createdUser,
           updatedUser: database.updatedUser,
           version: database.version,
+        },
+      });
+
+      const userDatabase = await prisma.md_user_database.create({
+        data: {
+          user_id: +createdUser,
+          database_id: database.id,
+          created_date: created_date,
+          created_user: +createdUser,
+        },
+      });
+      await prisma.log_user_database.create({
+        data: {
+          type: "UPDATE",
+          ud_id: userDatabase.id,
+          user_id: userDatabase.user_id,
+          database_id: userDatabase.database_id,
+          created_date: userDatabase.created_date,
+          updated_date: userDatabase.updated_date,
+          created_user: userDatabase.created_user,
+          updated_user: userDatabase.updated_user,
         },
       });
 
@@ -623,7 +644,7 @@ const createDatabaseModel = async (data: IDatabase) => {
           version,
         },
       });
-      const logDataBase = await prisma.log_database.create({
+      await prisma.log_database.create({
         data: {
           type: "CREATE",
           db_id: database.id,
@@ -662,7 +683,7 @@ const createDatabaseModel = async (data: IDatabase) => {
             created_user: +createdUser,
           },
         });
-        const logUserDatabase = await prisma.log_user_database.create({
+        await prisma.log_user_database.create({
           data: {
             type: "CREATE",
             ud_id: userDatabase.id,

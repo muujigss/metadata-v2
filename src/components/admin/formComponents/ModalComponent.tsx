@@ -93,7 +93,7 @@ const ModalComponent = ({
           />
         ) : type === "DatabaseChangeRequest" ? (
           <DatabaseChangeRequest
-          modalStatus={status}
+            modalStatus={status}
             actionTypeId={id}
             userId={userId}
             database={data}
