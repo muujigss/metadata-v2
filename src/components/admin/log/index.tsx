@@ -25,6 +25,7 @@ const AdminLogList = () => {
   const { data: actionType, isLoading: actionTypeLoading } = useGetActionType();
   const [columns, setColumns] = useState([
     { field: "id", headerName: "№", width: 10 },
+    { field: "img_url", headerName: "Зураг", width: 10 },
     { field: "name", headerName: "Байгууллагын нэр", width: 10 },
     { field: "name", headerName: "Өгөгдлийн сан", width: 10 },
     { field: "name", headerName: "Төрөл", width: 10 },
@@ -110,6 +111,33 @@ const AdminLogList = () => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                     <TableCell>{i + 1}</TableCell>
+                    <TableCell>
+                      {
+                      type === 1
+                        ? (item?.md_organization.img_url ? (
+                          <img 
+                            src={item?.md_organization.img_url} 
+                            alt="Logo" 
+                            className="w-12 h-12 object-contain rounded border"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
+                            No logo
+                          </div>
+                        ))
+                        : (item?.lud_created_user?.organization.img_url ? (
+                          <img 
+                            src={item?.lud_created_user?.organization.img_url} 
+                            alt="Logo" 
+                            className="w-12 h-12 object-contain rounded border"
+                          />
+                        ) : (
+                          <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
+                            No logo
+                          </div>
+                        ))
+                    }
+                    </TableCell>
                     <TableCell>
                       {
                         type === 1

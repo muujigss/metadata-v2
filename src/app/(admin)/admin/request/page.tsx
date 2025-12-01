@@ -1,5 +1,4 @@
 import AdminBreadCrumpMenu from "@/components/admin/AdminBreadCrumpMenu";
-import ModalComponent from "@/components/admin/formComponents/ModalComponent";
 import Loader from "@/components/Loader";
 import RequestActionComponent from "@/components/RequestActionComponent";
 import { getActionsModel } from "@/services/model/ActionModel";
@@ -9,6 +8,7 @@ import React, { Suspense } from "react";
 const RequestActionPage = async () => {
   const columns = [
     { field: "id", headerName: "№", width: 10 },
+    { field: "img_url", headerName: "Зураг", width: 10 },
     { field: "name", headerName: "Байгууллагын нэр", width: 10 },
     {
       field: "org_short_name",

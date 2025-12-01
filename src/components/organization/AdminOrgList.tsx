@@ -39,14 +39,14 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
         </Box>
       </Box>
        <TextInput
-                    className="w-full py-1.5 truncate"
-                    theme={textSubInputTheme}
-                    id="search"
-                    type="text"
-                    placeholder="Байгууллагын нэрээр хайх..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
+        className="w-full py-1.5 truncate"
+        theme={textSubInputTheme}
+        id="search"
+        type="text"
+        placeholder="Байгууллагын нэрээр хайх..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+      />
       <Suspense fallback={<Loader />}>
         <TableContainer sx={{ maxHeight: 700 }}>
           <Table stickyHeader>
@@ -71,33 +71,45 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-  {filteredData?.map((item: IOrganization, i: number) => {
-    return (
-      <TableRow hover role="checkbox" tabIndex={-1} key={i}>
-        <TableCell>{i + 1}</TableCell>
-        <TableCell>
-          <Link href={`/admin/database?org=${item.id}`}>
-            <Typography
-              sx={{
-                textTransform: "uppercase",
-                color: "#518df9",
-                display: "flex",
-              }}
-            >
-              {item.name}
-              <ArrowRightSLineIcon />
-            </Typography>
-          </Link>
-        </TableCell>
-        <TableCell>{item.org_short_name}</TableCell>
-        <TableCell>{item.email}</TableCell>
-        <TableCell>{item.website}</TableCell>
-        <TableCell>{item.phone}</TableCell>
-      </TableRow>
-    );
-  })}
-</TableBody>
-
+              {filteredData?.map((item: IOrganization, i: number) => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={i}>
+                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>
+                      {item?.img_url ? (
+                        <img 
+                          src={item?.img_url} 
+                          alt="Logo" 
+                          className="w-12 h-12 object-contain rounded border"
+                        />
+                      ) : (
+                        <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
+                          No logo
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <Link href={`/admin/database?org=${item.id}`}>
+                        <Typography
+                          sx={{
+                            textTransform: "uppercase",
+                            color: "#518df9",
+                            display: "flex",
+                          }}
+                        >
+                          {item.name}
+                          <ArrowRightSLineIcon />
+                        </Typography>
+                      </Link>
+                    </TableCell>
+                    <TableCell>{item.org_short_name}</TableCell>
+                    <TableCell>{item.email}</TableCell>
+                    <TableCell>{item.website}</TableCell>
+                    <TableCell>{item.phone}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
           </Table>
         </TableContainer>
       </Suspense>

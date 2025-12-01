@@ -5,6 +5,7 @@ import { Box } from "@mui/material";
 const OrganizationPage = async () => {
   const columns = [
     { field: "org_id", headerName: "№", width: 10 },
+    { field: "img_url", headerName: "Зураг", width: 10 },
     { field: "name", headerName: "Байгууллагын нэр", width: 10 },
     {
       field: "org_short_name",

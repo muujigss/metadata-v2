@@ -51,6 +51,7 @@ export const getLogModel = async (type: number = 1, page: number = 1, limit: num
               name: true,
               phone: true,
               email: true,
+              img_url: true,
               is_active: true,
             },
           },
@@ -109,6 +110,7 @@ export const getLogModel = async (type: number = 1, page: number = 1, limit: num
                 select: {
                   id: true,
                   name: true,
+                  img_url: true,
                   is_active: true,
                 },
               },

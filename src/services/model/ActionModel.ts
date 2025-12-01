@@ -43,6 +43,7 @@ const getActionsModel = async () => {
               select: {
                 id: true,
                 name: true,
+                img_url: true,
               },
             },
           },

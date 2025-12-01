@@ -98,6 +98,19 @@ const RequestActionComponent = ({
                 <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>
+                    {item?.databases[0]?.organization?.img_url ? (
+                      <img 
+                        src={item?.databases[0]?.organization?.img_url} 
+                        alt="Logo" 
+                        className="w-12 h-12 object-contain rounded border"
+                      />
+                    ) : (
+                      <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
+                        No logo
+                      </div>
+                    )}
+                  </TableCell>
+                  <TableCell>
                     <Link
                       href={`/admin/database?org=${item?.databases[0]?.organization?.id}`}
                     >
