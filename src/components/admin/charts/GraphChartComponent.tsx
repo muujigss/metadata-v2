@@ -19,9 +19,13 @@ const GraphChartComponent = ({
   const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
   const [clickTree, setClickTree] = useState(1);
   const [allData, setAllData] = useState(false);
+  const [dbSearchValue, setDbSearchValue] = useState<string | null>(null);
 
   const graphData = getConvertDataHome(dataList);
   const orgOptions = graphData.map((org: any) => org.name);
+
+  const selectedOrg: any = graphData.find((org: any) => org.name === searchValue);
+  const dbOptions = selectedOrg ? selectedOrg.children.map((db: any) => db.name) : [];
 
   // Debounce search value
   React.useEffect(() => {
@@ -41,9 +45,35 @@ const GraphChartComponent = ({
     if (!debouncedSearchValue) return graphData;
     const lowerSearch = debouncedSearchValue.toLowerCase();
 
-    return graphData.filter((org: any) =>
+    const filtered = graphData.filter((org: any) =>
       org.name.toLowerCase().includes(lowerSearch)
     );
+
+    return filtered.map((org: any) => {
+      const isSelectedOrg = org.name === searchValue;
+      let children = org.children;
+
+      if (isSelectedOrg && dbSearchValue) {
+        children = org.children.filter((db: any) => db.name === dbSearchValue);
+      }
+
+      return {
+        ...org,
+        children: children,
+        label: {
+          rotate: 0,
+          position: "inside",
+          verticalAlign: "middle",
+          align: "center",
+          fontSize: 10,
+          fontWeight: "bold",
+          backgroundColor: "#A5C984",
+          padding: [4, 8],
+          borderRadius: 4,
+          color: "#000",
+        },
+      };
+    });
   };
 
   const filteredGraphData = getFilteredData();
@@ -265,11 +295,39 @@ const GraphChartComponent = ({
             value={searchValue}
             onChange={(event: any, newValue: string | null) => {
               setSearchValue(newValue);
+              setDbSearchValue(null); // Reset DB search when Org changes
+              if (newValue) {
+                setClickTree(2);
+              } else {
+                setClickTree(1);
+              }
             }}
             renderInput={(params) => (
               <TextField
                 {...params}
                 label="Байгууллага хайх"
+                size="small"
+                sx={{ width: 400 }}
+              />
+            )}
+            sx={{ width: 400 }}
+          />
+          <Autocomplete
+            options={dbOptions}
+            value={dbSearchValue}
+            disabled={!searchValue}
+            onChange={(event: any, newValue: string | null) => {
+              setDbSearchValue(newValue);
+              if (newValue) {
+                setClickTree(3);
+              } else {
+                setClickTree(2);
+              }
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Өгөгдлийн сан хайх"
                 size="small"
                 sx={{ width: 400 }}
               />
