@@ -19,7 +19,7 @@ const Header = () => {
   const pathName = usePathname();
   const paths = pathName.split("/");
   return (
-    <header className="bg-white">
+    <header className="bg-transparent py-10 px-10">
       <nav
         className="flex gap-10 mx-2 lg:mx-auto items-center justify-between p-4 lg:px-6"
         aria-label="Global"
@@ -53,7 +53,7 @@ const Header = () => {
             <a
               key={menu.id}
               href={"/" + menu.link}
-              className={`uppercase text-sm font-normal xl:font-medium leading-4 xl:leading-6 text-text-org-name xl:text-text-body-large ${paths[1] == menu.link ? "menu-active" : "text-gray-900"
+              className={`font-sans opacity-90 text-sm font-normal leading-4 xl:leading-6 text-text-org-name xl:text-text-body-medium2 ${paths[1] == menu.link ? "menu-active" : "text-white"
                 }  hover:text-primary-medium "`}
             >
               {menu.menu_name}

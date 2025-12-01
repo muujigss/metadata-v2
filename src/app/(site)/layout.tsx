@@ -25,15 +25,11 @@ export default function RootLayout({
       </head>
       <GoogleAnalytics />
       <body>
-        <div className={`w-full h-screen`}>
+        <div className="relative w-full h-screen bg-[#080812]">
+          <div className="absolute inset-0 -top-[220px] bg-[url('/v2/bg-pattern.png')] bg-cover bg-no-repeat z-0"></div>
           <Header />
-          <main
-            style={{
-              background:
-                "linear-gradient(91.17deg,#f6fbfb 0.72%,#d7def6 59.53%,#efd8d8 98.91%)",
-            }}
-          >
-            <div className="">
+          <main className="flex flex-col items-center justify-between min-h-screen">
+            <div className="w-full flex-grow">
               <QueryClientProvider client={queryClient}>
                 {children}
               </QueryClientProvider>

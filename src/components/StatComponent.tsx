@@ -9,7 +9,7 @@ import BarcodeBoxLineIcon from "remixicon-react/BarcodeBoxLineIcon";
 
 const StatComponent = ({ mainIndicator }: { mainIndicator: any }) => {
   return (
-    <div className="bg-white">
+    <div className="bg-transparent mt-[100px]">
       <div className="container mx-auto py-14 px-8">
         <div className="w-full">
           <ul className="flex flex-col lg:grid lg:grid-cols-2 justify-between gap-4 ">
