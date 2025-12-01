@@ -22,6 +22,7 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Loader from "@/components/Loader";
+import { Chip } from "@mui/material";
 
 const OrgRequestListPage = () => {
   const [requests, setRequests] = useState<any[]>([]);
@@ -87,6 +88,23 @@ const OrgRequestListPage = () => {
     }
   };
 
+  const getDeadlineStatus = (createdDate: string) => {
+    const created = new Date(createdDate);
+    const deadline = new Date(created.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
+    const now = new Date();
+    const diff = deadline.getTime() - now.getTime();
+    const diffHours = Math.floor(diff / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diff < 0) {
+      return { label: "Хугацаа хэтэрсэн", color: "error" as const, expired: true };
+    } else if (diffHours < 24) {
+      return { label: `${diffHours} цаг үлдсэн`, color: "warning" as const, expired: false };
+    } else {
+      return { label: `${diffDays} өдөр үлдсэн`, color: "success" as const, expired: false };
+    }
+  };
+
   if (loading) return <Loader />;
 
   return (
@@ -106,6 +124,7 @@ const OrgRequestListPage = () => {
               <TableCell>Админ хэрэглэгч</TableCell>
               <TableCell>Албан бичиг</TableCell>
               <TableCell>Огноо</TableCell>
+              <TableCell>Хугацаа</TableCell>
               <TableCell align="center">Үйлдэл</TableCell>
             </TableRow>
           </TableHead>
@@ -154,6 +173,19 @@ const OrgRequestListPage = () => {
                   </TableCell>
                   <TableCell>
                     {new Date(req.created_date).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {(() => {
+                      const status = getDeadlineStatus(req.created_date);
+                      return (
+                        <Chip 
+                          label={status.label} 
+                          color={status.color} 
+                          size="small" 
+                          variant={status.expired ? "filled" : "outlined"}
+                        />
+                      );
+                    })()}
                   </TableCell>
                   <TableCell align="center">
                     <div className="flex justify-center gap-2">

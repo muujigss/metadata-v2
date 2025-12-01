@@ -378,7 +378,11 @@ const RequestAccessPage = () => {
                   )}
                 </Box>
 
-                <Box className="mt-8 flex justify-end">
+                <Alert severity="info" className="mt-8 mb-4">
+                  Таны хүсэлт 3 хоногийн дотор шийдвэрлэгдэх бөгөөд шийдвэрлэгдсэн үед бүртгэлтэй и-мэйл хаягаар мэдэгдэх болно.
+                </Alert>
+
+                <Box className="flex justify-end">
                   <Button
                     variant="contained"
                     color="primary"
