@@ -27,8 +27,9 @@ export async function POST(request: NextRequest) {
   const db_id = Number(body.item_id || 0);
   const action_type = Number(body.action_type || 0);
   const file_id = Number(body.file_id || null);
+  const description = body.description ?? "";
 
-  const dt = await updateActionsModel(db_id, action_type, user_id, file_id);
+  const dt = await updateActionsModel(db_id, action_type, user_id, file_id, description);
   if (!dt) {
     return NextResponse.json("error");
   }

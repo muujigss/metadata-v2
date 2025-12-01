@@ -5,16 +5,15 @@ import { sendMail } from "./MailService";
 import { checkStatusMetadata } from "./model/DatabaseModel";
 import { getUserInfoByLevelModel, getUserInfoModel } from "./model/UserModel";
 
-const updateActionService = async (data: IAction) => {
-  let checkStatus = await checkStatusMetadata(data?.item_id);
-
+const checkValidationStatus = async (db_id: number) => {
+  const checkStatus = await checkStatusMetadata(db_id);
   if (!checkStatus?.status) {
-    return {
-      status: false,
-      message: checkStatus?.message,
-    };
+    throw new Error(checkStatus?.message);
   }
+};
 
+const updateActionService = async (data: IAction) => {
+  await checkValidationStatus(data?.item_id);
   const res = await fetch(`${process.env.BASE_URL}/api/action`, {
     method: "POST",
     headers: {
@@ -74,10 +73,22 @@ const getActionService = async () => {
   });
 
   if (!res.ok) {
-    throw new Error("Failed to fetch user data");
+    throw new Error("Failed to updateActionService post data");
   }
 
   return res.json();
 };
 
-export { getActionService, updateActionService };
+const getActionByIdService = async (id: any) => {
+  const res = await fetch(`${process.env.BASE_URL}/api/action/${id}`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch getActionById data");
+  }
+
+  return res.json();
+};
+
+export { checkValidationStatus, getActionService, updateActionService, getActionByIdService };

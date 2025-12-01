@@ -63,6 +63,7 @@ const updateActionsModel = async (
   action_type: number,
   user_id: number,
   file_id: any,
+  description: any,
 ) => {
   try {
     const now = new Date();
@@ -72,6 +73,7 @@ const updateActionsModel = async (
     const updatedFields: {
       action_type: number;
       file_id?: number | null;
+      description?: string | null;
       updated_date: string;
       updated_user: number;
     } = {
@@ -83,6 +85,11 @@ const updateActionsModel = async (
       updatedFields.file_id = parseInt(file_id.toString());
     } else {
       updatedFields.file_id = null;
+    }
+    if (description) {
+      updatedFields.description = description.toString();
+    } else {
+      updatedFields.description = null;
     }
 
     const md_action = await prisma.md_action.update({
@@ -121,4 +128,52 @@ const updateActionsModel = async (
     throw new Error("Failed to updateActions Model");
   }
 };
-export { getLibChangeActionTypeModel, getActionsModel, updateActionsModel, getLibActionTypeModel };
+const getActionByIdModel = async (id: number) => {
+  try {
+    const data = await prisma.md_action.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        id: true,
+        item_id: true,
+        item_type: true,
+        action_type: true,
+        description: true,
+        user_id: true,
+        file_id: true,
+        created_date: true,
+        updated_date: true,
+        user: {
+          select: {
+            id: true,
+            firstname: true,
+            lastname: true,
+            department: true,
+            position: true,
+          },
+        },
+        databases: {
+          select: {
+            id: true,
+            name: true,
+            organization: {
+              select: {
+                id: true,
+                name: true,
+                img_url: true,
+              },
+            },
+          },
+        },
+        file: true,
+      },
+    });
+
+    return data;
+  } catch (error) {
+    console.error("Error in getActionByIdModel:", error);
+    throw new Error("Failed to fetch getActionByIdModel");
+  }
+};
+export { getLibChangeActionTypeModel, getActionsModel, updateActionsModel, getLibActionTypeModel, getActionByIdModel };

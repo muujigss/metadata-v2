@@ -7,7 +7,7 @@ export type IAction = {
   user_id?: number;
   item_id?: number;
   action_type?: number;
-  decription?: string;
+  description?: string;
   created_date?: string;
   created_user?: number;
   updated_date?: string;

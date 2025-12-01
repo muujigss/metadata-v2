@@ -1,7 +1,7 @@
 import {
   useGetUserLevel,
 } from "@/utils/customHooks";
-import { Alert, Button, Input, Box, Snackbar, Typography } from "@mui/material";
+import { Alert, Button, Input, Box, Snackbar, Typography, CircularProgress } from "@mui/material";
 import { Sidebar } from "flowbite-react";
 import { Formik } from "formik";
 import { useContext, useState } from "react";
@@ -19,12 +19,14 @@ import TooltipComponent from "../formComponents/TooltipComponent";
 import CurrentUserContext, { ICurrentUserContext } from "@/utils/context";
 import { IAction } from "@/interfaces/IAction";
 import FileComponent from "../formComponents/FIle";
-import { updateActionService } from "@/services/ActionService";
+import { checkValidationStatus, getActionByIdService, updateActionService } from "@/services/ActionService";
 import { IDatabase } from "@/interfaces/IDatabase";
-import Loader from "@/components/Loader";
 import { createFileService } from "@/services/FileService";
+import Loader from "@/components/Loader";
+import { useQuery } from "@tanstack/react-query";
 
 const DatabaseChangeRequest = ({
+  id,
   actionTypeId,
   userId,
   database,
@@ -33,6 +35,7 @@ const DatabaseChangeRequest = ({
   setOpen,
   setAlert,
 }: {
+  id?: number;
   actionTypeId: number;
   userId?: number;
   database?: IDatabase;
@@ -44,21 +47,46 @@ const DatabaseChangeRequest = ({
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [warningMessage, setWarningMessage] = useState("");
 
   const { data: userLevels, isLoading: userLevelLoading } = useGetUserLevel();
   const { userInfo } = useContext(CurrentUserContext) as ICurrentUserContext;
   const userCustomLevels = userLevels;
+  
+  const { data: selectedAction, isLoading } = useQuery({
+    queryKey: ["getActionByIdService on admin", id],
+    queryFn: () => getActionByIdService(id),
+    enabled: !!id && !!modalStatus, // 👈 RUN ONLY when these are true
+  });
+  const typeOptions = [
+    {  id: 1, groupId: 5, name: "3.1.1.мэдээлэл хариуцагч байгууллага татан буугдсан, өөрчлөн байгуулагдсанаар мэдээллийн санг нэгтгэх, өргөтгөн зохион байгуулах шаардлага үүссэн;", },
+    {  id: 2, groupId: 5, name: "3.1.2.хууль, захиргааны хэм хэмжээний актад орсон өөрчлөлтийн дагуу өөрчлөлт оруулах шаардлага үүссэн;", },
+    {  id: 3, groupId: 5, name: "3.1.3.мэдээлэл солилцооны систем ашиглан мэдээлэл солилцдог мэдээллийн сангийн бүтцэд өөрчлөлт оруулсан.", },
+    {  id: 4, groupId: 6, name: "4.1.1.мэдээлэл хариуцагч байгууллага татан буугдсан, өөрчлөн байгуулагдсанаар мэдээллийн санг бусад мэдээллийн сантай нэгтгэх, өргөтгөх шаардлагагүй болсон;", },
+    {  id: 5, groupId: 6, name: "4.1.2.мэдээлэл хариуцагчийн үйл ажиллагаанд ашиглагдахгүй болсон;", },
+    {  id: 6, groupId: 6, name: "4.1.3.хууль, захиргааны хэм хэмжээний актад орсон өөрчлөлтийн дагуу мэдээллийн санг ашиглахгүй болсон.", },
+  ];
+  const selectedTypeOption = selectedAction ? typeOptions.find((option) => option.name === selectedAction?.description) : typeOptions.find((option) => option.groupId === actionTypeId)
   
   const initData = {
     id: 0,
     user_id: userInfo?.id || 0,
     item_id: database?.id,
     file_id: selectedFile || 0,
+    description: selectedTypeOption?.name || "",
   };
-
+  const [selectedReason, setSelectedReason] = useState(selectedTypeOption ? selectedTypeOption.id : null);
+  
   const onSubmit = async (values: IAction) => {
     try {
       setLoading(true);
+      
+      await checkValidationStatus(database?.id);
+      if (!selectedFile) {
+        setStatus('error');
+        setWarningMessage("Тушаалын файлыг заавал хавсаргах шаардлагатай.");
+        return;
+      }
 
       const formData = new FormData();
       formData.append("created_user", userInfo?.id?.toString() || "");
@@ -68,21 +96,23 @@ const DatabaseChangeRequest = ({
       const responseFile = await saveFile();
 
       if (responseFile && responseFile.file) {
+        const description = typeOptions.filter((option) => option.groupId === actionTypeId).find((option) => option.id === selectedReason)?.name || "";
         const actionBody: IAction = {
           item_id: database?.id,
           user_id: userInfo?.id,
           action_type: actionTypeId,
           file_id: responseFile.file.id,
+          description: description,
         }
         await updateActionService(actionBody);
         window.location.reload();
       }
     } catch (err) {
-      setStatus("error");
-      setAlert("error");
+      setStatus('error');
+      setAlert('error');
+      setWarningMessage(err.toString());
     } finally {
       setLoading(false);
-      setOpen(false);
     }
   };
   const saveFile = async () => {
@@ -99,7 +129,7 @@ const DatabaseChangeRequest = ({
     }
   }
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
   return (
     <Sidebar className="w-full" theme={sidebarTheme}>
       <Snackbar
@@ -112,7 +142,7 @@ const DatabaseChangeRequest = ({
           {status == "success" ? (
             <Alert severity="success">Амжилттай хадгаллаа ... </Alert>
           ) : status == "error" ? (
-            <Alert severity="error">Хадгалахад алдаа гарлаа ...</Alert>
+            <Alert severity="error">{ warningMessage }</Alert>
           ) : null}
         </Box>
       </Snackbar>
@@ -126,6 +156,25 @@ const DatabaseChangeRequest = ({
             return (
               <form className="w-full" method="POST" onSubmit={handleSubmit}>
                 <Input type="hidden" value={values?.id} />
+                <FormBox>
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <LabelComponent label="Үндэслэл" />
+                    <TooltipComponent content="Үндэслэл" />
+                  </Box>
+                  {
+                    selectedAction
+                      ? (selectedAction?.description)
+                      : <SelectComponent
+                      options={selectedAction ? typeOptions : typeOptions.filter((option) => option.groupId === actionTypeId)}
+                      defaultValue={selectedReason}
+                      label="Төрөл"
+                      name="type"
+                      onChange={(e: any, value: any) => {
+                        setSelectedReason(value);
+                      }}
+                    />
+                  }
+                </FormBox>
                 <FormBox>
                   <Box sx={{ display: "flex", alignItems: "center" }}>
                     <LabelComponent label="Хэрэглэгчийн түвшин" />
@@ -219,8 +268,12 @@ const DatabaseChangeRequest = ({
                         color="success"
                         type="submit"
                         size="small"
+                        disabled={loading}
+                        startIcon={
+                          loading ? <CircularProgress color="inherit" size={16} /> : null
+                        }
                       >
-                        Илгээх
+                        {loading ? "Илгээх..." : "Илгээх"}
                       </Button>
                     </div>
                 }
