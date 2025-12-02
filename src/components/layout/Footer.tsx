@@ -8,7 +8,7 @@ const Footer = () => {
   return (
     <footer className="relative bg-[#080812] w-full h-[600px] pt-[100px]">
       <div className="absolute inset-0 -top-[920px] bg-[url('/v2/bg-pattern-wave2.png')] bg-cover bg-no-repeat z-0"></div>
-      <div className="bg-[rgba(61,78,108,0.15)] container m-auto text-center py-4 px-40 h-[400px] flex">
+      <div className="bg-[rgba(61,78,108,0.15)] rounded-lg container m-auto text-center py-4 px-40 h-[400px] flex">
         <div className="grid grid-cols-2 items-center gap-2">
           <div className="lg:inline-flex flex items-center gap-5 justify-start">
             <Image
