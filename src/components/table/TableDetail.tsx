@@ -24,10 +24,10 @@ const TableDetail = ({ data }: { data: ITable }) => {
   if (isLoading) return <Loader />;
   if (isLoadingSource) return <Loader />;
   return (
-    <Card className="mx-auto flex self-stretch justify-between mt-2">
+    <Card className="mx-auto flex self-stretch justify-between mt-2 bg-[#3D4E6C26] border-none">
       <div className="relative overflow-x-auto ">
-        <table className="site-table w-full text-left rtl:text-right text-secondary-medium">
-          <thead className=" text-secondary-default uppercase bg-table-default p-3 text-text-body-medium2">
+        <table className="site-table w-full text-left rtl:text-right text-white">
+          <thead className=" text-white uppercase bg-[#3D4E6C26] p-3 text-text-body-medium2">
             <tr>
               <th scope="col" className="px-6 py-3">
                 №
@@ -41,7 +41,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
             </tr>
           </thead>
           <tbody className=" text-text-body-medium2">
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -51,7 +51,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
               <td className="px-6 py-2">Хүснэгтийн тухай ойлголт</td>
               <td className="px-6 py-2">{data?.description}</td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-blue-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -63,7 +63,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
                 {data?.source?.length > 0 &&
                   data?.source.map((item, i) => (
                     <div key={i} className="m-1">
-                      <Kbd className=" font-thin text-text-table-small">
+                      <Kbd className=" font-thin text-white bg-[#3D4E6C26]">
                         {libSources?.find(
                           (spec: ISource) => +spec.id == +item.id
                         )?.name || item.id}
@@ -72,7 +72,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
                   ))}
               </td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-blue-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -84,7 +84,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
               </td>
               <td className="px-6 py-2">{data?.source_other}</td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-blue-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -96,7 +96,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
                 {data?.security_level &&
                   data?.security_level.map((item, i) => (
                     <div className="m-1" key={i}>
-                      <Kbd className=" font-thin text-text-table-small">
+                      <Kbd className=" font-thin text-white bg-[#3D4E6C26]">
                         {libSecurityLevels?.find(
                           (spec: ISecurity) => spec.id == +item.id
                         )?.name || item.id}
@@ -105,7 +105,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
                   ))}
               </td>
             </tr>
-            <tr>
+            <tr className="bg-[#3D4E6C26] text-white">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -129,7 +129,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
               </td>
               <td className="px-6 py-2">{data?.licence_type_other}</td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-blue-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -151,7 +151,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
                 )}
               </td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-blue-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"
@@ -161,7 +161,7 @@ const TableDetail = ({ data }: { data: ITable }) => {
               <td className="px-6 py-2">Хүснэгт үүсгэсэн огноо</td>
               <td className="px-6 py-2">{data?.started_date}</td>
             </tr>
-            <tr className="odd:bg-white odd:dark:bg-gray-900 even:bg-blue-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-gray-700">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-blue-500 whitespace-nowrap dark:text-white"

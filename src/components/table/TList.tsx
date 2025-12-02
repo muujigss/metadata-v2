@@ -28,9 +28,9 @@ export default async function TList({
 
   return (
     <div className="w-full h-full">
-      <div className="flex items-center gap-2 justify-start pb-6 pt-2">
+      <div className="flex items-center italic gap-2 justify-start pb-6 pt-2 text-white">
         Нийт:
-        <span className="text-primary-default text-text-title-medium">
+        <span className="text-white italic text-text-title-medium">
           {data?.allresults}
         </span>
       </div>

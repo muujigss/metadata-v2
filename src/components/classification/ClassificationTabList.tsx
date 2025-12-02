@@ -19,7 +19,7 @@ const ClassificationTabList = ({ data }: { data: IClassification }) => {
     <div className="flex min-h-screen flex-col items-start justify-start">
       <BreadCrumpSubMenu data={data} />
       <div className="container py-6 flex overflow-x-auto gap-4">
-        <div className="w-1/3 bg-white rounded-lg border">
+        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg border">
           {fieldData.indicators && fieldData.indicators.length > 0 && (
             <ClassificationDetailSideBar
               parent_id={fieldData?.indicators[0]?.indicator?.table?.db_id}
@@ -29,16 +29,16 @@ const ClassificationTabList = ({ data }: { data: IClassification }) => {
           )}
         </div>
         <div className="w-2/3">
-          <Card className="mx-auto flex self-stretch justify-between">
+          <Card className="mx-auto flex self-stretch justify-between bg-[#3D4E6C26] border-none">
             <div className="relative overflow-x-auto ">
               <div
-                className="text-black mb-2 font-bold"
+                className="text-white mb-2 font-bold"
                 style={{ fontSize: 24 }}
               >
                 {fieldData?.name}
               </div>
-              <span className="text-text-body-medium2 text-secondary-default opacity-50 inline-flex items-center px-2 pb-4">
-                <Calendar2LineIcon size={14} color="#333a3f" />
+              <span className="text-text-body-medium2 text-white opacity-50 inline-flex items-center px-2 pb-4">
+                <Calendar2LineIcon size={14} color="white" />
                 <p className="px-2">
                   {fieldData?.confirmed_decree_date &&
                     moment(fieldData?.confirmed_decree_date).format(
@@ -46,9 +46,9 @@ const ClassificationTabList = ({ data }: { data: IClassification }) => {
                     )}
                 </p>
               </span>
-              <span className=" inline-flex items-center px-2">
+              <span className=" inline-flex text-white opacity-50 items-center px-2">
                 <PriceTag3LineIcon className="w-4 h-4 mr-1" />
-                <Badge color="success" className="px-1">
+                <Badge  className="px-1">
                   {fieldData?.version}
                 </Badge>
               </span>

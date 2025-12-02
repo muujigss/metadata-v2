@@ -51,18 +51,22 @@ const ClassificationDetailSideBar = ({
         arrowIcon={false as any}
       >
         <Accordion.Panel>
-          <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background">
+          <Accordion.Title className="focus:ring-1 hover:bg-primary-high bg-[#3D4E6C26] hover:text-primary-background text-white">
             <span className="inline-flex items-center gap-10">
               Үзүүлэлтийн жагсаалт
             </span>
           </Accordion.Title>
-          <Accordion.Content className=" text-text-body-medium2 p-4">
+          <Accordion.Content className=" text-white p-4 bg-[#3D4E6C26]">
             <TreeItem2
               itemId={"tbl-" + tbl_id}
               label={table.name + " (" + classifications.length + ")"}
-              classes={{ root: "p-4" }}
+              classes={{ root: "p-4 text-white" }}
+              style={{
+                color: 'white',
+                '--TreeItem-color': 'white',
+              } as React.CSSProperties}
             >
-              <ListGroup theme={listGroupDetailSidebarTheme} className=" ml-2">
+              <ListGroup theme={listGroupDetailSidebarTheme} className="ml-2">
                 {/* <SearchTextInput
                   text="Хүснэгтийн нэрээр хайх"
                   dbSearchText={tblSearchText}

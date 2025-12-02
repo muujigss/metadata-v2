@@ -7,10 +7,10 @@ import { IIndicator } from "@/interfaces/IIndicators";
 
 const IndicatorDetail = ({ data }: { data: IIndicator }) => {
   return (
-    <Card className="mx-auto flex self-stretch justify-between mt-2">
+    <Card className="mx-auto flex self-stretch justify-between mt-2 bg-[#3D4E6C26] border-none">
       <div className="relative overflow-x-auto ">
-        <table className=" site-table w-full text-left rtl:text-right text-secondary-medium">
-          <thead className=" text-secondary-default uppercase bg-table-default p-3 text-text-body-medium2">
+        <table className=" site-table w-full text-left rtl:text-right text-white">
+          <thead className=" text-white uppercase bg-[#3D4E6C26] p-3 text-text-body-medium2">
             <tr>
               <th scope="col" className="px-6 py-3">
                 №
@@ -24,7 +24,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
             </tr>
           </thead>
           <tbody className=" text-text-body-medium2">
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -34,7 +34,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               <td className="px-6 py-2">Шифр, дугаар</td>
               <td className="px-6 py-2">{data?.code}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -48,7 +48,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
                 {data.frequency && data?.frequency.name}
               </td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -60,7 +60,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               </td>
               <td className="px-6 py-2">{data.frequency_other}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -70,7 +70,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               <td className="px-6 py-2">Хэмжих нэгж</td>
               <td className="px-6 py-2">{data?.unit_id && data?.unit?.name}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -82,7 +82,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
                 {data.value_type_id && data?.value_type?.name}
               </td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -92,13 +92,13 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               <td className="px-6 py-2">Нууцын зэрэглэл</td>
               <td className="px-6 py-2">
                 {data?.security_level_id && (
-                  <Kbd className="font-thin text-text-table-small">
+                  <Kbd className="font-thin text-white bg-[#3D4E6C26]">
                     {data?.security_level?.name}
                   </Kbd>
                 )}
               </td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -110,7 +110,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
                 {data?.is_methodology ? "Тийм" : "Үгүй"}
               </td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -120,7 +120,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               <td className="px-6 py-2">Аргачлал, арга зүйн нэр</td>
               <td className="px-6 py-2">{data?.methodology}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -132,7 +132,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
                 {data?.is_methodology_confirm ? "Тийм" : "Үгүй"}
               </td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -144,7 +144,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               </td>
               <td className="px-6 py-2">{data.methodology_decree_num}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -158,7 +158,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               </td>
             </tr>
 
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -170,7 +170,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               </td>
               <td className="px-6 py-2">{data.confirmed_organtization}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -183,7 +183,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
               <td className="px-6 py-2">{data?.generated_date}</td>
             </tr>
 
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -197,7 +197,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
             </tr>
             {data.is_classification && (
               <>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -210,7 +210,7 @@ const IndicatorDetail = ({ data }: { data: IIndicator }) => {
                   <td className="px-6 py-2">{data?.classification_count}</td>
                 </tr>
                 {/* 
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"

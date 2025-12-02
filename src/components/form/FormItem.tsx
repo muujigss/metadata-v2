@@ -19,29 +19,29 @@ const FormItem = ({
   return (
     <Link href={`/form/${id}`} className="flow-root">
       <Card
-        className="flex self-stretch justify-between"
+        className="flex self-stretch justify-between bg-[#3D4E6C26] border-none"
         theme={cardIndicatorTheme}
       >
         <div className="flex items-center space-x-4">
           <div className="shrink-0">
-            <EditBoxFillIcon size={24} color="#03543f" />
+            <EditBoxFillIcon size={24} color="white" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-text-body-large font-semibold text-secondary-default leading-6">
+            <p className="text-text-body-large font-semibold text-white leading-6">
               {name} /{code}/
             </p>
-            <p className="text-text-body-small text-secondary-default leading-4 list-desc">
+            <p className="text-text-body-small text-white leading-4 list-desc">
               {description}
             </p>
-            <div className="flex items-center text-text-body-medium2 text-secondary-default opacity-70 gap-4 py-1">
+            <div className="flex items-center text-text-body-medium2 text-white opacity-70 gap-4 py-1">
               <span className=" inline-flex items-center ">
-                <Calendar2LineIcon size={14} color="#333a3f" />
+                <Calendar2LineIcon size={14} color="white" />
                 <p className="px-1">
                   {confirmed_date && moment(confirmed_date).format("YYYY")}
                 </p>
               </span>
               <span className="inline-flex items-center gap-1">
-                <CommunityLineIcon size={14} color="#333a3f" />
+                <CommunityLineIcon size={14} color="white" />
                 <p>{org_name}</p>
               </span>
               <span className="inline-flex items-center gap-1">
@@ -56,7 +56,7 @@ const FormItem = ({
             </div>
           </div>
 
-          <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+          <div className="inline-flex items-center text-base font-semibold text-white">
             <ArrowRightSLineIcon size={26} />
           </div>
         </div>

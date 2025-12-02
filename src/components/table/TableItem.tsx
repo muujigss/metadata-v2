@@ -20,23 +20,23 @@ const TableItem = ({ list }: { list: ITable }) => {
   return (
     <Link href={`/table/${list?.id}`} className="flow-root">
       <Card
-        className="flex self-stretch justify-between"
+        className="flex self-stretch justify-between bg-[#3D4E6C26] border-none"
         theme={cardIndicatorTheme}
       >
         <div className="flex items-center space-x-4">
           <div className="shrink-0">
-            <GridLineIcon size={24} color="#03543f" />
+            <GridLineIcon size={24} color="white" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-text-body-large font-semibold text-secondary-default leading-6">
+            <p className="text-text-body-large font-semibold text-white leading-6">
               {list?.name}
             </p>
-            <p className="text-text-body-small text-secondary-default leading-4 list-desc pb-1">
+            <p className="text-text-body-small text-white leading-4 list-desc pb-1">
               {list?.description}
             </p>
-            <div className="flex items-center text-text-body-medium2 text-secondary-default opacity-70 gap-4">
+            <div className="flex items-center text-text-body-medium2 text-white opacity-70 gap-4">
               <span className=" inline-flex items-center ">
-                <Calendar2LineIcon size={14} color="#333a3f" />
+                <Calendar2LineIcon size={14} color="white" />
                 <p className="px-1">
                   {list?.started_date &&
                     moment(list?.started_date).format("YYYY")}
@@ -56,7 +56,7 @@ const TableItem = ({ list }: { list: ITable }) => {
             </div>
           </div>
 
-          <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+          <div className="inline-flex items-center text-base font-semibold text-white">
             <ArrowRightSLineIcon size={26} />
           </div>
         </div>

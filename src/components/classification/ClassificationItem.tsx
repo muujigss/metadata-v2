@@ -13,24 +13,24 @@ const ClassificationItem = ({ list }: { list: IClassification }) => {
   return (
     <Link href={`/classification/${list?.id}`} className="flow-root">
       <Card
-        className="flex self-stretch justify-between"
+        className="flex self-stretch justify-between bg-[#3D4E6C26] border-none"
         theme={cardIndicatorTheme}
       >
         <div className="flex items-center space-x-4">
           <div className="shrink-0">
-            <BarcodeBoxLineIcon size={24} color="#03543f" />
+            <BarcodeBoxLineIcon size={24} color="white" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-text-body-large font-semibold text-secondary-default leading-6">
+            <p className="text-text-body-large font-semibold text-white leading-6">
               {list?.name}
             </p>
-            <p className="text-text-body-small text-secondary-default leading-4 list-desc">
+            <p className="text-text-body-small text-white leading-4 list-desc">
               {list?.definition}
             </p>
-            <div className="flex flex-wrap md:flex-row items-center text-text-body-medium2 text-secondary-default opacity-70 gap-4 py-1">
+            <div className="flex flex-wrap md:flex-row items-center text-text-body-medium2 text-white opacity-70 gap-4 py-1">
               {list?.confirmed_decree_date && (
                 <span className=" inline-flex items-center ">
-                  <Calendar2LineIcon size={14} color="#333a3f" />
+                  <Calendar2LineIcon size={14} color="white" />
                   <p className="px-1">
                     {moment(list?.confirmed_decree_date).format("YYYY-MM-DD")}
                   </p>
@@ -46,7 +46,7 @@ const ClassificationItem = ({ list }: { list: IClassification }) => {
               </span> */}
               {list?.confirmed_organization1 && (
                 <span className=" inline-flex items-center ">
-                  <OrganizationChartIcon size={14} color="#03543f" />
+                  <OrganizationChartIcon size={14} color="white" />
                   <Badge color="success" className="px-1">
                     <span className="text-text-body-medium2">
                       {list?.confirmed_organization1}
@@ -56,7 +56,7 @@ const ClassificationItem = ({ list }: { list: IClassification }) => {
               )}
               {list?.confirmed_organization2 && (
                 <span className=" inline-flex items-center ">
-                  <OrganizationChartIcon size={14} color="#42389d" />
+                  <OrganizationChartIcon size={14} color="white" />
                   <Badge color="indigo" className="px-1">
                     <span className="text-text-body-medium2">
                       {list?.confirmed_organization2}
@@ -66,7 +66,7 @@ const ClassificationItem = ({ list }: { list: IClassification }) => {
               )}
               {list?.confirmed_organization3 && (
                 <span className=" inline-flex items-center ">
-                  <OrganizationChartIcon size={14} color="#5521b5" />
+                  <OrganizationChartIcon size={14} color="white" />
                   <Badge color="purple" className="px-1">
                     <span className="text-text-body-medium2">
                       {list?.confirmed_organization3}
@@ -76,7 +76,7 @@ const ClassificationItem = ({ list }: { list: IClassification }) => {
               )}
             </div>
           </div>
-          <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+          <div className="inline-flex items-center text-base font-semibold text-white">
             <ArrowRightSLineIcon size={26} />
           </div>
         </div>

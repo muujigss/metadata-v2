@@ -3,7 +3,7 @@ import moment from "moment";
 const ClassificationDetail = ({ fieldData }: any) => {
   return (
     <table className="site-table w-full text-left rtl:text-right text-secondary-medium">
-      <thead className=" text-secondary-default uppercase bg-table-default p-3 text-text-body-medium2">
+      <thead className=" text-white uppercase bg-[#3D4E6C26] p-3 text-text-body-medium2">
         <tr>
           <th scope="col" className="px-6 py-3">
             №
@@ -17,7 +17,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
         </tr>
       </thead>
       <tbody className=" text-text-body-medium2">
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -27,7 +27,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           <td className="px-6 py-2">Шифр</td>
           <td className="px-6 py-2">{fieldData?.classification_code}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -37,7 +37,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           <td className="px-6 py-2">Тодорхойлолт</td>
           <td className="px-6 py-2">{fieldData?.classification_definition}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -50,7 +50,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
               moment(fieldData?.confirmed_decree_date).format("YYYY-MM-DD")}
           </td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -62,7 +62,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
             {fieldData?.is_confirm ? "Тийм" : "Үгүй"}
           </td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -74,7 +74,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           </td>
           <td className="px-6 py-2">{fieldData?.confirmed_decree_name}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -86,7 +86,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           </td>
           <td className="px-6 py-2">{fieldData?.confirmed_decree_num}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -99,7 +99,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
               moment(fieldData?.confirmed_decree_date).format("YYYY-MM-DD")}
           </td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -109,7 +109,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           <td className="px-6 py-2">Ангилал, кодыг баталсан байгууллага</td>
           <td className="px-6 py-2">{fieldData?.confirmed_organization1}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -119,7 +119,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           <td className="px-6 py-2">Ангилал, кодыг баталсан байгууллага 2</td>
           <td className="px-6 py-2">{fieldData?.confirmed_organization3}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -129,7 +129,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
           <td className="px-6 py-2">Ангилал, кодыг баталсан байгууллага 3</td>
           <td className="px-6 py-2">{fieldData?.confirmed_organization3}</td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -142,7 +142,7 @@ const ClassificationDetail = ({ fieldData }: any) => {
               moment(fieldData?.implemented_date).format("YYYY")}
           </td>
         </tr>
-        <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+        <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
           <th
             scope="row"
             className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"

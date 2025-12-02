@@ -88,8 +88,8 @@ const ClassificationCode = ({
             Ангилал, код татах
           </button>
         </div>
-        <table className="w-full text-left rtl:text-right text-secondary-medium">
-          <thead className="site-table text-secondary-default uppercase bg-table-default p-3 ">
+        <table className="w-full text-left rtl:text-right text-white">
+          <thead className="site-table text-white uppercase bg-[#3D4E6C26] p-3 ">
             <tr>
               <th scope="col" className="px-6 py-3 ">
                 №
@@ -125,7 +125,7 @@ const ClassificationCode = ({
               items?.map((classCode: IClassificationCode, i: any) => {
                 return (
                   <tr
-                    className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border"
+                    className="bg-[#3D4E6C26] text-white border-b dark:border-table-border"
                     key={i}
                   >
                     <th
@@ -150,9 +150,9 @@ const ClassificationCode = ({
             )}
           </tbody>
         </table>
-        <div className="flex items-center justify-between gap-10 py-2">
+        <div className="flex items-center justify-between gap-10 py-2 text-white">
           <p>
-            Нийт: <span className="font-bold">{totalItems}</span>
+            Нийт: <span className="font-bold text-white">{totalItems}</span>
           </p>
           <div className="flex items-center justify-end gap-8 ">
             <button
@@ -167,7 +167,7 @@ const ClassificationCode = ({
             >
               <ArrowLeftSLineIcon size={16} />
             </button>
-            <p className="text-text-body-medium p-2">
+            <p className="text-text-body-medium p-2 text-white">
               Хуудас <span className="font-bold">{activePage}</span> /{" "}
               {totalPages}
             </p>
