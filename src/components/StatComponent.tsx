@@ -62,7 +62,7 @@ const StatComponent = ({ mainIndicator }: { mainIndicator: any }) => {
             {
               list.map((item: any, i: number) => {
                 return (
-                  <li key={i} className="py-3 sm:py-4 bg-surface-default px-4 bg-[rgba(61,78,108,0.15)] backdrop-blur-lg rounded-lg bg-[url('/v2/bg-pattern-wave.png')] bg-cover bg-no-repeat">
+                  <li key={i} className="py-3 sm:py-4 px-4 bg-[rgba(61,78,108,0.15)] backdrop-blur-lg rounded-lg bg-[url('/v2/bg-pattern-wave.png')] bg-cover bg-no-repeat">
                     <Link href={item.link}>
                       <div className="flex items-center space-x-4 w-full">
                         <div className="shrink-0">
