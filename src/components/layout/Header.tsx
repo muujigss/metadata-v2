@@ -20,9 +20,9 @@ const Header = () => {
   const paths = pathName.split("/");
   return (
     // shadow-[0_0_15px_10px_rgba(255,255,255,0.6)]
-    <header className="bg-transparent py-10 px-10">
+    <header className="relative bg-transparent py-10 px-10">
       <nav
-        className="flex gap-10 mx-2 lg:mx-auto items-center justify-between p-4 lg:px-6 glow-text"
+        className="flex gap-10 mx-2 lg:mx-auto items-center justify-between p-4 lg:px-6 glow-text z-10"
         aria-label="Global"
       >
         <LogoPics />
