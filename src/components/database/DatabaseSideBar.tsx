@@ -44,12 +44,26 @@ const DatabaseSideBar = ({ data }: any) => {
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const customTextInputTheme = {
+    ...(textInputTheme || {}),
+    field: {
+      ...(textInputTheme?.field || {}),
+      input: {
+        ...(textInputTheme?.field?.input || {}),
+        colors: {
+          ...(textInputTheme?.field?.input?.colors || {}),
+          gray: "text-white border-transparent bg-[#3D4E6C26] focus:bg-[#3D4E6C26] focus:ring-0 focus:border-transparent placeholder-white/70 placeholder:text-text-body-meduim2",
+        },
+      },
+    },
+  };
+
   return (
     <div className=" w-full md:w-1/3 h-full">
       <div className=" w-full pb-4 text-text-body-meduim text-secondary-default flex justify-between items-center">
         <div className="relative w-full">
           <TextInput
-            theme={textInputTheme}
+            theme={customTextInputTheme}
             id="search"
             type="text"
             placeholder="Өгөгдлийн сангийн нэрээр хайх..."
@@ -63,9 +77,9 @@ const DatabaseSideBar = ({ data }: any) => {
             className="absolute top-0 right-0 p-2 my-1 inline-flex items-center text-text-body-small justify-center"
           >
             {searchText == "" ? (
-              <SearchLineIcon color="#333a3f" size={16} />
+              <SearchLineIcon color="white" size={16} />
             ) : (
-              <CloseLineIcon color="#333a3f" size={16} />
+              <CloseLineIcon color="white" size={16} />
             )}
           </Button>
         </div>

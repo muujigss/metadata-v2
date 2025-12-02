@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import CloseLineIcon from "remixicon-react/CloseLineIcon";
 import SearchLineIcon from "remixicon-react/SearchLineIcon";
 import { accordionTheme } from "./componentTheme/AccordionTheme";
+import { listGroupTheme } from "./componentTheme/ListGroupTheme";
 import { textSubInputTheme } from "./componentTheme/SearchTheme";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -45,17 +46,74 @@ const SectorSidebar = ({ sector }: { sector: ISector[] }) => {
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const customAccordionTheme = {
+    ...(accordionTheme || {}),
+    root: {
+      ...(accordionTheme?.root || {}),
+      base: "divide-y divide-secondary-background border-secondary-background bg-[#3D4E6C26]",
+    },
+    content: {
+      ...(accordionTheme?.content || {}),
+      base: "first:rounded-t-lg last:rounded-b-lg bg-transparent",
+    },
+    title: {
+      ...(accordionTheme?.title || {}),
+      base: "flex w-full items-center justify-between p-2 first:rounded-t-lg last:rounded-b-lg bg-[#3D4E6C26]",
+      flush: {
+        ...(accordionTheme?.title?.flush || {}),
+        off: "hover:bg-white/10 focus:ring-2 focus:ring-primary-default focus:outline-none bg-[#3D4E6C26]",
+      },
+      open: {
+        ...(accordionTheme?.title?.open || {}),
+        on: "bg-[#3D4E6C26] text-white",
+      },
+    },
+  };
+
+  const customListGroupTheme = {
+    ...(listGroupTheme || {}),
+    root: {
+      ...(listGroupTheme?.root || {}),
+      base: "list-none bg-transparent text-left text-sm font-medium text-white",
+    },
+    item: {
+      ...(listGroupTheme?.item || {}),
+      base: "[&>*]:first:rounded-t-lg [&>*]:last:rounded-b-lg [&>*]:last:border-b-0",
+      link: {
+        base: "flex w-full items-center p-2 cursor-pointer",
+        active: {
+          off: "hover:bg-white/10 focus:outline-none",
+          on: "bg-transparent",
+        },
+      },
+    },
+  };
+
+  const customTextInputTheme = {
+    ...(textSubInputTheme || {}),
+    field: {
+      ...(textSubInputTheme?.field || {}),
+      input: {
+        ...(textSubInputTheme?.field?.input || {}),
+        colors: {
+          ...(textSubInputTheme?.field?.input?.colors || {}),
+          gray: "text-white border-transparent bg-transparent focus:bg-transparent focus:ring-0 focus:border-transparent placeholder-white/70 placeholder:text-text-body-small",
+        },
+      },
+    },
+  };
+
   return (
-    <Accordion className="bg-white mb-1" theme={accordionTheme} collapseAll>
+    <Accordion className="bg-[#3D4E6C26] mb-1" theme={customAccordionTheme} collapseAll>
       <Accordion.Panel>
-        <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background p-2">
+        <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background p-2 text-white bg-[#3D4E6C26]">
           Салбар
         </Accordion.Title>
-        <Accordion.Content className="text-text-body-medium2 p-0">
+        <Accordion.Content className="text-text-body-medium2 p-0 text-white">
           <div className="relative w-full h-full">
             <TextInput
               className="w-full py-1.5 "
-              theme={textSubInputTheme}
+              theme={customTextInputTheme}
               id="search"
               type="text"
               placeholder="Салбарын нэрээр хайх..."
@@ -68,20 +126,20 @@ const SectorSidebar = ({ sector }: { sector: ISector[] }) => {
               onClick={handleSectorCancel}
             >
               {sectorSearch == "" ? (
-                <SearchLineIcon color="#333a3f" size={16} />
+                <SearchLineIcon color="white" size={16} />
               ) : (
-                <CloseLineIcon color="#333a3f" size={16} />
+                <CloseLineIcon color="white" size={16} />
               )}
               <span className="sr-only">Search</span>
             </button>
           </div>
           {sectorSearchData?.length > 0 ? (
-            <ListGroup className="rounded-none">
+            <ListGroup className="rounded-none" theme={customListGroupTheme}>
               <ListGroup.Item
                 className={`${
                   sectorText === ""
-                    ? "active bg-secondary-background"
-                    : "text-text-body-medium2"
+                    ? "active bg-transparent text-white"
+                    : "text-white"
                 }`}
                 onClick={() => onClickOnSector("")}
               >
@@ -110,8 +168,8 @@ const SectorSidebar = ({ sector }: { sector: ISector[] }) => {
                       }
                       className={`${
                         sectorText == sectorData?.id?.toString()
-                          ? "active bg-secondary-background"
-                          : " text-text-body-medium2"
+                          ? "active bg-transparent text-white"
+                          : " text-white"
                       }`}
                     >
                       <div className="flex flex-1 items-start">
@@ -134,7 +192,7 @@ const SectorSidebar = ({ sector }: { sector: ISector[] }) => {
                 })}
             </ListGroup>
           ) : (
-            <div className="text-text-body-medium2">Салбар олдсонгүй...</div>
+            <div className="text-white">Салбар олдсонгүй...</div>
           )}
         </Accordion.Content>
       </Accordion.Panel>

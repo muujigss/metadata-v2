@@ -36,9 +36,9 @@ const DbList = async ({
     <div className={"w-full h-full"}>
   <div className="flex items-center justify-between pb-6 pt-2">
   {/* Зүүн талд "Нийт" */}
-  <div className="flex items-center gap-2">
+  <div className="flex items-center gap-2 text-white italic">
     Нийт:
-    <span className="text-primary-default text-text-title-medium">
+    <span className="text-white text-text-title-medium">
       {data?.allresults}
     </span>
   </div>
