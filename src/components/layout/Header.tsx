@@ -1,9 +1,10 @@
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import LogoPics from "./LogoPics";
 
 const Header = () => {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const menus = [
     // { id: "0", menu_name: "Нүүр", link: "" },
@@ -13,13 +14,12 @@ const Header = () => {
     { id: "4", menu_name: "Ангилал, код", link: "classification" },
     { id: "5", menu_name: "Маягт", link: "form" },
     { id: "6", menu_name: "Мета өгөгдлийн дүрслэл", link: "chart" },
-    { id: "7", menu_name: "Нэвтрэх", link: "login" },
+    // { id: "7", menu_name: "Нэвтрэх", link: "login" },
   ];
 
   const pathName = usePathname();
   const paths = pathName.split("/");
   return (
-    // shadow-[0_0_15px_10px_rgba(255,255,255,0.6)]
     <header className="relative bg-transparent py-10 px-10">
       <nav
         className="flex gap-10 mx-2 lg:mx-auto items-center justify-between p-4 lg:px-6 glow-text z-10"
@@ -50,16 +50,26 @@ const Header = () => {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-6">
-          {menus.map((menu) => (
-            <a
-              key={menu.id}
-              href={"/" + menu.link}
-              className={`font-sans opacity-90 text-sm font-normal leading-4 xl:leading-6 text-text-org-name xl:text-text-body-medium2 ${paths[1] == menu.link ? "menu-active" : "text-white"
-                }  hover:text-primary-medium "`}
-            >
-              {menu.menu_name}
-            </a>
-          ))}
+          <div className="flex gap-5 items-center">
+            {menus.map((menu) => (
+              <a
+                key={menu.id}
+                href={"/" + menu.link}
+                className={`font-sans opacity-90 text-sm font-normal leading-4 xl:leading-6 text-text-org-name xl:text-text-body-medium2 ${paths[1] == menu.link ? "menu-active" : "text-white"
+                  }  hover:text-primary-medium "`}
+              >
+                {menu.menu_name}
+              </a>
+            ))}
+          </div>
+          <button
+            onClick={() => router.push('/login')}
+            className="relative px-7 py-2 bg-[rgba(61,78,108,0.2)] rounded-lg text-white font-normal font-sans text-[14px]
+              border-t-[0.3px] border-l-[0.1px] border-r-[0.1px] border-b-0 border-white/15
+              transition-all duration-200"
+          >
+            Нэвтрэх
+          </button>
         </div>
       </nav>
       {/* <!-- Mobile menu, show/hide based on menu open state. --> */}
