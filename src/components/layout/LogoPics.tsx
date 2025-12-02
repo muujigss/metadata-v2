@@ -8,28 +8,32 @@ const LogoPics = () => {
         href="/"
         className="-m-1.5 p-1.5 inline-flex flex-col md:flex-row gap-2"
       >
-        <span className="sr-only">Үндэсний Статистикийн Хороо</span>
-        <Image
-          className="object-contain"
-          width={isMobile ? 150 : 200}
-          height={isMobile ? 150 : 200}
-          src="/logo.png"
-          alt=""
-          quality={100}
-          priority
-        />
-        <span className="hidden lg:inline-flex items-center gap-2">
+        <span className="hidden lg:inline-flex flex items-center gap-2">
           <Image
             className="object-contain"
-            width={isMobile ? 30 : 54}
-            height={isMobile ? 30 : 54}
+            width={isMobile ? 104 : 54}
+            height={isMobile ? 104 : 54}
             src="/logo/zg.png"
             alt=""
             quality={100}
             priority
           />
-          <span className="text-text-organization-small text-primary-default font-extrabold leading-4 w-48 uppercase">
+          <span className="text-white text-[16px] font-medium font-extrabold leading-4 w-48">
             Цахим хөгжил, инновац, харилцаа холбооны яам
+          </span>
+        </span>
+        <span className="lg:inline-flex flex items-center gap-2">
+          <Image
+            className="object-contain"
+            width={isMobile ? 54 : 54}
+            height={isMobile ? 54 : 54}
+            src="/v2/logo1.png"
+            alt=""
+            quality={100}
+            priority
+          />
+          <span className="text-white text-[16px] font-medium font-extrabold leading-4 w-48">
+            Үндэсний Статистикийн Хороо
           </span>
         </span>
       </a>

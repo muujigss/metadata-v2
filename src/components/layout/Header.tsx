@@ -67,19 +67,33 @@ const Header = () => {
         <div className="lg:hidden" role="dialog" aria-modal="true">
           {/* <!-- Background backdrop, show/hide based on slide-over state. --> */}
           <div className="fixed inset-0 z-50"></div>
-          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-[#080812] px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <a href="#" className="-m-1.5 p-1.5">
+              {/* <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only text-white">Үндэсний Статистикийн Хороо</span>
                 <Image
                   className="object-none"
-                  width={55}
-                  height={55}
-                  src="/logo.png"
+                  width={35}
+                  height={35}
+                  src="/v2/logo1.png"
                   alt=""
                   quality={100}
                   priority
                 />
+              </a> */}
+              <a href="#" className="-m-1.5 p-1.5 lg:inline-flex flex items-center gap-3">
+                <Image
+                  className="object-contain"
+                  width={54}
+                  height={54}
+                  src="/v2/logo1.png"
+                  alt=""
+                  quality={100}
+                  priority
+                />
+                <span className="text-white text-[16px] font-medium font-extrabold leading-4 w-48">
+                  Үндэсний Статистикийн Хороо
+                </span>
               </a>
               <button
                 type="button"
@@ -88,7 +102,7 @@ const Header = () => {
               >
                 <span className="sr-only">Close menu</span>
                 <svg
-                  className="h-[55px] w-[55px"
+                  className="h-[55px] w-[55px text-white"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"
@@ -109,7 +123,7 @@ const Header = () => {
                   <a
                     key={menu.id}
                     href={menu.link}
-                    className=" text-sm font-semibold leading-6 text-gray-900 hover:text-primary-medium"
+                    className=" text-sm font-semibold leading-6 text-white hover:text-primary-medium"
                   >
                     {menu.menu_name}
                   </a>
