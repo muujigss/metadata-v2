@@ -26,6 +26,7 @@ const config: Config = {
         background: "#f9fafb",
       },
       secondary: {
+        white: "#ffffff",
         default: "#333a3f",
         high: "#252525",
         medium: "#000000",
@@ -109,9 +110,9 @@ const config: Config = {
         },
       ],
       "text-body-medium": [
-        "15px",
+        "14px",
         {
-          fontWeight: "400",
+          fontWeight: "500",
         },
       ],
       "text-body-medium2": [

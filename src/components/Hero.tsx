@@ -36,7 +36,7 @@ const Hero = ({ mainIndicator }: any) => {
       </div>
       <OrgSlideList />
       <StatComponent mainIndicator={mainIndicator} />
-      <SectorSlide />
+      {/* <SectorSlide /> */}
     </section>
   );
 };

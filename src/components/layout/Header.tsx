@@ -19,9 +19,10 @@ const Header = () => {
   const pathName = usePathname();
   const paths = pathName.split("/");
   return (
+    // shadow-[0_0_15px_10px_rgba(255,255,255,0.6)]
     <header className="bg-transparent py-10 px-10">
       <nav
-        className="flex gap-10 mx-2 lg:mx-auto items-center justify-between p-4 lg:px-6"
+        className="flex gap-10 mx-2 lg:mx-auto items-center justify-between p-4 lg:px-6 glow-text"
         aria-label="Global"
       >
         <LogoPics />
@@ -69,11 +70,11 @@ const Header = () => {
           <div className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
               <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Үндэсний Статистикийн Хороо</span>
+                <span className="sr-only text-white">Үндэсний Статистикийн Хороо</span>
                 <Image
                   className="object-none"
-                  width={200}
-                  height={200}
+                  width={55}
+                  height={55}
                   src="/logo.png"
                   alt=""
                   quality={100}
@@ -87,7 +88,7 @@ const Header = () => {
               >
                 <span className="sr-only">Close menu</span>
                 <svg
-                  className="h-6 w-6"
+                  className="h-[55px] w-[55px"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth="1.5"

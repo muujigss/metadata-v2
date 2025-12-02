@@ -8,144 +8,85 @@ import PulseLineIcon from "remixicon-react/PulseLineIcon";
 import BarcodeBoxLineIcon from "remixicon-react/BarcodeBoxLineIcon";
 
 const StatComponent = ({ mainIndicator }: { mainIndicator: any }) => {
+  const list = [
+    {
+      title: "Байгууллага",
+      description: "Бүртгэлтэй байгууллагын мэдээлэл",
+      icon: <Building4LineIcon size={24} color="white" />,
+      link: "/organization",
+      count: mainIndicator?.organizations,
+    },
+    {
+      title: "Өгөгдлийн сан",
+      description: "Төрийн байгууллагын өгөгдлийн сангийн мета мэдээлэл",
+      icon: <Database2FillIcon size={24} color="white" />,
+      link: "/database",
+      count: mainIndicator?.databases,
+    },
+    {
+      title: "Хүснэгт",
+      description: "Өгөгдлийн санд агуулагдаж буй үндсэн хүснэгтийн мета мэдээлэл",
+      icon: <GridLineIcon size={24} color="white" />,
+      link: "/table",
+      count: mainIndicator?.tables,
+    },
+    {
+      title: "Үзүүлэлт",
+      description: "Үндсэн хүснэгтийн үзүүлэлтийн мета мэдээлэл",
+      icon: <PulseLineIcon size={24} color="white" />,
+      link: "/indicator",
+      count: mainIndicator?.indicators,
+    },
+    {
+      title: "Ангилал, код",
+      description: "Үндсэн хүснэгтийн ангилал, кодын мета мэдээлэл",
+      icon: <BarcodeBoxLineIcon size={24} color="white" />,
+      link: "/classification",
+      count: mainIndicator?.classifications,
+    },
+    {
+      title: "Маягт",
+      description: "Маягтын мета мэдээлэл",
+      icon: <EditBoxFillIcon size={24} color="white" />,
+      link: "/form",
+      count: mainIndicator?.forms,
+    },
+  ]
   return (
-    <div className="bg-transparent mt-[100px]">
-      <div className="container mx-auto py-14 px-8">
-        <div className="w-full">
+    <div className="relative bg-[#080812]">
+      <div className="absolute inset-0 bg-[url('/v2/bg-pattern.png')] bg-cover bg-no-repeat z-0"></div>
+      <div className="grid container mx-auto py-14 px-8 pt-[100px] relative z-10">
+        <h5 className="flex justify-center text-white font-medium font-sans text-[38px]">Ангилал</h5>
+        <div className="w-full pt-[50px]">
           <ul className="flex flex-col lg:grid lg:grid-cols-2 justify-between gap-4 ">
-            <li className="py-3 sm:py-4 bg-surface-default px-4">
-              <Link href="/organization">
-                <div className="flex items-center space-x-4 w-full">
-                  <div className="shrink-0">
-                    <Building4LineIcon size={24} />
-                  </div>
-                  <div className="min-w-0 flex-1 items-center">
-                    <p className="uppercase text-sm font-medium text-gray-900 dark:text-white">
-                      Байгууллага
-                    </p>
-                    <p className="truncate text-text-body-medium2 text-justify text-secondary-default opacity-80 ">
-                      Бүртгэлтэй байгууллагын мэдээлэл
-                    </p>
-                  </div>
-                  <div className="inline-flex bg-primary-medium text-white justify-center items-center rounded-full bg-primary-10 w-10 h-10 lg:h-12 lg:w-12">
-                    <span className="text-text-org-name lg:text-text-body-medium">
-                      {mainIndicator?.organizations}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="py-3 sm:py-4 bg-surface-default px-4">
-              <Link href="/database">
-                <div className="flex items-center space-x-4 w-full">
-                  <div className="shrink-0">
-                    <Database2FillIcon size={24} />
-                  </div>
-                  <div className="min-w-0 flex-1 items-center">
-                    <p className="uppercase text-sm font-medium text-gray-900 dark:text-white">
-                      Өгөгдлийн сан
-                    </p>
-                    <p className="truncate text-text-body-medium2 text-justify text-secondary-default opacity-80 ">
-                      Төрийн байгууллагын өгөгдлийн сангийн мета мэдээлэл
-                    </p>
-                  </div>
-                  <div className="inline-flex bg-primary-medium text-white justify-center items-center rounded-full bg-primary-100 w-10 h-10 lg:h-12 lg:w-12">
-                    <span className="text-text-org-name lg:text-text-body-medium">
-                      {mainIndicator?.databases}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="py-3 sm:py-4 bg-surface-default px-4">
-              <Link href={`/table`}>
-                <div className="flex items-center space-x-4">
-                  <div className="shrink-0">
-                    <GridLineIcon size={24} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="uppercase text-sm font-medium text-gray-900 dark:text-white">
-                      Хүснэгт
-                    </p>
-                    <p className="truncate text-text-body-medium2 text-justify text-secondary-default opacity-80 ">
-                      Өгөгдлийн санд агуулагдаж буй үндсэн хүснэгтийн мета
-                      мэдээлэл
-                    </p>
-                  </div>
-                  <div className="inline-flex bg-primary-medium text-white justify-center items-center rounded-full bg-primary-100 w-10 h-10 lg:h-12 lg:w-12">
-                    <span className="text-text-org-name lg:text-text-body-medium">
-                      {mainIndicator?.tables}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="py-3 sm:py-4 bg-surface-default px-4">
-              <Link href={`/indicator`}>
-                <div className="flex items-center space-x-4">
-                  <div className="shrink-0">
-                    <PulseLineIcon size={24} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="uppercase text-sm font-medium text-gray-900 dark:text-white">
-                      Үзүүлэлт
-                    </p>
-                    <p className="truncate text-text-body-medium2 text-justify text-secondary-default opacity-80 ">
-                      Үндсэн хүснэгтийн үзүүлэлтийн мета мэдээлэл
-                    </p>
-                  </div>
-                  <div className="inline-flex bg-primary-medium text-white justify-center items-center rounded-full bg-primary-100 w-10 h-10 lg:h-12 lg:w-12">
-                    <span className="text-text-org-name lg:text-text-body-medium">
-                      {mainIndicator?.indicators}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="py-3 sm:py-4 bg-surface-default px-4">
-              <Link href={`/classification`}>
-                <div className="flex items-center space-x-4">
-                  <div className="shrink-0">
-                    <BarcodeBoxLineIcon size={24} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="uppercase text-sm font-medium text-gray-900 dark:text-white">
-                      Ангилал, код
-                    </p>
-                    <p className="truncate text-text-body-medium2 text-justify text-secondary-default opacity-80 ">
-                      Үндсэн хүснэгтийн ангилал, кодын мета мэдээлэл
-                    </p>
-                  </div>
-                  <div className="inline-flex bg-primary-medium text-white justify-center items-center rounded-full bg-primary-100 w-10 h-10 lg:h-12 lg:w-12">
-                    <span className="text-text-org-name lg:text-text-body-medium">
-                      {mainIndicator?.classifications}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
-            <li className="py-3 sm:py-4 bg-surface-default px-4">
-              <Link href={`/form`}>
-                <div className="flex items-center space-x-4">
-                  <div className="shrink-0">
-                    <EditBoxFillIcon size={24} />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <p className="uppercase text-sm font-medium text-gray-900 dark:text-white">
-                      Маягт
-                    </p>
-                    <p className="truncate text-text-body-medium2 text-justify text-secondary-default opacity-80 ">
-                      Маягтын мета мэдээлэл
-                    </p>
-                  </div>
-                  <div className="inline-flex bg-primary-medium text-white justify-center items-center rounded-full bg-primary-100 w-10 h-10 lg:h-12 lg:w-12">
-                    <span className="text-text-org-name lg:text-text-body-medium">
-                      {mainIndicator?.forms}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            </li>
+            {
+              list.map((item: any, i: number) => {
+                return (
+                  <li key={i} className="py-3 sm:py-4 bg-surface-default px-4 bg-[rgba(61,78,108,0.15)] backdrop-blur-lg rounded-lg bg-[url('/v2/bg-pattern-wave.png')] bg-cover bg-no-repeat">
+                    <Link href={item.link}>
+                      <div className="flex items-center space-x-4 w-full">
+                        <div className="shrink-0">
+                          {item.icon}
+                        </div>
+                        <div className="min-w-0 flex-1 items-center">
+                          <p className="uppercase text-sm font-medium text-white">
+                            {item.title}
+                          </p>
+                          <p className="truncate text-white text-justify opacity-80 ">
+                            {item.description}
+                          </p>
+                        </div>
+                        <div className="inline-flex bg-white text-white justify-center items-center rounded-full bg-primary-10 w-10 h-10 lg:h-12 lg:w-12">
+                          <span className="text-[#080812] lg:text-text-body-medium">
+                            {item.count}
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  </li>
+                );
+              })
+            }
           </ul>
         </div>
       </div>

@@ -28,7 +28,7 @@ export default function RootLayout({
         <div className="relative w-full h-screen bg-[#080812]">
           <div className="absolute inset-0 -top-[220px] bg-[url('/v2/bg-pattern.png')] bg-cover bg-no-repeat z-0"></div>
           <Header />
-          <main className="flex flex-col items-center justify-between min-h-screen">
+          <main className="flex flex-col items-center justify-between min-h-screen relative z-10">
             <div className="w-full flex-grow">
               <QueryClientProvider client={queryClient}>
                 {children}
