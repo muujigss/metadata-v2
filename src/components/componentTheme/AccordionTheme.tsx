@@ -41,7 +41,7 @@ export const accordionSidebarDetailsTheme: CustomFlowbiteTheme["accordion"] = {
     },
   },
   content: {
-    base: "p-5 first:rounded-t-lg last:rounded-b-lg bg-secondary-background",
+    base: "p-5 first:rounded-t-lg last:rounded-b-lg bg-transparent",
   },
   title: {
     arrow: {
@@ -51,7 +51,7 @@ export const accordionSidebarDetailsTheme: CustomFlowbiteTheme["accordion"] = {
         on: "rotate-180",
       },
     },
-    base: "flex w-full items-center justify-between p-5 first:rounded-t-lg last:rounded-b-lg",
+    base: "flex w-full items-center justify-between p-5 first:rounded-t-lg last:rounded-b-lg bg-[#3D4E6C33] text-white",
     flush: {
       off: "hover:bg-gray-100 focus:ring-2 focus:ring-primary-default focus:outline-none",
       on: "bg-transparent dark:bg-transparent",
@@ -59,7 +59,7 @@ export const accordionSidebarDetailsTheme: CustomFlowbiteTheme["accordion"] = {
     heading: "",
     open: {
       off: "",
-      on: "bg-gray-100 text-gray-900",
+      on: "bg-[#3D4E6C33] text-white",
     },
   },
 };

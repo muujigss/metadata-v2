@@ -39,8 +39,8 @@ export const tabsTheme: CustomFlowbiteTheme["tabs"] = {
         fullWidth: {
           base: "ml-0 flex w-full rounded-none first:ml-0",
           active: {
-            on: "active rounded-none bg-tab-background p-4 text-primary-default border-t-4 border-t-primary-default",
-            off: "rounded-none bg-tab-primary text-text-body-meduim2 text-secondary-medium hover:bg-gray-50 hover:text-gray-700",
+            on: "active rounded-none bg-[#3D4E6C33] p-4 text-white border-t-4 border-t-primary-default",
+            off: "rounded-none bg-[#3D4E6C33] text-white hover:bg-[#3D4E6C33]/70 hover:text-white",
           },
         },
       },

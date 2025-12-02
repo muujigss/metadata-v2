@@ -33,7 +33,7 @@ const ListGroupItem = ({
           : "border-b"
       } ${
         id == activeId
-          ? "active bg-secondary-background"
+          ? "active"
           : " text-text-body-medium2"
       }`}
     >

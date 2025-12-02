@@ -52,22 +52,25 @@ const OrganizationSideBar = ({
     ...(accordionTheme || {}),
     root: {
       ...(accordionTheme?.root || {}),
-      base: "divide-y divide-secondary-background border-secondary-background bg-[#3D4E6C26]",
+      // border, divide-ыг устгаж borderless болгов
+      base: "bg-[#3D4E6C26] border-0 shadow-none divide-none",
     },
     content: {
       ...(accordionTheme?.content || {}),
-      base: "first:rounded-t-lg last:rounded-b-lg bg-transparent",
+      base: "first:rounded-t-lg last:rounded-b-lg bg-transparent border-0",
     },
     title: {
       ...(accordionTheme?.title || {}),
-      base: "flex w-full items-center justify-between p-2 first:rounded-t-lg last:rounded-b-lg bg-[#3D4E6C26]",
+      base:
+        "flex w-full items-center justify-between p-2 first:rounded-t-lg last:rounded-b-lg bg-[#3D4E6C26] border-0",
       flush: {
         ...(accordionTheme?.title?.flush || {}),
-        off: "hover:bg-white/10 focus:ring-2 focus:ring-primary-default focus:outline-none bg-[#3D4E6C26]",
+        off:
+          "hover:bg-white/10 focus:ring-2 focus:ring-primary-default focus:outline-none bg-[#3D4E6C26] border-0",
       },
       open: {
         ...(accordionTheme?.title?.open || {}),
-        on: "bg-[#3D4E6C26] text-white",
+        on: "bg-[#3D4E6C26] text-white border-0",
       },
     },
   };
@@ -76,13 +79,15 @@ const OrganizationSideBar = ({
     ...(listGroupTheme || {}),
     root: {
       ...(listGroupTheme?.root || {}),
+      // divide-y устгасан, inset divider-ийг CSS-ээр хийнэ
       base: "list-none bg-transparent text-left text-sm font-medium text-white",
     },
     item: {
       ...(listGroupTheme?.item || {}),
-      base: "[&>*]:first:rounded-t-lg [&>*]:last:rounded-b-lg [&>*]:last:border-b-0",
+      base:
+        "[&>*]:first:rounded-t-lg [&>*]:last:rounded-b-lg [&>*]:last:border-b-0",
       link: {
-        base: "flex w-full items-center p-2 cursor-pointer",
+        base: "flex w-full items-center p-2 cursor-pointer rounded-none",
         active: {
           off: "hover:bg-white/10 focus:outline-none",
           on: "bg-transparent",
@@ -106,97 +111,151 @@ const OrganizationSideBar = ({
   };
 
   return (
-    <Accordion className="bg-[#3D4E6C26] mb-1" theme={customAccordionTheme} alwaysOpen>
-      <Accordion.Panel>
-        <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background p-2 text-white bg-[#3D4E6C26]">
-          Байгууллага
-        </Accordion.Title>
-        <Accordion.Content className="text-text-body-medium2 p-0 text-white">
-          <div className="relative w-full h-full">
-            <TextInput
-              className="w-full py-1.5 truncate"
-              theme={customTextInputTheme}
-              id="search"
-              type="text"
-              placeholder="Байгууллагын нэрээр хайх..."
-              value={orgSearch}
-              onChange={handleOrgSearchChange}
-            />
-            <button
-              type="submit"
-              className="absolute top-0 end-0 p-2 my-1.5 inline-flex items-start text-text-body-small justify-center"
-              onClick={handleOrgCancel}
-            >
-              {orgSearch == "" ? (
-                <SearchLineIcon color="white" size={16} />
-              ) : (
-                <CloseLineIcon color="white" size={16} />
-              )}
-              <span className="sr-only">Search</span>
-            </button>
-          </div>
-          {orgSearchData?.length > 0 ? (
-            <ListGroup className="rounded-none" theme={customListGroupTheme}>
-              <ListGroup.Item
-                className={`${
-                  orgText == ""
-                    ? "active bg-transparent text-white"
-                    : "text-white"
-                }`}
-                onClick={() => onClickOnOrg("")}
+    <>
+      <Accordion className="bg-[#3D4E6C26] mb-1 border-0" theme={customAccordionTheme} alwaysOpen>
+        <Accordion.Panel>
+          <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background p-2 text-white bg-[#3D4E6C26]">
+            Байгууллага
+          </Accordion.Title>
+          <Accordion.Content className="text-text-body-medium2 p-0 text-white">
+            <div className="relative w-full h-full py-3"> 
+              <TextInput
+                className="w-full py-3 px-4 truncate rounded-lg bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.06)] focus:bg-[rgba(255,255,255,0.06)] transition-colors shadow-sm org-search-input"
+                theme={customTextInputTheme}
+                id="search"
+                type="text"
+                placeholder="Байгууллагын нэрээр хайх..."
+                value={orgSearch}
+                onChange={handleOrgSearchChange}
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 inline-flex items-center text-text-body-small justify-center"
+                onClick={handleOrgCancel}
               >
-                <div className="flex flex-1 items-start">Бүгд</div>
-                {/* <div
-                  className={
-                    "inline-flex items-center px-1 rounded" +
-                    `${
-                      orgText == ""
-                        ? " bg-primary-default text-table-default"
-                        : ""
-                    }`
-                  }
+                {orgSearch == "" ? (
+                  <SearchLineIcon color="white" size={16} />
+                ) : (
+                  <CloseLineIcon color="white" size={16} />
+                )}
+                <span className="sr-only">Search</span>
+              </button>
+            </div>
+            {orgSearchData?.length > 0 ? (
+              <ListGroup className="rounded-none px-4 org-list-group" theme={customListGroupTheme}>
+                <ListGroup.Item
+                  className={`${
+                    orgText == ""
+                      ? "active bg-transparent text-white"
+                      : "text-white"
+                  }`}
+                  onClick={() => onClickOnOrg("")}
                 >
-                  {orgSearchData.reduce((a, b) => a + b?.data_count, 0)}
-                </div> */}
-              </ListGroup.Item>
-              {orgSearchData
-                ?.filter((item: any) => item?.data_count > 0)
-                ?.map((orgData: IOrganization, i: any) => {
-                  return (
-                    <ListGroup.Item
-                      key={i}
-                      onClick={() => onClickOnOrg(orgData?.id.toString())}
-                      className={`${
-                        orgText == orgData?.id.toString()
-                          ? "active bg-transparent text-white"
-                          : " text-white"
-                      }`}
-                    >
-                      <div className="flex flex-1 items-start">
-                        <p className="text-start">{orgData?.name}</p>
-                      </div>
-                      <div
-                        className={
-                          "inline-flex items-center px-1 rounded" +
-                          `${
-                            orgText == orgData?.id.toString()
-                              ? " bg-primary-default text-table-default"
-                              : ""
-                          }`
-                        }
-                      >
-                        {" " + orgData?.data_count}
-                      </div>
-                    </ListGroup.Item>
-                  );
-                })}
-            </ListGroup>
-          ) : (
-            <p>Байгууллага олдсонгүй...</p>
-          )}
-        </Accordion.Content>
-      </Accordion.Panel>
-    </Accordion>
-  );
-};
+                  <div className="flex flex-1 items-start">Бүгд</div>
+                  {/* <div
+                    className={
+                      "inline-flex items-center px-1 rounded" +
+                      `${
+                        orgText == ""
+                          ? " bg-primary-default text-table-default"
+                          : ""
+                      }`
+                    }
+                  >
+                    {orgSearchData.reduce((a, b) => a + b?.data_count, 0)}
+                  </div> */}
+                </ListGroup.Item>
+                                    {orgSearchData
+                                        ?.filter((item: any) => item?.data_count > 0)
+                                        ?.map((orgData: IOrganization, i: any) => {
+                                          return (
+                                            <ListGroup.Item
+                                              key={i}
+                                              onClick={() => onClickOnOrg(orgData?.id.toString())}
+                                              className={`${
+                                                orgText == orgData?.id.toString()
+                                                  ? "active bg-transparent text-white"
+                                                  : " text-white"
+                                              }`}
+                                            >
+                                              <div className="flex flex-1 items-start">
+                                                <p className="text-start">{orgData?.name}</p>
+                                              </div>
+                                              <div
+                                                className={
+                                                  "inline-flex items-center px-1 rounded" +
+                                                  `${
+                                                    orgText == orgData?.id.toString()
+                                                      ? " bg-primary-default text-table-default"
+                                                      : ""
+                                                  }`
+                                                }
+                                              >
+                                                {" " + orgData?.data_count}
+                                              </div>
+                                            </ListGroup.Item>
+                                          );
+                                        })}            </ListGroup>
+            ) : (
+              <p>Байгууллага олдсонгүй...</p>
+            )}
+          </Accordion.Content>
+         </Accordion.Panel>
+      </Accordion>
+
+       {/* Inset divider styling for organization list */}
+       <style jsx global>{`
+      .org-list-group > * + * { position: relative; }
+      .org-list-group > * + *::before {
+        content: "";
+        position: absolute;
+        left: 24px;
+        right: 16px;
+        top: 0;
+        height: 1px;
+        background: rgba(217, 217, 217, 0.12);
+        pointer-events: none;
+        z-index: 1;
+      }
+      .org-list-group > * {
+        border-top: 0 !important;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+      }
+
+      /* --- Search input: use container shadow only, remove inner border --- */
+      .org-search-input {
+        border: 0 !important;
+        background: transparent !important;
+        /* top white + bottom dark (only on container) */
+        box-shadow:
+          inset 0 1px 0 rgba(255,255,255,0.95),
+          inset 0 -1px 0 rgba(0,0,0,0.45);
+        transition: box-shadow 0.12s ease, background-color 0.12s ease;
+        /* keep padding/rounded from Tailwind class */
+      }
+
+      /* Remove any border/box-shadow from the real <input> element */
+      .org-search-input input {
+        border: 0 !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        outline: none !important;
+      }
+
+      /* stronger focus visual only on container */
+      .org-search-input:focus-within {
+        box-shadow:
+          inset 0 1.5px 0 rgba(255,255,255,1),
+          inset 0 -1.5px 0 rgba(0,0,0,0.6);
+      }
+
+      /* Optional: remove outer panel border that might form a top line */
+      .flowbite-accordion .flowbite-accordion-content {
+        border-top: 0 !important;
+      }
+    `}</style>
+    </>
+   );
+ };
 export default OrganizationSideBar;

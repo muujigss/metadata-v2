@@ -27,7 +27,7 @@ export const listGroupTheme: CustomFlowbiteTheme["listGroup"] = {
 
 export const listGroupDetailSidebarTheme: CustomFlowbiteTheme["listGroup"] = {
   root: {
-    base: "list-none bg-white text-left text-sm font-medium text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white",
+    base: "list-none bg-transparent text-left text-sm font-medium text-white dark:border-gray-600 dark:bg-gray-700 dark:text-white",
   },
   item: {
     base: "[&>*]:first:rounded-t-lg [&>*]:last:rounded-b-lg [&>*]:last:border-b-0",

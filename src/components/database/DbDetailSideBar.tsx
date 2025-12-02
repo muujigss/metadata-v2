@@ -54,9 +54,9 @@ const DbDetailSideBar = ({
         arrowIcon={false as any}
       >
         <Accordion.Panel>
-          <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background">
-            <span className="inline-flex items-center gap-10">
-              Өгөгдлийн сангийн жагсаалт
+          <Accordion.Title className="focus:ring-1 bg-[#3D4E6C33]">
+            <span className="inline-flex items-center gap-10 text-white">
+              Өгөгдлийн сангийн
             </span>
           </Accordion.Title>
           <Accordion.Content className=" text-text-body-medium2 p-4">

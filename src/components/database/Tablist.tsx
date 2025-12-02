@@ -20,7 +20,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
     <Tabs aria-label="Full width tabs" style="fullWidth" theme={tabsTheme}>
       <TabItem title="Өгөгдлийн сангийн мета мэдээлэл">
         <table className="site-table w-full text-left rtl:text-right text-secondary-medium">
-          <thead className=" text-secondary-default uppercase bg-table-default p-3 text-text-body-medium2">
+          <thead className=" text-white uppercase bg-table-default p-3 text-white">
             <tr>
               <th scope="col" className="px-6 py-3">
                 №
@@ -33,11 +33,11 @@ const TabList = ({ data }: { data: IDatabase }) => {
               </th>
             </tr>
           </thead>
-          <tbody className=" text-text-body-medium2">
+          <tbody className=" text-white">
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 1
               </th>
@@ -47,7 +47,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 2
               </th>
@@ -57,7 +57,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 3
               </th>
@@ -66,7 +66,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
                 {data?.spec?.length > 0 &&
                   data?.spec.map((item, i) => (
                     <div className="m-1" key={i}>
-                      <Kbd className=" font-thin text-text-table-small">
+                      <Kbd className=" font-thin text-white">
                         {libSpecification?.find(
                           (spec: ISpecification) => spec.id == +item.id
                         )?.name || item.id}
@@ -78,7 +78,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 4
               </th>
@@ -88,7 +88,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr>
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 5
               </th>
@@ -100,7 +100,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 6
               </th>
@@ -112,7 +112,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr>
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 7
               </th>
@@ -122,7 +122,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 8
               </th>
@@ -132,7 +132,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr>
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 9
               </th>
@@ -142,7 +142,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 10
               </th>
@@ -152,7 +152,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 11
               </th>
@@ -164,7 +164,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 12
               </th>
@@ -176,7 +176,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr>
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 13
               </th>
@@ -198,7 +198,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 14
               </th>
@@ -210,7 +210,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr>
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 15
               </th>
@@ -220,7 +220,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
               >
                 16
               </th>
