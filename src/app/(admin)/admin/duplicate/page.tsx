@@ -19,22 +19,36 @@ import Link from "next/link";
 
 const DuplicatePage = () => {
   const [duplicates, setDuplicates] = useState<any[]>([]);
+  const [filteredDuplicates, setFilteredDuplicates] = useState<any[]>([]);
   const [selectedDuplicate, setSelectedDuplicate] = useState<string | null>(
     null
   );
   const [details, setDetails] = useState<any[]>([]);
   const [loadingList, setLoadingList] = useState(true);
   const [loadingDetails, setLoadingDetails] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchDuplicates();
   }, []);
+
+  useEffect(() => {
+    if (searchTerm) {
+      const filtered = duplicates.filter((item) =>
+        item.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+      setFilteredDuplicates(filtered);
+    } else {
+      setFilteredDuplicates(duplicates);
+    }
+  }, [searchTerm, duplicates]);
 
   const fetchDuplicates = async () => {
     try {
       setLoadingList(true);
       const data = await getDuplicateIndicators();
       setDuplicates(data);
+      setFilteredDuplicates(data);
     } catch (error) {
       console.error("Failed to fetch duplicates", error);
     } finally {
@@ -60,12 +74,21 @@ const DuplicatePage = () => {
       {/* Left Side - List */}
       <Paper elevation={3} className="w-1/3 flex flex-col overflow-hidden">
         <Box p={2} bgcolor="white">
-          <Typography variant="h6" className="font-bold text-gray-800">
-          Жагсаалт
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            Нийт давхцсан үгнүүдийн тоо: {duplicates.length}
-          </Typography>
+          <div className="flex justify-between items-center mb-2">
+            <Typography variant="h6" className="font-bold text-gray-800">
+              Жагсаалт
+            </Typography>
+            <div className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+              Нийт: {duplicates.length}
+            </div>
+          </div>
+          <input
+            type="text"
+            placeholder="Хайх..."
+            className="w-full p-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-blue-500"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </Box>
         <Divider />
         <div className="flex-1 overflow-y-auto">
@@ -75,7 +98,7 @@ const DuplicatePage = () => {
             </Box>
           ) : (
             <List>
-              {duplicates.map((item, index) => (
+              {filteredDuplicates.map((item, index) => (
                 <ListItemButton
                   key={index}
                   selected={selectedDuplicate === item.name}
@@ -97,11 +120,18 @@ const DuplicatePage = () => {
       {/* Right Side - Details */}
       <Paper elevation={3} className="w-2/3 flex flex-col overflow-hidden">
         <Box p={2} bgcolor="white">
-          <Typography variant="h6" className="font-bold text-gray-800">
-          Дэлгэрэнгүй
-          </Typography>
+          <div className="flex justify-between items-center">
+            <Typography variant="h6" className="font-bold text-gray-800">
+              Дэлгэрэнгүй
+            </Typography>
+            {selectedDuplicate && (
+              <div className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                Давхцал: {details.length}
+              </div>
+            )}
+          </div>
           {selectedDuplicate && (
-            <Typography variant="subtitle1" color="primary">
+            <Typography variant="subtitle1" color="primary" className="mt-1">
               {selectedDuplicate}
             </Typography>
           )}
@@ -125,41 +155,43 @@ const DuplicatePage = () => {
           ) : (
             <div className="space-y-4">
               {details.map((detail, index) => (
-                <Paper key={index} variant="outlined" className="p-4">
-                  <div className="flex gap-2 mb-2">
-                    <Typography className="font-bold text-gray-500 min-w-[24px]">
-                      {index + 1}.
-                    </Typography>
-                    <Breadcrumbs aria-label="breadcrumb">
-                      <Typography
-                        color="text.primary"
-                        className="font-semibold"
-                      >
-                        {detail.table?.database?.organization?.name ||
-                          "Байгууллага"}
+                <Paper key={index} variant="outlined" className="p-4 relative">
+                  <div className="flex justify-between items-start">
+                    <div className="flex gap-2 items-start">
+                      <Typography className="font-bold text-gray-500 min-w-[24px] mt-1">
+                        {index + 1}.
                       </Typography>
-                      <Typography color="text.primary">
-                        {detail.table?.database?.name || "Өгөгдлийн сан"}
-                      </Typography>
-                      <Typography color="text.primary">
-                        {detail.table?.name || "Хүснэгт"}
-                      </Typography>
-                      <Typography color="text.primary">{detail.name}</Typography>
-                    </Breadcrumbs>
-                  </div>
-                  <Box mt={2} display="flex" justifyContent="flex-end">
+                      <div className="flex flex-col gap-1">
+                        <Typography className="text-sm text-gray-600">
+                          <span className="font-semibold">Байгууллага:</span>{" "}
+                          {detail.table?.database?.organization?.name || "-"}
+                        </Typography>
+                        <Typography className="text-sm text-gray-600">
+                          <span className="font-semibold">Өгөгдлийн сан:</span>{" "}
+                          {detail.table?.database?.name || "-"}
+                        </Typography>
+                        <Typography className="text-sm text-gray-600">
+                          <span className="font-semibold">Хүснэгт:</span>{" "}
+                          {detail.table?.name || "-"}
+                        </Typography>
+                        <Typography className="text-sm text-gray-800 font-medium">
+                          <span className="font-semibold">Үзүүлэлт:</span>{" "}
+                          {detail.name}
+                        </Typography>
+                      </div>
+                    </div>
                     <Link
-                      href={`/admin/database?org=${detail.table?.database?.organization?.id}&db=${detail.table?.database?.id}`}
+                      href={`/admin/indicator-classification?tbl=${detail.table?.id}`}
                       passHref
                     >
                       <Typography
                         variant="button"
-                        className="text-blue-600 hover:underline cursor-pointer"
+                        className="text-blue-600 hover:underline cursor-pointer text-xs whitespace-nowrap ml-4"
                       >
-                        Өгөгдлийн сан руу очих &rarr;
+                        Үзүүлэлт рүү очих &rarr;
                       </Typography>
                     </Link>
-                  </Box>
+                  </div>
                 </Paper>
               ))}
             </div>
