@@ -203,13 +203,13 @@ const GraphChartComponent = ({
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: "white",
+            backgroundColor: "transparent",
             opacity: 0.8,
           }}
         >
           <Typography
             variant="h5"
-            color="primary"
+            color="white"
             fontStyle={"inherit"}
             sx={{
               justifyContent: "center",
@@ -222,7 +222,7 @@ const GraphChartComponent = ({
           </Typography>
           <Typography
             variant="body1"
-            color="#0E0E0E"
+            color="white"
             sx={{
               textAlign: "center",
               p: 1,
@@ -248,6 +248,7 @@ const GraphChartComponent = ({
             <Box sx={{ width: 10, p: 1, bgcolor: "#A5C984" }}></Box>
             <Typography
               variant="body1"
+              color="white"
               sx={{
                 cursor: "pointer",
                 ":hover": { textDecoration: "underline", backgroundColor: "#A5C984" },
@@ -261,6 +262,7 @@ const GraphChartComponent = ({
             <Box sx={{ width: 10, p: 1, bgcolor: "#408FC9" }}></Box>
             <Typography
               variant="body1"
+              color="white"
               sx={{
                 cursor: "pointer",
                 ":hover": { textDecoration: "underline", backgroundColor: "#408FC9" },
@@ -274,6 +276,7 @@ const GraphChartComponent = ({
             <Box sx={{ width: 10, p: 1, bgcolor: "#B9C5FC" }}></Box>
             <Typography
               variant="body1"
+              color="white"
               sx={{
                 cursor: "pointer",
                 ":hover": { textDecoration: "underline", backgroundColor: "#B9C5FC" },
@@ -285,7 +288,7 @@ const GraphChartComponent = ({
           </Box>
           <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
             <Box sx={{ width: 10, p: 1, bgcolor: "#F2BE7A" }}></Box>
-            <Typography variant="body1">Үзүүлэлт</Typography>
+            <Typography variant="body1" color="white">Үзүүлэлт</Typography>
           </Box>
         </Box>
         {/* Search Controls */}
@@ -307,7 +310,17 @@ const GraphChartComponent = ({
                 {...params}
                 label="Байгууллага хайх"
                 size="small"
-                sx={{ width: 400 }}
+                InputLabelProps={{ style: { color: "black" } }}
+                sx={{ 
+                  width: 400,
+                  "& .MuiOutlinedInput-root": {
+                    bgcolor: "rgba(0,0,0,0.5)",
+                    color: "white",
+                    "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                    "&:hover fieldset": { borderColor: "white" },
+                  },
+                  "& .MuiSvgIcon-root": { color: "white" }
+                }}
               />
             )}
             sx={{ width: 400 }}
@@ -329,7 +342,17 @@ const GraphChartComponent = ({
                 {...params}
                 label="Өгөгдлийн сан хайх"
                 size="small"
-                sx={{ width: 400 }}
+                InputLabelProps={{ style: { color: "black" } }}
+                sx={{ 
+                  width: 400,
+                  "& .MuiOutlinedInput-root": {
+                    bgcolor: "rgba(0,0,0,0.5)",
+                    color: "white",
+                    "& fieldset": { borderColor: "rgba(255,255,255,0.3)" },
+                    "&:hover fieldset": { borderColor: "white" },
+                  },
+                  "& .MuiSvgIcon-root": { color: "white" }
+                }}
               />
             )}
             sx={{ width: 400 }}

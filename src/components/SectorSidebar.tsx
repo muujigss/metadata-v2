@@ -104,35 +104,12 @@ const SectorSidebar = ({ sector }: { sector: ISector[] }) => {
   };
 
   return (
-    <Accordion className="bg-[#3D4E6C26] mb-1" theme={customAccordionTheme} collapseAll>
+    <Accordion className="bg-[#3D4E6C26] mb-1 border-0" theme={customAccordionTheme} collapseAll>
       <Accordion.Panel>
         <Accordion.Title className="focus:ring-1 hover:bg-primary-high hover:text-primary-background p-2 text-white bg-[#3D4E6C26]">
           Салбар
         </Accordion.Title>
         <Accordion.Content className="text-text-body-medium2 p-0 text-white">
-          <div className="relative w-full h-full">
-            <TextInput
-              className="w-full py-1.5 "
-              theme={customTextInputTheme}
-              id="search"
-              type="text"
-              placeholder="Салбарын нэрээр хайх..."
-              value={sectorSearch}
-              onChange={handleSectorSearchChange}
-            />
-            <button
-              type="submit"
-              className="absolute top-0 end-0 p-2 my-1.5 inline-flex items-start text-text-body-small justify-center"
-              onClick={handleSectorCancel}
-            >
-              {sectorSearch == "" ? (
-                <SearchLineIcon color="white" size={16} />
-              ) : (
-                <CloseLineIcon color="white" size={16} />
-              )}
-              <span className="sr-only">Search</span>
-            </button>
-          </div>
           {sectorSearchData?.length > 0 ? (
             <ListGroup className="rounded-none" theme={customListGroupTheme}>
               <ListGroup.Item

@@ -118,29 +118,6 @@ const OrganizationSideBar = ({
             Байгууллага
           </Accordion.Title>
           <Accordion.Content className="text-text-body-medium2 p-0 text-white">
-            <div className="relative w-full h-full py-3"> 
-              <TextInput
-                className="w-full py-3 px-4 truncate rounded-lg bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(255,255,255,0.06)] focus:bg-[rgba(255,255,255,0.06)] transition-colors shadow-sm org-search-input"
-                theme={customTextInputTheme}
-                id="search"
-                type="text"
-                placeholder="Байгууллагын нэрээр хайх..."
-                value={orgSearch}
-                onChange={handleOrgSearchChange}
-              />
-              <button
-                type="submit"
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 inline-flex items-center text-text-body-small justify-center"
-                onClick={handleOrgCancel}
-              >
-                {orgSearch == "" ? (
-                  <SearchLineIcon color="white" size={16} />
-                ) : (
-                  <CloseLineIcon color="white" size={16} />
-                )}
-                <span className="sr-only">Search</span>
-              </button>
-            </div>
             {orgSearchData?.length > 0 ? (
               <ListGroup className="rounded-none px-4 org-list-group" theme={customListGroupTheme}>
                 <ListGroup.Item

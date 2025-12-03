@@ -19,7 +19,7 @@ const ClassificationTabList = ({ data }: { data: IClassification }) => {
     <div className="flex min-h-screen flex-col items-start justify-start">
       <BreadCrumpSubMenu data={data} />
       <div className="container py-6 flex overflow-x-auto gap-4">
-        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg border">
+        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg">
           {fieldData.indicators && fieldData.indicators.length > 0 && (
             <ClassificationDetailSideBar
               parent_id={fieldData?.indicators[0]?.indicator?.table?.db_id}
@@ -58,7 +58,7 @@ const ClassificationTabList = ({ data }: { data: IClassification }) => {
               style="fullWidth"
               theme={tabsTheme}
             >
-              <TabItem title="Ерөнхий мэдээлэл">
+              <TabItem title="Ерөнхий мэдээлэл">
                 <ClassificationDetail fieldData={fieldData} />
               </TabItem>
               <TabItem title="Ангилал, кодын мета мэдээлэл">

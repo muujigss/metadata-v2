@@ -29,7 +29,7 @@ const TableDetailSideBar = ({
 }: IDetailSideBarProps) => {
   // const pathname = usePathname();
   // const path = pathname.split("/");
-  const { data, isError, isLoading } = useQuery<ITable>({
+  const { data, isError, isLoading } = useQuery({
     queryKey: ["getFormsByDbId by id", database_id, tbl_id, form_id],
     queryFn: () => getFormsByDbId(parent_id, form_id, tbl_id),
   });
@@ -38,7 +38,7 @@ const TableDetailSideBar = ({
   if (isLoading) return <Loader />;
   if (!data) return <p>Алдаа гарлаа !!</p>;
 
-  const { tables, db } = data;
+  const { tables, db }: any = data;
 
   if (!tables || !db) return <p>Алдаа гарлаа !!</p>;
 

@@ -71,8 +71,8 @@ const CitizenDashboard = () => {
 
   if (loading || !data) {
     return (
-      <Box sx={{ p: 4, textAlign: "center" }}>
-        <Typography>Мэдээлэл ачааллаж байна...</Typography>
+      <Box sx={{ p: 4, textAlign: "center", color: "white" }}>
+        <Typography color="white">Мэдээлэл ачааллаж байна...</Typography>
       </Box>
     );
   }
@@ -84,7 +84,7 @@ const CitizenDashboard = () => {
     title: {
       text: "Салбарын тархалт",
       left: "center",
-      textStyle: { fontSize: 14, fontWeight: "bold" },
+      textStyle: { fontSize: 14, fontWeight: "bold", color: "white" },
     },
     tooltip: {
       trigger: "item",
@@ -94,6 +94,7 @@ const CitizenDashboard = () => {
       orient: "vertical",
       left: "left",
       type: "scroll",
+      textStyle: { color: "white" },
     },
     series: [
       {
@@ -127,7 +128,7 @@ const CitizenDashboard = () => {
     title: {
       text: "Топ 10 Байгууллага (Өгөгдлийн сангаар)",
       left: "center",
-      textStyle: { fontSize: 14, fontWeight: "bold" },
+      textStyle: { fontSize: 14, fontWeight: "bold", color: "white" },
     },
     tooltip: {
       trigger: "axis",
@@ -141,6 +142,8 @@ const CitizenDashboard = () => {
     },
     xAxis: {
       type: "value",
+      axisLabel: { color: "white" },
+      axisLine: { lineStyle: { color: "white" } },
     },
     yAxis: {
       type: "category",
@@ -148,7 +151,9 @@ const CitizenDashboard = () => {
       axisLabel: {
         width: 100,
         overflow: "truncate",
+        color: "white",
       },
+      axisLine: { lineStyle: { color: "white" } },
     },
     series: [
       {
@@ -165,7 +170,7 @@ const CitizenDashboard = () => {
     title: {
       text: "Өгөгдлийн өсөлт (Сүүлийн саруудад)",
       left: "center",
-      textStyle: { fontSize: 14, fontWeight: "bold" },
+      textStyle: { fontSize: 14, fontWeight: "bold", color: "white" },
     },
     tooltip: {
       trigger: "axis",
@@ -173,6 +178,7 @@ const CitizenDashboard = () => {
     legend: {
       data: ["Өгөгдлийн сан", "Үзүүлэлт"],
       top: 25,
+      textStyle: { color: "white" },
     },
     grid: {
       left: "3%",
@@ -184,9 +190,13 @@ const CitizenDashboard = () => {
       type: "category",
       boundaryGap: false,
       data: data.trendData.map((d) => d.month),
+      axisLabel: { color: "white" },
+      axisLine: { lineStyle: { color: "white" } },
     },
     yAxis: {
       type: "value",
+      axisLabel: { color: "white" },
+      axisLine: { lineStyle: { color: "white" } },
     },
     series: [
       {
@@ -216,30 +226,30 @@ const CitizenDashboard = () => {
       title: "Байгууллага",
       count: data.counts.organizations,
       icon: <Business fontSize="large" />,
-      color: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      color: "#3D4E6C26",
     },
     {
       title: "Өгөгдлийн сан",
       count: data.counts.databases,
       icon: <Storage fontSize="large" />,
-      color: "linear-gradient(135deg, #2af598 0%, #009efd 100%)",
+      color: "#3D4E6C26",
     },
     {
       title: "Хүснэгт",
       count: data.counts.tables,
       icon: <TableChart fontSize="large" />,
-      color: "linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)",
+      color: "#3D4E6C26",
     },
     {
       title: "Үзүүлэлт",
       count: data.counts.indicators,
       icon: <ShowChart fontSize="large" />,
-      color: "linear-gradient(120deg, #f6d365 0%, #fda085 100%)",
+      color: "#3D4E6C26",
     },
   ];
 
   return (
-    <Box sx={{ p: 3, bgcolor: "#f8f9fa" }}>
+    <Box sx={{ p: 3, bgcolor: "transparent" }}>
       {/* Header & Filter */}
       <Paper
         elevation={0}
@@ -251,10 +261,11 @@ const CitizenDashboard = () => {
           alignItems: "center",
           justifyContent: "space-between",
           borderRadius: 2,
-          border: "1px solid #e0e0e0",
+          border: "1px solid rgba(255,255,255,0.2)",
+          bgcolor: "transparent",
         }}
       >
-        <Typography variant="h6" fontWeight="bold" color="primary">
+        <Typography variant="h6" fontWeight="bold" color="white">
           📊 Мета өгөгдлийн нэгдсэн самбар
         </Typography>
         <Box sx={{ display: "flex", gap: 2, alignItems: "center", mt: { xs: 2, md: 0 } }}>
@@ -262,7 +273,21 @@ const CitizenDashboard = () => {
             label="Эхлэх огноо"
             type="date"
             size="small"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ shrink: true, style: { color: "white" } }}
+            sx={{ 
+              input: { 
+                color: "black",
+                "&::-webkit-calendar-picker-indicator": {
+                  cursor: "pointer"
+                }
+              }, 
+              "& .MuiOutlinedInput-root": { 
+                bgcolor: "black",
+                "& fieldset": { borderColor: "rgba(255,255,255,0.3)" }, 
+                "&:hover fieldset": { borderColor: "black" },
+                "& .MuiSvgIcon-root": { color: "black" }
+              } 
+            }}
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
           />
@@ -270,7 +295,21 @@ const CitizenDashboard = () => {
             label="Дуусах огноо"
             type="date"
             size="small"
-            InputLabelProps={{ shrink: true }}
+            InputLabelProps={{ shrink: true, style: { color: "white" } }}
+            sx={{ 
+              input: { 
+                color: "black",
+                "&::-webkit-calendar-picker-indicator": {
+                  cursor: "pointer"
+                }
+              }, 
+              "& .MuiOutlinedInput-root": { 
+                bgcolor: "black",
+                "& fieldset": { borderColor: "rgba(255,255,255,0.3)" }, 
+                "&:hover fieldset": { borderColor: "black" },
+                "& .MuiSvgIcon-root": { color: "black" }
+              } 
+            }}
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
           />
@@ -332,12 +371,12 @@ const CitizenDashboard = () => {
       {/* Charts Row 1 */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "transparent", boxShadow: "none" }}>
             <ReactECharts option={sectorOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "transparent", boxShadow: "none" }}>
             <ReactECharts option={topOrgsOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
@@ -346,7 +385,7 @@ const CitizenDashboard = () => {
       {/* Charts Row 2 */}
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "transparent", boxShadow: "none" }}>
             <ReactECharts option={trendOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>

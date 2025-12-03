@@ -35,7 +35,7 @@ const TablePage = ({ params }: { params: { id: number } }) => {
       /> */}
       <BreadCrumpSubMenu data={data} />
       <div className="container py-6 flex overflow-x-auto gap-4">
-        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg border">
+        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg">
           {/* <DetailSideBar parent_id={data.db_id} tbl_id={data?.id} /> */}
           <TableDetailSideBar parent_id={data.db_id} tbl_id={data?.id} />
         </div>

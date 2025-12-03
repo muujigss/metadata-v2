@@ -30,14 +30,14 @@ const FormDetail = ({ id }: { id: number }) => {
     <>
       <BreadCrumpSubMenu data={data} />
       <div className="container py-6 flex overflow-x-auto gap-4">
-        <div className="w-1/3 bg-white border rounded-lg h-2/3">
+        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg h-2/3">
           <DetailSideBar parent_id={data?.db_id} form_id={id} />
         </div>
-        <Card className="mx-auto flex self-stretch justify-between mt-2 w-2/3 h-full">
+        <Card className="mx-auto flex self-stretch justify-between mt-2 w-2/3 h-full bg-[#3D4E6C26] border-none">
           <div className="relative overflow-x-auto ">
             <div className="flex items-center justify-between">
               <div
-                className="text-black mb-2 font-bold"
+                className="text-white mb-2 font-bold"
                 style={{ fontSize: 24 }}
               >
                 {data?.name}
@@ -48,17 +48,17 @@ const FormDetail = ({ id }: { id: number }) => {
                 </a>
               </Button>
             </div>
-            <div className="flex items-center justify-between text-text-body-medium2 text-secondary-default opacity-50 mb-2">
+            <div className="flex items-center justify-between text-text-body-medium2 text-white opacity-50 mb-2">
               <span className=" inline-flex items-center">
-                <Calendar2LineIcon size={14} color="#333a3f" />
+                <Calendar2LineIcon size={14} color="white" />
                 <p className="px-2">
                   {data?.form_generated_date &&
                     moment(data?.form_generated_date).format("YYYY-MM-DD")}
                 </p>
               </span>
             </div>
-            <table className=" site-table w-full text-left rtl:text-right text-secondary-medium">
-              <thead className=" text-secondary-default uppercase bg-table-default p-3 text-text-body-medium2">
+            <table className=" site-table w-full text-left rtl:text-right text-white">
+              <thead className=" text-white uppercase bg-[#3D4E6C26] p-3 text-text-body-medium2">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     №
@@ -72,7 +72,7 @@ const FormDetail = ({ id }: { id: number }) => {
                 </tr>
               </thead>
               <tbody className=" text-text-body-medium2">
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -82,7 +82,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягтын шифр, дугаар</td>
                   <td className="px-6 py-2">{data?.code}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -92,7 +92,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Тушаалын дугаар</td>
                   <td className="px-6 py-2">{data?.decree_num}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -106,7 +106,7 @@ const FormDetail = ({ id }: { id: number }) => {
                       moment(data?.confirmed_date).format("YYYY-MM-DD")}
                   </td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -116,7 +116,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Баталсан байгууллага No1</td>
                   <td className="px-6 py-2">{data?.confirmed_org1}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -126,7 +126,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Баталсан байгууллага No2</td>
                   <td className="px-6 py-2">{data?.confirmed_org2}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -136,7 +136,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Салбар</td>
                   <td className="px-6 py-2">{data?.sector.name}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -146,7 +146,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Дэд салбар</td>
                   <td className="px-6 py-2">{data?.sub_sector}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -156,7 +156,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Хамтран гаргадаг байгууллага</td>
                   <td className="px-6 py-2">{data?.coorperate_org}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -168,7 +168,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   </td>
                   <td className="px-6 py-2">
                     {data?.source_id?.map((item, i) => (
-                      <Kbd key={i} className=" font-thin text-text-table-small">
+                      <Kbd key={i} className=" font-thin text-white bg-[#3D4E6C26]">
                         {libSources?.find(
                           (spec: ISource) => spec.id == +item.id
                         )?.name || item.id}
@@ -176,7 +176,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     ))}
                   </td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -189,7 +189,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">
                     {data?.collection_method_id?.map((item, i) => (
                       <div key={i} className="m-1">
-                        <Kbd className=" font-thin text-text-table-small">
+                        <Kbd className=" font-thin text-white bg-[#3D4E6C26]">
                           {libCollectionMethod?.find(
                             (spec: ICollectionMethod) => spec.id == +item.id
                           )?.name || item.id}
@@ -199,7 +199,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   </td>
                 </tr>
 
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -211,7 +211,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     <td className="px-6 py-2">{data?.frequency?.name}</td>
                   )}
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -227,7 +227,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   </td>
                 </tr>
 
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -241,7 +241,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     {data?.dissimenation_level?.name}
                   </td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -252,7 +252,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">{data?.is_form_guide}</td>
                 </tr>
 
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -262,7 +262,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Мэдээлэл цуглуулах ажилтан</td>
                   <td className="px-6 py-2">{data?.collected_officer}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -272,7 +272,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Нууцын зэрэглэл</td>
                   <td className="px-6 py-2"></td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -282,7 +282,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Хариуцдаг газар / хэлтэс/ нэгж</td>
                   <td className="px-6 py-2">{data?.owner_department}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -301,7 +301,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     </a>
                   </td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -320,7 +320,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     </a>
                   </td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -330,7 +330,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягт нэвтрүүлсэн огноо</td>
                   <td className="px-6 py-2">{data?.form_generated_date}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -340,7 +340,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягт шинэчилсэн огноо</td>
                   <td className="px-6 py-2">{data?.form_updated_date}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -350,7 +350,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягтын хүснэгтийн тоо</td>
                   <td className="px-6 py-2">{data?.form_table_count}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -360,7 +360,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Тооцож гаргадаг үзүүлэлтүүд</td>
                   <td className="px-6 py-2">{data?.estimated_indicators}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -370,7 +370,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2"> Түлхүүр үг</td>
                   <td className="px-6 py-2">{data?.keywords}</td>
                 </tr>
-                <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"

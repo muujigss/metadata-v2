@@ -27,7 +27,7 @@ const IndicatorDetailPage = ({ params }: { params: { id: number } }) => {
       <BreadCrumpSubMenu data={data} />
 
       <div className="container py-6 flex overflow-x-auto gap-4">
-        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg border ">
+        <div className="w-1/3 bg-[#3D4E6C26] rounded-lg">
           <IndicatorDetailSideBar
             parent_id={data?.table?.db_id}
             tbl_id={data?.tbl_id}
