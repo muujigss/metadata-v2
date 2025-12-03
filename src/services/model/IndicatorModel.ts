@@ -524,4 +524,70 @@ export {
   createIndicatorModel,
   getIndicatorsByTblId,
   getPrevIndicatorByTblId,
+  getDuplicateIndicatorsModel,
+  getDuplicateIndicatorDetailsModel,
+};
+
+const getDuplicateIndicatorsModel = async () => {
+  try {
+    const duplicates = await prisma.$queryRaw`
+      SELECT
+        MAX(md_i.name) as name, count(md_i.name) AS count
+      FROM md_indicator md_i
+      where md_i.is_active = true
+      GROUP BY LOWER(md_i.name)
+      HAVING COUNT(md_i.name) > 1
+      ORDER BY COUNT(md_i.name) DESC;
+    `;
+    // BigInt serialization fix
+    const serializedDuplicates = JSON.parse(
+      JSON.stringify(duplicates, (_, v) =>
+        typeof v === "bigint" ? v.toString() : v
+      )
+    );
+    return serializedDuplicates;
+  } catch (error) {
+    console.error("Error in getDuplicateIndicatorsModel:", error);
+    throw new Error("Failed to fetch duplicate indicators");
+  }
+};
+
+const getDuplicateIndicatorDetailsModel = async (name: string) => {
+  try {
+    const indicators = await prisma.md_indicator.findMany({
+      where: {
+        is_active: true,
+        name: {
+          equals: name,
+          mode: "insensitive", // Case insensitive
+        },
+      },
+      select: {
+        id: true,
+        name: true,
+        table: {
+          select: {
+            id: true,
+            name: true,
+            database: {
+              select: {
+                id: true,
+                name: true,
+                organization: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    });
+    return indicators;
+  } catch (error) {
+    console.error("Error in getDuplicateIndicatorDetailsModel:", error);
+    throw new Error("Failed to fetch duplicate indicator details");
+  }
 };

@@ -14,6 +14,7 @@ import InformationFillIcon from "remixicon-react/InformationFillIcon";
 import User2FillIcon from "remixicon-react/User2FillIcon";
 import Settings3LineIcon from "remixicon-react/Settings3LineIcon";
 import GitPullRequestFillIcon from "remixicon-react/GitPullRequestFillIcon";
+import FileCopyLineIcon from "remixicon-react/FileCopyLineIcon";
 import useCurrentUser from "@/utils/useCurrentUser";
 import { Tooltip } from "@mui/material";
 import { usePathname } from "next/navigation";
@@ -136,6 +137,23 @@ const MainList = () => {
                 <ChatHistoryLineIcon color="#518df9" />
               </ListItemIcon>
               <ListItemText primary={"Лог"} />
+            </ListItemButton>
+          </Tooltip>
+        </Link>
+      )}
+      {userInfo?.user_level == 1 && (
+        <Link href={"/admin/duplicate"}>
+          <Tooltip title={"Давхцалын цэс"}>
+            <ListItemButton
+              sx={{
+                backgroundColor:
+                  pathname == "/admin/duplicate" ? "aliceblue" : "",
+              }}
+            >
+              <ListItemIcon>
+                <FileCopyLineIcon color="#518df9" />
+              </ListItemIcon>
+              <ListItemText primary={"Давхцалын цэс"} />
             </ListItemButton>
           </Tooltip>
         </Link>

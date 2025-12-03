@@ -84,10 +84,39 @@ const getPrevIndicator = async (id: number) => {
   return res.json();
 };
 
+const getDuplicateIndicators = async () => {
+  const res = await fetch(`${process.env.BASE_URL}/api/indicator/duplicate`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch duplicate indicators");
+  }
+
+  return res.json();
+};
+
+const getDuplicateIndicatorDetails = async (name: string) => {
+  const res = await fetch(
+    `${process.env.BASE_URL}/api/indicator/duplicate/${name}`,
+    {
+      cache: "no-cache",
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch duplicate indicator details");
+  }
+
+  return res.json();
+};
+
 export {
   createIndicatorService,
   getIndicator,
   getIndicatorListByTblId,
   getIndicators,
   getPrevIndicator,
+  getDuplicateIndicators,
+  getDuplicateIndicatorDetails,
 };
