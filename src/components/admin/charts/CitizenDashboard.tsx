@@ -249,7 +249,7 @@ const CitizenDashboard = () => {
   ];
 
   return (
-    <Box sx={{ p: 3, bgcolor: "transparent", maxWidth: "1500px", mx: "auto" }}>
+    <Box sx={{ p: 3, bgcolor: "transparent", maxWidth: "1750px", mx: "auto" }}>
       {/* Header & Filter */}
       <Paper
         elevation={0}
@@ -373,12 +373,12 @@ const CitizenDashboard = () => {
       {/* Charts Row 1 */}
       <Grid container spacing={3} sx={{ mb: 3 }}>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "transparent", boxShadow: "none" }}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "#3D4E6C26", boxShadow: "none" }}>
             <ReactECharts option={sectorOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={6}>
-          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "transparent", boxShadow: "none" }}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "#3D4E6C26", boxShadow: "none" }}>
             <ReactECharts option={topOrgsOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
@@ -387,7 +387,7 @@ const CitizenDashboard = () => {
       {/* Charts Row 2 */}
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "transparent", boxShadow: "none" }}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400, bgcolor: "#3D4E6C26", boxShadow: "none" }}>
             <ReactECharts option={trendOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>

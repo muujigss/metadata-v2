@@ -19,7 +19,7 @@ const FormItem = ({
   return (
     <Link href={`/form/${id}`} className="flow-root">
       <Card
-        className="flex self-stretch justify-between bg-[#3D4E6C26] border-none"
+        className="flex self-stretch justify-between bg-[#080812] border-none"
         theme={cardIndicatorTheme}
       >
         <div className="flex items-center space-x-4">

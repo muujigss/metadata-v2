@@ -58,7 +58,7 @@ const FormDetail = ({ id }: { id: number }) => {
               </span>
             </div>
             <table className=" site-table w-full text-left rtl:text-right text-white">
-              <thead className=" text-white uppercase bg-[#3D4E6C26] p-3 text-text-body-medium2">
+              <thead className=" text-white uppercase bg-[#080812] p-3 text-text-body-medium2">
                 <tr>
                   <th scope="col" className="px-6 py-3">
                     №
@@ -72,7 +72,7 @@ const FormDetail = ({ id }: { id: number }) => {
                 </tr>
               </thead>
               <tbody className=" text-text-body-medium2">
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -82,7 +82,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягтын шифр, дугаар</td>
                   <td className="px-6 py-2">{data?.code}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -92,7 +92,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Тушаалын дугаар</td>
                   <td className="px-6 py-2">{data?.decree_num}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -106,7 +106,7 @@ const FormDetail = ({ id }: { id: number }) => {
                       moment(data?.confirmed_date).format("YYYY-MM-DD")}
                   </td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -116,7 +116,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Баталсан байгууллага No1</td>
                   <td className="px-6 py-2">{data?.confirmed_org1}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -126,7 +126,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Баталсан байгууллага No2</td>
                   <td className="px-6 py-2">{data?.confirmed_org2}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -136,7 +136,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Салбар</td>
                   <td className="px-6 py-2">{data?.sector.name}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -146,7 +146,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Дэд салбар</td>
                   <td className="px-6 py-2">{data?.sub_sector}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -156,7 +156,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Хамтран гаргадаг байгууллага</td>
                   <td className="px-6 py-2">{data?.coorperate_org}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -176,7 +176,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     ))}
                   </td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -199,7 +199,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   </td>
                 </tr>
 
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -211,7 +211,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     <td className="px-6 py-2">{data?.frequency?.name}</td>
                   )}
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -227,7 +227,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   </td>
                 </tr>
 
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -241,7 +241,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     {data?.dissimenation_level?.name}
                   </td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -252,7 +252,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">{data?.is_form_guide}</td>
                 </tr>
 
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -262,7 +262,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Мэдээлэл цуглуулах ажилтан</td>
                   <td className="px-6 py-2">{data?.collected_officer}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -272,7 +272,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Нууцын зэрэглэл</td>
                   <td className="px-6 py-2"></td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -282,7 +282,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Хариуцдаг газар / хэлтэс/ нэгж</td>
                   <td className="px-6 py-2">{data?.owner_department}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -301,7 +301,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     </a>
                   </td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -320,7 +320,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     </a>
                   </td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -330,7 +330,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягт нэвтрүүлсэн огноо</td>
                   <td className="px-6 py-2">{data?.form_generated_date}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -340,7 +340,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягт шинэчилсэн огноо</td>
                   <td className="px-6 py-2">{data?.form_updated_date}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -350,7 +350,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Маягтын хүснэгтийн тоо</td>
                   <td className="px-6 py-2">{data?.form_table_count}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -360,7 +360,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2">Тооцож гаргадаг үзүүлэлтүүд</td>
                   <td className="px-6 py-2">{data?.estimated_indicators}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"
@@ -370,7 +370,7 @@ const FormDetail = ({ id }: { id: number }) => {
                   <td className="px-6 py-2"> Түлхүүр үг</td>
                   <td className="px-6 py-2">{data?.keywords}</td>
                 </tr>
-                <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+                <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th
                     scope="row"
                     className="px-6 py-2 font-medium text-table-number whitespace-nowrap dark:text-white"

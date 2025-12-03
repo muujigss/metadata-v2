@@ -195,7 +195,7 @@ const GraphChartComponent = ({
   if (isLoading) return <Loader />;
 
   return (
-    <div>
+    <div style={{ maxWidth: "1750px", margin: "0 auto" }}>
       <Box sx={{ display: "flex", flexDirection: "column" }}>
         <Box
           sx={{
@@ -366,6 +366,9 @@ const GraphChartComponent = ({
           flexDirection: "row",
           width: "100%",
           height: "100%",
+          backgroundColor: "#3D4E6C26",
+          borderRadius: 3,
+          p: 2,
         }}
       >
         <div className="w-1/2">

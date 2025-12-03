@@ -20,7 +20,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
     <Tabs aria-label="Full width tabs" style="fullWidth" theme={tabsTheme}>
       <TabItem title="Өгөгдлийн сангийн мета мэдээлэл">
         <table className="site-table w-full text-left rtl:text-right text-secondary-medium">
-          <thead className=" text-white uppercase bg-[#3D4E6C26] p-3 text-white">
+          <thead className=" text-white uppercase bg-[#080812] p-3 text-white">
             <tr>
               <th scope="col" className="px-6 py-3">
                 №
@@ -34,7 +34,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
             </tr>
           </thead>
           <tbody className=" text-white">
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className=" odd:dark:bg-gray-900 bg-[#080812] border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -44,20 +44,20 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Хариуцдаг байгууллагын нэр</td>
               <td className="px-6 py-2">{data?.organization?.name}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white  whitespace-nowrap dark:text-white"
               >
                 2
               </th>
               <td className="px-6 py-2">Өгөгдлийн сангийн тухай ойлголт</td>
               <td className="px-6 py-2">{data?.description}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
-                className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
+                className="px-6 py-2 font-medium text-white bg-[#080812] whitespace-nowrap dark:text-white"
               >
                 3
               </th>
@@ -66,7 +66,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
                 {data?.spec?.length > 0 &&
                   data?.spec.map((item, i) => (
                     <div className="m-1" key={i}>
-                      <Kbd className=" font-thin text-white bg-[#3D4E6C26]">
+                      <Kbd className=" font-thin text-white bg-[#080812]">
                         {libSpecification?.find(
                           (spec: ISpecification) => spec.id == +item.id
                         )?.name || item.id}
@@ -75,7 +75,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
                   ))}
               </td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -85,7 +85,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Зориулалт бусад бичих</td>
               <td className="px-6 py-2">{data?.spec_other}</td>
             </tr>
-            <tr>
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -97,7 +97,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               </td>
               <td className="px-6 py-2">{data?.databaseType?.name}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -109,7 +109,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               </td>
               <td className="px-6 py-2">{data?.db_type_other}</td>
             </tr>
-            <tr>
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -119,7 +119,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Салбар</td>
               <td className="px-6 py-2">{data?.sectors?.name}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -129,7 +129,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Салбар бусад</td>
               <td className="px-6 py-2">{data?.sector_other}</td>
             </tr>
-            <tr>
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -139,7 +139,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Өгөгдлийн сангийн байршил</td>
               <td className="px-6 py-2">{data?.databaseLocation?.name}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -149,7 +149,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Өгөгдлийн сангийн байршил бусад</td>
               <td className="px-6 py-2">{data?.db_location_other}</td>
             </tr>
-            <tr className=" odd:dark:bg-gray-900 even:bg-table-default even:dark:bg-gray-800 border-b dark:border-table-border">
+            <tr className=" odd:dark:bg-gray-900 bg-[#080812] border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -161,7 +161,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               </td>
               <td className="px-6 py-2">{data?.licenceType?.name}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -173,7 +173,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               </td>
               <td className="px-6 py-2">{data?.licence_type_other}</td>
             </tr>
-            <tr>
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -195,7 +195,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
                 )}
               </td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -207,7 +207,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               {data?.start_date}
               </td>
             </tr>
-            <tr>
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
@@ -217,7 +217,7 @@ const TabList = ({ data }: { data: IDatabase }) => {
               <td className="px-6 py-2">Хүснэгтийн тоо</td>
               <td className="px-6 py-2">{data?.table_count}</td>
             </tr>
-            <tr className="bg-[#3D4E6C26] text-white border-b dark:border-table-border">
+            <tr className="bg-[#080812] text-white border-b dark:border-table-border">
               <th
                 scope="row"
                 className="px-6 py-2 font-medium text-white whitespace-nowrap dark:text-white"
