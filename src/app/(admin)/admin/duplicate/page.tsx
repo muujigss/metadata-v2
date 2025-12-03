@@ -78,7 +78,7 @@ const DuplicatePage = () => {
             <Typography variant="h6" className="font-bold text-gray-800">
               Жагсаалт
             </Typography>
-            <div className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+            <div className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
               Нийт: {duplicates.length}
             </div>
           </div>
@@ -107,9 +107,11 @@ const DuplicatePage = () => {
                 >
                   <ListItemText
                     primary={item.name}
-                    secondary={`Тоо: ${item.count}`}
                     primaryTypographyProps={{ className: "font-medium" }}
                   />
+                  <div className="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-1 rounded-full ml-2">
+                    {item.count}
+                  </div>
                 </ListItemButton>
               ))}
             </List>
@@ -122,19 +124,14 @@ const DuplicatePage = () => {
         <Box p={2} bgcolor="white">
           <div className="flex justify-between items-center">
             <Typography variant="h6" className="font-bold text-gray-800">
-              Дэлгэрэнгүй
+              {selectedDuplicate || "Дэлгэрэнгүй"}
             </Typography>
             {selectedDuplicate && (
-              <div className="bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+              <div className="bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
                 Давхцал: {details.length}
               </div>
             )}
           </div>
-          {selectedDuplicate && (
-            <Typography variant="subtitle1" color="primary" className="mt-1">
-              {selectedDuplicate}
-            </Typography>
-          )}
         </Box>
         <Divider />
         <div className="flex-1 overflow-y-auto p-4">
