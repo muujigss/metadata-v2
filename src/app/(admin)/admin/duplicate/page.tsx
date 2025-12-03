@@ -109,7 +109,7 @@ const DuplicatePage = () => {
                     primary={item.name}
                     primaryTypographyProps={{ className: "font-medium" }}
                   />
-                  <div className="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-1 rounded-full ml-2">
+                  <div className="text-xs font-semibold text-blue-600 bg-gray-100 px-2 py-1 rounded-full ml-2">
                     {item.count}
                   </div>
                 </ListItemButton>
@@ -170,10 +170,6 @@ const DuplicatePage = () => {
                         <Typography className="text-sm text-gray-600">
                           <span className="font-semibold">Хүснэгт:</span>{" "}
                           {detail.table?.name || "-"}
-                        </Typography>
-                        <Typography className="text-sm text-gray-800 font-medium">
-                          <span className="font-semibold">Үзүүлэлт:</span>{" "}
-                          {detail.name}
                         </Typography>
                       </div>
                     </div>
