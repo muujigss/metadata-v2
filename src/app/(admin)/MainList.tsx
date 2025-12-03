@@ -93,7 +93,7 @@ const MainList = () => {
       
       {userInfo?.user_level == 1 && (
         <Link href={"/admin/request"}>
-          <Tooltip title={"Хүсэлт"}>
+          <Tooltip title={"Өгөгдлийн хүсэлт"}>
             <ListItemButton
               sx={{
                 backgroundColor:
@@ -103,14 +103,14 @@ const MainList = () => {
               <ListItemIcon>
                 <GitPullRequestFillIcon color="#518df9" />
               </ListItemIcon>   
-              <ListItemText primary={"Хүсэлт"} />
+              <ListItemText primary={"Өгөгдлийн хүсэлт"} />
             </ListItemButton>
           </Tooltip>
         </Link>
       )}
       {(userInfo?.user_level == 1) && (
         <Link href={"/admin/org-request"}>
-          <Tooltip title={"Байгууллагын хүсэлт"}>
+          <Tooltip title={"Бүртгүүлэх хүсэлт"}>
             <ListItemButton
               sx={{
                 backgroundColor:
@@ -120,7 +120,7 @@ const MainList = () => {
               <ListItemIcon>
                 <GitPullRequestFillIcon color="#518df9" />
               </ListItemIcon>   
-              <ListItemText primary={"Байгууллагын хүсэлт"} />
+              <ListItemText primary={"Бүртгүүлэх хүсэлт"} />
             </ListItemButton>
           </Tooltip>
         </Link>
@@ -143,7 +143,7 @@ const MainList = () => {
       )}
       {userInfo?.user_level == 1 && (
         <Link href={"/admin/duplicate"}>
-          <Tooltip title={"Давхцалын цэс"}>
+          <Tooltip title={"Давхардсан үзүүлэлт"}>
             <ListItemButton
               sx={{
                 backgroundColor:
@@ -153,7 +153,7 @@ const MainList = () => {
               <ListItemIcon>
                 <FileCopyLineIcon color="#518df9" />
               </ListItemIcon>
-              <ListItemText primary={"Давхцалын цэс"} />
+              <ListItemText primary={"Давхардсан үзүүлэлт"} />
             </ListItemButton>
           </Tooltip>
         </Link>
