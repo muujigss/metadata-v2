@@ -85,4 +85,40 @@ const validationSchema = Yup.object({
     .typeError("Он буруу байна."),
   table_count: Yup.number().required("Хүснэгтийн тоо оруулна уу."),
 });
-export { validationSchema };
+
+const validationTab0Schema = Yup.object({
+  // org_id: Yup.string().required("Байгууллагаа сонгоно уу."),
+  tab0_name: Yup.string().required("Системийн нэр оруулна уу."),
+  tab0_short_name: Yup.string().required("Системийн товч нэр оруулна уу."),
+  tab0_domain_name: Yup.string().required("Системийн домэйн нэр оруулна уу."),
+  tab0_scope: Yup.string().required("Зорилго, үйл ажиллагаа, хамрах хүрээ оруулна уу."),
+  // tab0_regulation_file_id: Yup.string().required("Дотооддоо мөрдөж буй дүрэм, журам, шийдвэр оруулна уу."),
+  tab0_status_description: Yup.string().required("Сан шинээр үүсгэх, бүтцийн өөрчлөлт оруулсан, ашиглалтаас гаргасан мэдээлэл оруулна уу."),
+  tab0_change_description: Yup.string().required("Сан бүртдүүлэх ашиглах, солилцох үйл ажиллагаанд мөрдөж буй стандарт оруулна уу."),
+  tab0_service_list: Yup.string().required("Үзүүлэх үйлчилгээний жагсаалт оруулна уу."),
+  tab0_other_info_list: Yup.string().required("Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл оруулна уу."),
+  tab0_full_org_info: Yup.string().required("Харуцагч байгууллагын нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
+  tab0_full_user_info: Yup.string().required("Харуцсан ажилтны нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
+  tab0_copyright_description: Yup.string().required("Програм хангамж, мэдээллийн сангийн зохиогчийн эрхийн мэдээлэл оруулна уу."),
+});
+
+const validationTab1Schema = Yup.object({
+  // org_id: Yup.string().required("Байгууллагаа сонгоно уу."),
+  tab1_name: Yup.string().required("Мэдээллийн сангийн нэр оруулна уу."),
+  tab1_short_name: Yup.string().required("Мэдээллийн сангийн товч нэр оруулна уу."),
+  tab1_db_type: Yup.string().required("Мэдээллийн сангийн төрөл оруулна уу."),
+  tab1_db_manage_system: Yup.string().required("Мэдээллийн сан удирдах системийн нэр оруулна уу."),
+  tab1_db_size: Yup.string().required("Мэдээллийн сангийн хэмжээ оруулна уу."),
+  tab1_db_rows_count: Yup.string().required("Мэдээллийн сан дан бичлэгийн тоо оруулна уу."),
+  tab1_resource_location: Yup.string().required("Мэдээллийн сан, түүний нөөцийн байршил оруулна уу."),
+  tab1_diagram_file_id: Yup.string().required("Мэдээллийн сангийн диаграм оруулна уу."),
+  tab1_access_control_info: Yup.string().required("Хандах эрхийн зохицуулалтын мэдээлэл, тайлбар оруулна уу."),
+  tab1_file_type_info: Yup.string().required("Мэдээллийн санд хадгалагдаж буй файлын төрлүүд оруулна уу."),
+  tab1_info_supply: Yup.string().required("Мэдээллийн хариуцагчаас үндсэн системд нийлүүлж буй мэдээлэл оруулна уу."),
+  tab1_service_name: Yup.string().required("Сервисийн нэр оруулна уу."),
+  tab1_content_info_supply: Yup.string().required("Нийлүүлэх мэдээллийн агуулга оруулна уу."),
+  tab1_input_values: Yup.string().required("Оролтын утгууд (төрөл, утга, тайлбар) оруулна уу."),
+  tab1_output_values: Yup.string().required("Гаралтын утгууд (төрөл, утга, тайлбар) оруулна уу."),
+});
+
+export { validationSchema, validationTab0Schema, validationTab1Schema };
