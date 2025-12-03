@@ -249,7 +249,7 @@ const CitizenDashboard = () => {
   ];
 
   return (
-    <Box sx={{ p: 3, bgcolor: "transparent" }}>
+    <Box sx={{ p: 3, bgcolor: "transparent", maxWidth: "1500px", mx: "auto" }}>
       {/* Header & Filter */}
       <Paper
         elevation={0}
@@ -262,7 +262,7 @@ const CitizenDashboard = () => {
           justifyContent: "space-between",
           borderRadius: 2,
           border: "1px solid rgba(255,255,255,0.2)",
-          bgcolor: "transparent",
+          bgcolor: "#3D4E6C26",
         }}
       >
         <Typography variant="h6" fontWeight="bold" color="white">
@@ -276,16 +276,17 @@ const CitizenDashboard = () => {
             InputLabelProps={{ shrink: true, style: { color: "white" } }}
             sx={{ 
               input: { 
-                color: "black",
+                color: "white",
                 "&::-webkit-calendar-picker-indicator": {
+                  filter: "invert(1)",
                   cursor: "pointer"
                 }
               }, 
               "& .MuiOutlinedInput-root": { 
                 bgcolor: "black",
                 "& fieldset": { borderColor: "rgba(255,255,255,0.3)" }, 
-                "&:hover fieldset": { borderColor: "black" },
-                "& .MuiSvgIcon-root": { color: "black" }
+                "&:hover fieldset": { borderColor: "white" },
+                "& .MuiSvgIcon-root": { color: "white" }
               } 
             }}
             value={startDate}
@@ -298,16 +299,17 @@ const CitizenDashboard = () => {
             InputLabelProps={{ shrink: true, style: { color: "white" } }}
             sx={{ 
               input: { 
-                color: "black",
+                color: "white",
                 "&::-webkit-calendar-picker-indicator": {
+                  filter: "invert(1)",
                   cursor: "pointer"
                 }
               }, 
               "& .MuiOutlinedInput-root": { 
                 bgcolor: "black",
                 "& fieldset": { borderColor: "rgba(255,255,255,0.3)" }, 
-                "&:hover fieldset": { borderColor: "black" },
-                "& .MuiSvgIcon-root": { color: "black" }
+                "&:hover fieldset": { borderColor: "white" },
+                "& .MuiSvgIcon-root": { color: "white" }
               } 
             }}
             value={endDate}

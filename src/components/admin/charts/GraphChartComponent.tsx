@@ -310,7 +310,7 @@ const GraphChartComponent = ({
                 {...params}
                 label="Байгууллага хайх"
                 size="small"
-                InputLabelProps={{ style: { color: "black" } }}
+                InputLabelProps={{ style: { color: "white" } }}
                 sx={{ 
                   width: 400,
                   "& .MuiOutlinedInput-root": {
@@ -342,7 +342,7 @@ const GraphChartComponent = ({
                 {...params}
                 label="Өгөгдлийн сан хайх"
                 size="small"
-                InputLabelProps={{ style: { color: "black" } }}
+                InputLabelProps={{ style: { color: "white" } }}
                 sx={{ 
                   width: 400,
                   "& .MuiOutlinedInput-root": {
