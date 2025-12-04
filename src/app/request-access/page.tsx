@@ -123,7 +123,7 @@ const RequestAccessPage = () => {
         {/* Form Section */}
         <div className="py-8">
         <Container maxWidth="md">
-          <Paper elevation={0} className="p-8 border-none bg-[#1F2937]/80 backdrop-blur-sm shadow-xl border border-gray-700 relative">
+          <Paper elevation={0} className="p-8 border-none bg-[#3D4E6C33] backdrop-blur-sm shadow-xl border border-gray-700 relative">
         <IconButton
           className="absolute top-4 left-4 text-white hover:bg-white/10"
           onClick={() => router.push("/login")}
