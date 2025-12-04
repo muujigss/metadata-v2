@@ -54,7 +54,8 @@ const ActionType = ({
       });
       window.location.reload();
     } catch (error) {
-      setAlertMessage(error.toString() ?? "Төлөв хадгалахад алдаа гарлаа!")
+      // setAlertMessage(error.toString() ?? "Төлөв хадгалахад алдаа гарлаа!")
+      setAlertMessage("Өгөгдлийн сан, Хүснэгт, Үзүүлэлт идэвхитэй эсэхийг шалгана уу!")
     } finally {
       setLoading(false);
     }
