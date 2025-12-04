@@ -166,7 +166,7 @@ export const textInputHomeSearchTheme: CustomFlowbiteTheme["textInput"] = {
         lg: "",
       },
       colors: {
-        gray: "text-text-body-meduim border-transparent bg-tab-background focus:ring-0 focus:border-transparent placeholder-gray-500 placeholder:text-text-body-meduim2",
+        gray: "text-gray-300 border-gray-600 bg-[#111827]/50 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 rounded-lg",
         info: "",
         failure: "",
         warning: "",
