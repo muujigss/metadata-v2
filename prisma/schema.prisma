@@ -49,6 +49,55 @@ model md_database {
   log_user_database  log_user_database[]
 }
 
+model md_database_activity {
+  id                     Int       @id @default(autoincrement())
+  database_id            Int
+  org_id                 Int
+  name                   String
+  short_name             String?
+  domain_name            String?
+  scope                  String?
+  regulation_file_id     Int?
+  status_description     String?
+  change_description     String?
+  service_list           String?
+  other_info_list        String?
+  full_org_info          String?
+  full_user_info         String?
+  copyright_description  String?
+  is_active              Boolean?
+  created_user            Int?
+  created_date            DateTime
+  updated_date            DateTime?
+  updated_user            Int?
+}
+
+model md_database_technology {
+  id                   Int      @id @default(autoincrement())
+  database_id            Int
+  org_id                 Int
+  name                 String
+  short_name           String?
+  db_type              String?
+  db_manage_system     String?
+  db_size              Int?
+  db_rows_count        Int?
+  resource_location    String?
+  diagram_file_id      Int?
+  access_control_info  String?
+  file_type_info       String?
+  info_supply          String?
+  service_name         String?
+  content_info_supply  String?
+  input_values         String?
+  output_values        String?
+  is_active            Boolean
+  created_user            Int?
+  created_date            DateTime
+  updated_date            DateTime?
+  updated_user            Int?
+}
+
 model log_database {
   id                 Int      @id @default(autoincrement())
   type               String
@@ -684,6 +733,7 @@ model lib_user_role {
 
 model log_action {
   id              Int              @id @default(autoincrement())
+  file_id         Int?
   log_type        String
   action_id       Int?
   user_id         Int?
@@ -696,6 +746,7 @@ model log_action {
   updated_date    DateTime?        @default(now())
   updated_user    Int?
   lib_action_type lib_action_type? @relation(fields: [action_type], references: [id])
+  file         md_file?        @relation(fields: [file_id], references: [id])
 }
 
 model md_file {
@@ -707,4 +758,5 @@ model md_file {
   created_date    DateTime?        @default(now())
   created_user    Int?
   actions         md_action[]
+  log_actions     log_action[]
 }

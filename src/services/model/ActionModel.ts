@@ -118,6 +118,7 @@ const updateActionsModel = async (
         action_type: md_action.action_type,
         item_id: md_action.item_id,
         item_type: md_action.item_type,
+        file_id: md_action.file_id,
         updated_user: user_id,
         updated_date: created_date,
       },

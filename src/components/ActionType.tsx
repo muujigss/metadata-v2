@@ -54,12 +54,12 @@ const ActionType = ({
       });
       window.location.reload();
     } catch (error) {
+      // setAlertMessage(error.toString() ?? "Төлөв хадгалахад алдаа гарлаа!")
+      setAlertMessage("Өгөгдлийн сан, Хүснэгт, Үзүүлэлт идэвхитэй эсэхийг шалгана уу!")
     } finally {
-      console.log("finally");
       setLoading(false);
     }
   };
-  // console.log({ user_level, action_type, userInfo });
 
   return (
     <Box

@@ -34,22 +34,20 @@ const DbList = async ({
 
   return (
     <div className={"w-full h-full"}>
-  <div className="flex items-center justify-between pb-6 pt-2">
-  {/* Зүүн талд "Нийт" */}
-  <div className="flex items-center gap-2 text-white italic">
-    Нийт:
-    <span className="text-white text-text-title-medium">
-      {data?.allresults}
-    </span>
-  </div>
+      <div className="flex items-center justify-between pb-6 pt-2">
+        {/* Зүүн талд "Нийт" */}
+        <div className="flex items-center gap-2 text-white italic">
+          Нийт:
+          <span className="text-white text-text-title-medium">
+            {data?.allresults}
+          </span>
+        </div>
 
-  {/* Баруун талд "Эксел татах" товч */}
-  <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
-    Эксел татах
-  </button>
-</div>
-
-
+        {/* Баруун талд "Эксел татах" товч */}
+        <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
+          Эксел татах
+        </button>
+      </div>
       <div className="flex flex-col gap-4 self-stretch">
         {data?.data?.map((list: any, i: number) => {
           // console.log("data", data);

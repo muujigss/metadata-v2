@@ -136,7 +136,7 @@ const DBList = ({
         )}
       </Box>
       <Grid container spacing={4}>
-        <Grid size={{ xs: 6, md: 5 }}>
+        <Grid size={{ xs: open ? 6 : 6, md: open ? 5 : 12 }}>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
             <DataGridComponent
               data={rowData}
@@ -146,47 +146,155 @@ const DBList = ({
             />
           </Paper>
         </Grid>
-        <Grid size={{ xs: 6, md: 7 }}>
-          <Paper>
-            <Box
-              sx={{
-                height: 700,
-                width: "100%",
-                overflow: "scroll",
-              }}
-            >
-              {!open ? (
-                <OrgSidebar
-                  handleModal={handleModal}
-                  org={orgInfo && orgInfo}
-                />
-              ) : (
-                <Suspense fallback={<Loader />}>
-                  <DatabaseDetail
-                    id={Number(orgId)}
-                    orgId={orgId}
-                    userId={+userId}
-                    setOpen={setOpen}
-                    dbId={selectedDbId}
-                    setOpenModal={setOpenModal}
+        {
+          open && 
+          <Grid size={{ xs: 6, md: 7 }}>
+            <Paper>
+              <Box
+                sx={{
+                  height: 700,
+                  width: "100%",
+                  overflow: "scroll",
+                }}
+              >
+                {!open ? (
+                  <OrgSidebar
+                    handleModal={handleModal}
+                    org={orgInfo && orgInfo}
                   />
-                </Suspense>
-              )}
-              <ModalComponent
-                userId={userId}
-                id={Number(orgId)}
-                open={openModal}
-                setOpen={setOpenModal}
-                type={"database"}
-                setAlert={setShowAlert}
-                data={{}}
-              />
-            </Box>
-          </Paper>
-        </Grid>
+                ) : (
+                  <Suspense fallback={<Loader />}>
+                    <DatabaseDetail
+                      id={Number(orgId)}
+                      orgId={orgId}
+                      userId={+userId}
+                      setOpen={setOpen}
+                      dbId={selectedDbId}
+                      setOpenModal={setOpenModal}
+                    />
+                  </Suspense>
+                )}
+              </Box>
+            </Paper>
+          </Grid>
+        }
+        <ModalComponent
+          userId={userId}
+          id={Number(orgId)}
+          open={openModal}
+          setOpen={setOpenModal}
+          type={"database"}
+          setAlert={setShowAlert}
+          data={{}}
+        />
       </Grid>
     </Box>
   );
+
+  // return (
+  //   <Box>
+  //     {/* <Box sx={{ p: 1 }}> */}
+  //     <AdminBreadCrumpMenu
+  //       type="database"
+  //       menu_name="Өгөгдлийн сан"
+  //       link="/admin/database"
+  //     />
+  //     {/* </Box> */}
+  //     <Box
+  //       sx={{
+  //         display: "inline-flex",
+  //         alignItems: "center",
+  //         justifyContent: "space-between",
+  //         gap: 4,
+  //       }}
+  //     >
+  //       <span className="flex items-center justify-start gap-2">
+  //         <Typography variant="h6" sx={{ marginBottom: 1, p: 1 }}>
+  //           Өгөгдлийн сангийн жагсаалт
+  //         </Typography>
+
+  //         <Badge color={"blue"}>
+  //           <span className="text-text-body-small">{total}</span>
+  //         </Badge>
+  //       </span>
+  //       {userInfo?.user_level != 1 && (
+  //         <Box>
+  //           {userInfo?.user_level == 2 ? (
+  //             <Button
+  //               className="border border-secondary-medium"
+  //               onClick={handleModal}
+  //             >
+  //               <AddLineIcon size={24} />
+  //               Өгөгдлийн сан
+  //             </Button>
+  //           ) : (
+  //             userInfo?.roles?.find((role: any) => {
+  //               return role.id == 3 || role.id == 1;
+  //             }) && (
+  //               <Button
+  //                 className="border border-secondary-medium"
+  //                 onClick={handleModal}
+  //               >
+  //                 <AddLineIcon size={24} />
+  //                 Өгөгдлийн сан
+  //               </Button>
+  //             )
+  //           )}
+  //         </Box>
+  //       )}
+  //     </Box>
+  //     <Grid container spacing={4}>
+  //       <Grid size={{ xs: 6, md: 5 }}>
+  //         <Paper sx={{ width: "100%", overflow: "hidden" }}>
+  //           <DataGridComponent
+  //             data={rowData}
+  //             columns={columns}
+  //             handleClick={handleClick}
+  //             listId={selectedDbId}
+  //           />
+  //         </Paper>
+  //       </Grid>
+  //       <Grid size={{ xs: 6, md: 7 }}>
+  //         <Paper>
+  //           <Box
+  //             sx={{
+  //               height: 700,
+  //               width: "100%",
+  //               overflow: "scroll",
+  //             }}
+  //           >
+  //             {!open ? (
+  //               <OrgSidebar
+  //                 handleModal={handleModal}
+  //                 org={orgInfo && orgInfo}
+  //               />
+  //             ) : (
+  //               <Suspense fallback={<Loader />}>
+  //                 <DatabaseDetail
+  //                   id={Number(orgId)}
+  //                   orgId={orgId}
+  //                   userId={+userId}
+  //                   setOpen={setOpen}
+  //                   dbId={selectedDbId}
+  //                   setOpenModal={setOpenModal}
+  //                 />
+  //               </Suspense>
+  //             )}
+  //             <ModalComponent
+  //               userId={userId}
+  //               id={Number(orgId)}
+  //               open={openModal}
+  //               setOpen={setOpenModal}
+  //               type={"database"}
+  //               setAlert={setShowAlert}
+  //               data={{}}
+  //             />
+  //           </Box>
+  //         </Paper>
+  //       </Grid>
+  //     </Grid>
+  //   </Box>
+  // );
 };
 
 export default DBList;
