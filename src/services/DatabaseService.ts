@@ -33,6 +33,17 @@ const getOneDatabase = async (id: number) => {
 
   return res.json();
 };
+const getOneDatabaseOther = async (id: number) => {
+  const res = await fetch(`${process.env.BASE_URL}/api/database-other/${id}`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
 
 const getSpecification = async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/specification`, {
@@ -94,6 +105,20 @@ const createDatabase = async (data: any) => {
   }
   return res.json();
 };
+const createDatabaseAll = async (data: any) => {
+  const res = await fetch(`${process.env.BASE_URL}/api/database/createAll`, {
+    method: "POST",
+    cache: "no-cache",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+};
 export {
   getDatabase,
   getOneDatabase,
@@ -103,4 +128,6 @@ export {
   getDatabaseLocation,
   getLicence,
   createDatabase,
+  createDatabaseAll,
+  getOneDatabaseOther,
 };

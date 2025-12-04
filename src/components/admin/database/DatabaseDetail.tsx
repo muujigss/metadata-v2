@@ -1,6 +1,6 @@
 "use client";
 import ActionType from "@/components/ActionType";
-import { getOneDatabase } from "@/services/DatabaseService";
+import { getOneDatabase, getOneDatabaseOther } from "@/services/DatabaseService";
 import useCurrentUser from "@/utils/useCurrentUser";
 import { Box, Button, Tooltip, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
@@ -37,6 +37,11 @@ const DatabaseDetail = ({
   const { data, isLoading } = useQuery({
     queryKey: ["get db detail on admin", dbId],
     queryFn: () => getOneDatabase(dbId),
+  });
+
+  const { data: dataOther } = useQuery({
+    queryKey: ["get db other detail on admin", dbId],
+    queryFn: () => getOneDatabaseOther(dbId),
   });
 
   if (isLoading) return <Loader />;
@@ -129,6 +134,8 @@ const DatabaseDetail = ({
           <CreateDatabase
             setOpen={setOpenModal}
             dbData={data}
+            dbActivityData={dataOther?.activity}
+            dbTechnologyData={dataOther?.technology}
             orgId={Number(id)}
             userId={userId}
             setAlert={setAlert}

@@ -1,4 +1,4 @@
-import { createDatabase } from "@/services/DatabaseService";
+import { createDatabaseAll } from "@/services/DatabaseService";
 import {
   useGetDbLocation,
   useGetDbType,
@@ -41,6 +41,8 @@ const CreateDatabase = ({
   orgId,
   setOpen,
   dbData,
+  dbActivityData,
+  dbTechnologyData,
   setAlert,
   sidebarStatus,
   setSidebarStatus,
@@ -49,6 +51,8 @@ const CreateDatabase = ({
   orgId: number;
   setOpen: (open: boolean) => void;
   dbData: IDatabase;
+  dbActivityData?: any;
+  dbTechnologyData?: any;
   setAlert: (status: string) => {};
   sidebarStatus?: boolean;
   setSidebarStatus?: any;
@@ -62,6 +66,7 @@ const CreateDatabase = ({
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [step, setStep] = useState(0);
+  const [warningMessage, setWarningMessage] = useState("");
 
   const orgData = organizations?.map((org: IOrganization) => {
     return { name: org.name, id: org.id };
@@ -102,42 +107,40 @@ const CreateDatabase = ({
   };
 
   const initDB1 = {
-    tab0_id: dbData?.id || 0,
-    tab0_org_id: orgId,
-    tab0_name: dbData?.name || "",
-    tab0_short_name: dbData?.short_name || "",
-    tab0_domain_name: dbData?.tab0_domain_name || "", // 5.11.1.3
-    tab0_scope: dbData?.scope || "", // 5.11.1.4
-    tab0_regulation_file_id: dbData?.service_name || null, // 5.11.1.5
-    tab0_status_description: dbData?.status_description || "", // 5.11.1.6
-    tab0_change_description: dbData?.change_description || "", //  5.11.1.7
-    tab0_service_list: dbData?.service_list || "", //  5.11.1.8
-    tab0_other_info_list: dbData?.other_info_list || "", //  5.11.1.9
-    tab0_full_org_info: dbData?.full_org_info || "", //  5.11.1.10
-    tab0_full_user_info: dbData?.full_user_info || "", //  5.11.1.11
-    tab0_copyright_description: dbData?.copyright_description || "", //  5.11.1.12
-    tab0_is_active: dbData?.is_active || false,
+    tab0_id: dbActivityData?.id || 0,
+    tab0_name: dbActivityData?.name || "",
+    tab0_short_name: dbActivityData?.short_name || "",
+    tab0_domain_name: dbActivityData?.domain_name || "", // 5.11.1.3
+    tab0_scope: dbActivityData?.scope || "", // 5.11.1.4
+    tab0_regulation_file_id: dbActivityData?.service_name || null, // 5.11.1.5
+    tab0_status_description: dbActivityData?.status_description || "", // 5.11.1.6
+    tab0_change_description: dbActivityData?.change_description || "", //  5.11.1.7
+    tab0_service_list: dbActivityData?.service_list || "", //  5.11.1.8
+    tab0_other_info_list: dbActivityData?.other_info_list || "", //  5.11.1.9
+    tab0_full_org_info: dbActivityData?.full_org_info || "", //  5.11.1.10
+    tab0_full_user_info: dbActivityData?.full_user_info || "", //  5.11.1.11
+    tab0_copyright_description: dbActivityData?.copyright_description || "", //  5.11.1.12
+    tab0_is_active: dbActivityData?.is_active || false,
     tab0_createdUser: userId || 0,
   };
   const initDB2 = {
-    tab1_id: dbData?.id || 0,
-    tab1_org_id: orgId,
-    tab1_name: dbData?.name || "",
-    tab1_short_name: dbData?.tab1_short_name || "",
-    tab1_db_type: dbData?.db_type || "", // 5.11.2.2
-    tab1_db_manage_system: dbData?.db_manage_system || "", // 5.11.2.3
-    tab1_db_size: dbData?.db_size || 0, // 5.11.2.4
-    tab1_db_rows_count: dbData?.db_db_rows_countsize || 0, // 5.11.2.5
-    tab1_resource_location: dbData?.resource_location || "", //  5.11.2.6
-    tab1_diagram_file_id: dbData?.diagram_file_id || null, //  5.11.2.7
-    tab1_access_control_info: dbData?.access_control_info || "", //  5.11.2.8
-    tab1_file_type_info: dbData?.file_type_info || "", //  5.11.2.9
-    tab1_info_supply: dbData?.info_supply || "", //  5.11.2.10
-    tab1_service_name: dbData?.service_name || "", //  5.11.2.11
-    tab1_content_info_supply: dbData?.content_info_supply || "", //  5.11.2.12
-    tab1_input_values: dbData?.input_values || "", //  5.11.2.13
-    tab1_output_values: dbData?.output_values || "", //  5.11.2.14
-    tab1_is_active: dbData?.is_active || false,
+    tab1_id: dbTechnologyData?.id || 0,
+    tab1_name: dbTechnologyData?.name || "",
+    tab1_short_name: dbTechnologyData?.short_name || "",
+    tab1_db_type: dbTechnologyData?.db_type || "", // 5.11.2.2
+    tab1_db_manage_system: dbTechnologyData?.db_manage_system || "", // 5.11.2.3
+    tab1_db_size: dbTechnologyData?.db_size || 0, // 5.11.2.4
+    tab1_db_rows_count: dbTechnologyData?.db_db_rows_countsize || 0, // 5.11.2.5
+    tab1_resource_location: dbTechnologyData?.resource_location || "", //  5.11.2.6
+    tab1_diagram_file_id: dbTechnologyData?.diagram_file_id || null, //  5.11.2.7
+    tab1_access_control_info: dbTechnologyData?.access_control_info || "", //  5.11.2.8
+    tab1_file_type_info: dbTechnologyData?.file_type_info || "", //  5.11.2.9
+    tab1_info_supply: dbTechnologyData?.info_supply || "", //  5.11.2.10
+    tab1_service_name: dbTechnologyData?.service_name || "", //  5.11.2.11
+    tab1_content_info_supply: dbTechnologyData?.content_info_supply || "", //  5.11.2.12
+    tab1_input_values: dbTechnologyData?.input_values || "", //  5.11.2.13
+    tab1_output_values: dbTechnologyData?.output_values || "", //  5.11.2.14
+    tab1_is_active: dbTechnologyData?.is_active || false,
     tab1_createdUser: userId || 0,
   };
   const initialValues = {
@@ -147,52 +150,98 @@ const CreateDatabase = ({
   };
 
   const onSubmit = async (values: IDatabase) => {
-    const data = {
-      id: values?.id,
-      org_id: values?.org_id,
-      name: values?.name,
-      description: values?.description,
-      spec: values?.spec,
-      spec_other: values?.spec_other,
-      db_type: values?.db_type,
-      db_type_other: values?.db_type_other,
-      db_location: values?.db_location,
-      db_location_other: values?.db_location_other,
-      sector: values?.sector,
-      sector_other: values?.sector_other,
-      licence_type: values?.licence_type,
-      licence_type_other: values?.licence_type_other,
-      opendata_url: values?.opendata_url,
-      table_count: Number(values?.table_count),
-      start_date: values?.start_date,
-      is_form: values?.is_form,
-      is_active: values?.is_active,
-      createdUser: values?.createdUser,
-    };
+    try {
+      const data = {
+        id: values?.id,
+        org_id: values?.org_id,
+        name: values?.name,
+        description: values?.description,
+        spec: values?.spec,
+        spec_other: values?.spec_other,
+        db_type: values?.db_type,
+        db_type_other: values?.db_type_other,
+        db_location: values?.db_location,
+        db_location_other: values?.db_location_other,
+        sector: values?.sector,
+        sector_other: values?.sector_other,
+        licence_type: values?.licence_type,
+        licence_type_other: values?.licence_type_other,
+        opendata_url: values?.opendata_url,
+        table_count: Number(values?.table_count),
+        start_date: values?.start_date,
+        is_form: values?.is_form,
+        is_active: values?.is_active,
+        version: values?.version,
+        createdUser: values?.createdUser,
+      };
+      const dataTab0 = {
+        id: values?.tab0_id,
+        org_id: values?.org_id,
+        name: values?.tab0_name,
+        short_name: values?.tab0_short_name,
+        domain_name: values?.tab0_domain_name,
+        scope: values?.tab0_scope,
+        regulation_file_id: values?.tab0_regulation_file_id,
+        status_description: values?.tab0_status_description,
+        change_description: values?.tab0_change_description,
+        service_list: values?.tab0_service_list,
+        other_info_list: values?.tab0_other_info_list,
+        full_org_info: values?.tab0_full_org_info,
+        full_user_info: values?.tab0_full_user_info,
+        copyright_description: values?.tab0_copyright_description,
+        is_active: true,
+        created_user: values?.createdUser,
+      };
+      const dataTab1 = {
+        id: values?.tab1_id,
+        org_id: values?.org_id,
+        name: values?.tab1_name,
+        short_name: values?.tab1_short_name,
+        db_type: values?.tab1_db_type.toString(),
+        db_manage_system: values?.tab1_db_manage_system,
+        db_size: values?.tab1_db_size,
+        db_rows_count: values?.tab1_db_rows_count,
+        resource_location: values?.tab1_resource_location,
+        diagram_file_id: values?.tab1_diagram_file_id,
+        access_control_info: values?.tab1_access_control_info,
+        file_type_info: values?.tab1_file_type_info,
+        info_supply: values?.tab1_info_supply,
+        service_name: values?.tab1_service_name,
+        content_info_supply: values?.tab1_content_info_supply,
+        input_values: values?.tab1_input_values,
+        output_values: values?.tab1_output_values,
+        is_active: true,
+        created_user: values?.createdUser,
+      };
 
-    const response = await createDatabase(data);
-    setLoading(true);
-    if (response.status == "success") {
-      window.location.reload();
-      setStatus("success");
-      setAlert("success");
+      const body = {
+        bodyDatabase: data, bodyActivity: dataTab0, bodyTechnology: dataTab1
+      }
+
+      setLoading(true);
+      const response = await createDatabaseAll(body);
+      if (response.status == "success") {
+        window.location.reload();
+        setOpen(false);
+        setSidebarStatus(false);
+      } else {
+        setOpen(false);
+        setSidebarStatus(false);
+      }
+      setLoading(false);
       setOpen(false);
       setSidebarStatus(false);
+    } catch (err) {
+      console.log('-----err-----', err)
+      setStatus('error');
+      setAlert('error');
+      setWarningMessage(err.toString());
+    } finally {
       setLoading(false);
-    } else {
-      setStatus("error");
-      setAlert("error");
-      setLoading(false);
-      setOpen(false);
-      setSidebarStatus(false);
     }
-    setLoading(false);
-    setOpen(false);
-    setSidebarStatus(false);
   };
 
   const getValidationSchema = () => {
-    console.log('-----getValidationSchema------', step)
     switch (step) {
       case 0:
         return validationTab0Schema;
@@ -218,7 +267,7 @@ const CreateDatabase = ({
           {status == "success" ? (
             <Alert severity="success">Амжилттай хадгаллаа ... </Alert>
           ) : status == "error" ? (
-            <Alert severity="error">Хадгалахад алдаа гарлаа ...</Alert>
+            <Alert severity="error">{ warningMessage }</Alert>
           ) : null}
         </Box>
       </Snackbar>
@@ -234,12 +283,11 @@ const CreateDatabase = ({
                 <Input type="hidden" value={values?.id} />
 
                 <Tabs value={step} onChange={async (e, newStep) => {
-                  console.log('-----newStep, step------', newStep, step)
-                  // if (newStep > step) {
-                  //   const errors = await validateForm();
-                  //   console.log('-----errors------', errors)
-                  //   if (Object.keys(errors).length !== 0) return; // block
-                  // }
+                  if (newStep > step) {
+                    const errors = await validateForm();
+                    console.log('-----errors------', errors)
+                    if (Object.keys(errors).length !== 0) return; // block
+                  }
                   setStep(newStep);
                 }}>
                   <Tab label="Үйл ажиллагааны мэдээлэл">
@@ -372,7 +420,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab0_service_list}
-                            onChange={(content) => setFieldValue("tab0_service_list", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab0_service_list", content)
+                              else setFieldValue("tab0_service_list", null)
+                            }}
                             onBlur={() => setFieldTouched("tab0_service_list", true)}
                           />
                           {errors.tab0_service_list && (
@@ -390,7 +442,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab0_other_info_list}
-                            onChange={(content) => setFieldValue("tab0_other_info_list", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab0_other_info_list", content)
+                              else setFieldValue("tab0_other_info_list", null)
+                            }}
                           />
                           {errors.tab0_other_info_list && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -407,7 +463,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab0_full_org_info}
-                            onChange={(content) => setFieldValue("tab0_full_org_info", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab0_full_org_info", content)
+                              else setFieldValue("tab0_full_org_info", null)
+                            }}
                           />
                           {errors.tab0_full_org_info && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -424,7 +484,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab0_full_user_info}
-                            onChange={(content) => setFieldValue("tab0_full_user_info", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab0_full_user_info", content)
+                              else setFieldValue("tab0_full_user_info", null)
+                            }}
                           />
                           {errors.tab0_full_user_info && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -441,7 +505,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab0_copyright_description}
-                            onChange={(content) => setFieldValue("tab0_copyright_description", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab0_copyright_description", content)
+                              else setFieldValue("tab0_copyright_description", null)
+                            }}
                           />
                           {errors.tab0_copyright_description && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -498,7 +566,7 @@ const CreateDatabase = ({
                           options={dbTypes}
                           label="Мэдээллийн сангийн төрөл"
                           name="tab1_db_type"
-                          defaultValue={values?.tab1_db_type}
+                          defaultValue={Number(values?.tab1_db_type)}
                           onChange={(e: any, value: any) => {
                             setFieldValue("tab1_db_type", value);
                           }}
@@ -592,7 +660,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab1_access_control_info}
-                            onChange={(content) => setFieldValue("tab1_access_control_info", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab1_access_control_info", content)
+                              else setFieldValue("tab1_access_control_info", null)
+                            }}
                           />
                           {errors.tab1_access_control_info && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -609,7 +681,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab1_file_type_info}
-                            onChange={(content) => setFieldValue("tab1_file_type_info", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab1_file_type_info", content)
+                              else setFieldValue("tab1_file_type_info", null)
+                            }}
                           />
                           {errors.tab1_file_type_info && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -626,7 +702,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab1_info_supply}
-                            onChange={(content) => setFieldValue("tab1_info_supply", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab1_info_supply", content)
+                              else setFieldValue("tab1_info_supply", null)
+                            }}
                           />
                           {errors.tab1_info_supply && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -659,7 +739,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab1_content_info_supply}
-                            onChange={(content) => setFieldValue("tab1_content_info_supply", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab1_content_info_supply", content)
+                              else setFieldValue("tab1_content_info_supply", null)
+                            }}
                           />
                           {errors.tab1_content_info_supply && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -676,7 +760,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab1_input_values}
-                            onChange={(content) => setFieldValue("tab1_input_values", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab1_input_values", content)
+                              else setFieldValue("tab1_input_values", null)
+                            }}
                           />
                           {errors.tab1_input_values && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -693,7 +781,11 @@ const CreateDatabase = ({
                         <div>
                           <ReactQuill
                             value={values?.tab1_output_values}
-                            onChange={(content) => setFieldValue("tab1_output_values", content)}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab1_output_values", content)
+                              else setFieldValue("tab1_output_values", null)
+                            }}
                           />
                           {errors.tab1_output_values && (
                             <p className="text-red-600 text-text-body-small mt-2 p-1">
@@ -1045,7 +1137,7 @@ const CreateDatabase = ({
                         />
                       </FormBox>
       
-                      {/* <div className="flex justify-end p-3">
+                      <div className="flex justify-end p-3">
                         <Button
                           className="text-primary-default bg-primary-medium bg-opacity-50 hover:bg-tertirary-background hover:text-tertirary-default"
                           variant="contained"
@@ -1055,7 +1147,7 @@ const CreateDatabase = ({
                         >
                           Хадгалах
                         </Button>
-                      </div> */}
+                      </div>
                     </>
                   )
                 }

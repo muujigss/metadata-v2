@@ -295,6 +295,8 @@ const getOneDatabaseModel = async (id: number) => {
         sector_other: true,
         table_count: true,
         is_form: true,
+        is_active: true,
+        version: true,
         start_date: true,
         organization: {
           select: {
@@ -398,6 +400,33 @@ const getOneDatabaseModel = async (id: number) => {
     return databases;
   } catch (error) {
     console.error("Error in getOneDatabaseModel:", error);
+    throw new Error("Failed to fetch forms");
+  }
+};
+const getOneDatabaseOther = async (database_id: number) => {
+  try {
+    const activity = await prisma.$queryRaw<any[]>`
+      SELECT *
+      FROM md_database_activity
+      WHERE database_id = ${database_id} AND is_active = true;
+    `;
+    const technology = await prisma.$queryRaw<any[]>`
+      SELECT *
+      FROM md_database_technology
+      WHERE database_id = ${database_id} AND is_active = true;
+    `;
+
+    const serializeBigInt = (obj: any) => {
+      return JSON.parse(JSON.stringify(obj, (_, value) =>
+        typeof value === 'bigint' ? value.toString() : value
+      ));
+    };
+    return {
+      activity: activity.length > 0 ? serializeBigInt(activity[0]) : null,
+      technology: technology.length > 0 ? serializeBigInt(technology[0]) : null
+    };
+  } catch (error) {
+    console.error("Error in getOneDatabaseOther:", error);
     throw new Error("Failed to fetch forms");
   }
 };
@@ -730,6 +759,334 @@ const createDatabaseModel = async (data: IDatabase) => {
     throw new Error("Failed to create database");
   }
 };
+
+const createDatabaseAll = async (data: any) => {
+  const { bodyDatabase, bodyActivity, bodyTechnology } = data;
+
+  const now = new Date();
+  const created_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ");
+  const updated_date = created_date;
+
+  const specList =
+    bodyDatabase.spec?.map((item: number) => ({ id: item })) || [];
+
+  try {
+    return await prisma.$transaction(async (tx) => {
+      let database;
+
+      // ------------------------------------
+      // 1. CREATE / UPDATE md_database
+      // ------------------------------------
+      if (bodyDatabase.id) {
+        delete bodyDatabase.createdDate
+        database = await tx.md_database.update({
+          where: { id: bodyDatabase.id },
+          data: {
+            org_id: bodyDatabase.org_id,
+            name: bodyDatabase.name,
+            description: bodyDatabase.description,
+            spec: specList,
+            spec_other: bodyDatabase.spec_other,
+            db_type: bodyDatabase.db_type,
+            db_type_other: bodyDatabase.db_type_other,
+            sector: Number(bodyDatabase.sector),
+            sector_other: bodyDatabase.sector_other,
+            db_location: bodyDatabase.db_location,
+            db_location_other: bodyDatabase.db_location_other,
+            licence_type: Number(bodyDatabase.licence_type),
+            licence_type_other: bodyDatabase.licence_type_other,
+            opendata_url: bodyDatabase.opendata_url,
+            table_count: Math.abs(Number(bodyDatabase.table_count)),
+            is_form: bodyDatabase.is_form,
+            is_active: bodyDatabase.is_active,
+            is_integrated: false,
+            start_date: Number(bodyDatabase.start_date),
+            updatedDate: updated_date,
+            createdUser: +bodyDatabase.createdUser,
+            updatedUser: +bodyDatabase.createdUser,
+            version: bodyDatabase.version,
+          },
+        });
+
+        await tx.log_database.create({
+          data: {
+            type: "UPDATE",
+            db_id: database.id,
+            org_id: database.org_id,
+            name: database.name,
+            description: database.description,
+            spec: specList,
+            spec_other: database.spec_other,
+            db_type: database.db_type,
+            db_type_other: database.db_type_other,
+            sector: database.sector,
+            sector_other: database.sector_other,
+            db_location: database.db_location,
+            db_location_other: database.db_location_other,
+            licence_type: database.licence_type,
+            licence_type_other: database.licence_type_other,
+            opendata_url: database.opendata_url,
+            table_count: database.table_count,
+            is_form: database.is_form,
+            is_active: database.is_active,
+            is_integrated: database.is_integrated,
+            start_date: database.start_date,
+            createdDate: database.createdDate,
+            updatedDate: database.updatedDate,
+            createdUser: database.createdUser,
+            updatedUser: database.updatedUser,
+            version: database.version,
+          },
+        });
+
+        const userDatabase = await tx.md_user_database.create({
+          data: {
+            user_id: bodyDatabase.createdUser,
+            database_id: database.id,
+            created_date: created_date,
+            created_user: database.createdUser,
+          },
+        });
+
+        await tx.log_user_database.create({
+          data: {
+            type: "UPDATE",
+            ud_id: userDatabase.id,
+            user_id: userDatabase.user_id,
+            database_id: userDatabase.database_id,
+            created_date: userDatabase.created_date,
+            updated_date: userDatabase.updated_date,
+            created_user: userDatabase.created_user,
+            updated_user: userDatabase.updated_user,
+          },
+        });
+
+        await tx.md_database_activity.update({
+          where: { id: bodyActivity.id },
+          data: {
+            database_id: database.id,
+            org_id: bodyActivity.org_id,
+            name: bodyActivity.name,
+            short_name: bodyActivity.short_name,
+            domain_name: bodyActivity.domain_name,
+            scope: bodyActivity.scope,
+            regulation_file_id: bodyActivity.regulation_file_id,
+            status_description: bodyActivity?.status_description,
+            change_description: bodyActivity.change_description,
+            service_list: bodyActivity.service_list,
+            other_info_list: bodyActivity.other_info_list,
+            full_org_info: bodyActivity.full_org_info,
+            full_user_info: bodyActivity.full_user_info,
+            copyright_description: bodyActivity.copyright_description,
+            is_active: bodyActivity.is_active,
+            updated_user: bodyDatabase.createdUser,
+            updated_date: updated_date,
+          },
+        });
+
+        await tx.md_database_technology.update({
+          where: { id: bodyTechnology.id },
+          data: {
+            database_id: database.id,
+            org_id: bodyActivity.org_id,
+            name: bodyTechnology.name,
+            short_name: bodyTechnology.short_name,
+
+            db_type: bodyTechnology.db_type.toString(),
+            db_manage_system: bodyTechnology.db_manage_system,
+            db_size: Number(bodyTechnology.db_size),
+            db_rows_count: Number(bodyTechnology.db_rows_count),
+            resource_location: bodyTechnology.resource_location,
+            diagram_file_id: bodyTechnology.diagram_file_id,
+            file_type_info: bodyTechnology.file_type_info.toString(),
+            access_control_info: bodyTechnology.access_control_info.toString(),
+            info_supply: bodyTechnology.info_supply.toString(),
+            service_name: bodyTechnology.service_name,
+            content_info_supply: bodyTechnology.content_info_supply.toString(),
+            input_values: bodyTechnology.input_values.toString(),
+            output_values: bodyTechnology.output_values.toString(),
+
+            is_active: bodyActivity.is_active,
+            updated_user: bodyDatabase.createdUser,
+            updated_date: updated_date,
+          },
+        });
+      } else {
+        // CREATE
+        database = await tx.md_database.create({
+          data: {
+            org_id: bodyDatabase.org_id,
+            name: bodyDatabase.name,
+            description: bodyDatabase.description,
+            spec: specList,
+            spec_other: bodyDatabase.spec_other,
+            db_type: bodyDatabase.db_type,
+            db_type_other: bodyDatabase.db_type_other,
+            sector: Number(bodyDatabase.sector),
+            sector_other: bodyDatabase.sector_other,
+            db_location: bodyDatabase.db_location,
+            db_location_other: bodyDatabase.db_location_other,
+            licence_type: Number(bodyDatabase.licence_type),
+            licence_type_other: bodyDatabase.licence_type_other,
+            opendata_url: bodyDatabase.opendata_url,
+            table_count: Math.abs(Number(bodyDatabase.table_count)),
+            is_form: bodyDatabase.is_form,
+            is_active: bodyDatabase.is_active,
+            is_integrated: false,
+            start_date: Number(bodyDatabase.start_date),
+            createdDate: created_date,
+            updatedDate: updated_date,
+            createdUser: +bodyDatabase.createdUser,
+            updatedUser: +bodyDatabase.createdUser,
+            version: bodyDatabase.version,
+          },
+        });
+
+        await tx.log_database.create({
+          data: {
+            type: "CREATE",
+            db_id: database.id,
+            org_id: database.org_id,
+            name: database.name,
+            description: database.description,
+            spec: specList,
+            spec_other: database.spec_other,
+            db_type: database.db_type,
+            db_type_other: database.db_type_other,
+            sector: database.sector,
+            sector_other: database.sector_other,
+            db_location: database.db_location,
+            db_location_other: database.db_location_other,
+            licence_type: database.licence_type,
+            licence_type_other: database.licence_type_other,
+            opendata_url: database.opendata_url,
+            table_count: database.table_count,
+            is_form: database.is_form,
+            is_active: database.is_active,
+            is_integrated: database.is_integrated,
+            start_date: database.start_date,
+            createdDate: database.createdDate,
+            updatedDate: database.updatedDate,
+            createdUser: database.createdUser,
+            updatedUser: database.updatedUser,
+            version: database.version,
+          },
+        });
+
+        const userDatabase = await tx.md_user_database.create({
+          data: {
+            user_id: bodyDatabase.createdUser,
+            database_id: database.id,
+            created_date: created_date,
+            created_user: database.createdUser,
+          },
+        });
+
+        await tx.log_user_database.create({
+          data: {
+            type: "CREATE",
+            ud_id: userDatabase.id,
+            user_id: userDatabase.user_id,
+            database_id: userDatabase.database_id,
+            created_date: userDatabase.created_date,
+            updated_date: userDatabase.updated_date,
+            created_user: userDatabase.created_user,
+            updated_user: userDatabase.updated_user,
+          },
+        });
+
+        const md_action = await tx.md_action.create({
+          data: {
+            user_id: bodyDatabase.createdUser,
+            action_type: 1,
+            item_id: database.id,
+            item_type: "db",
+            created_date: created_date,
+            created_user: database.createdUser,
+          },
+        });
+
+        await tx.log_action.create({
+          data: {
+            log_type: "CREATE",
+            action_id: md_action.id,
+            user_id: md_action.user_id,
+            action_type: md_action.action_type,
+            item_id: md_action.item_id,
+            item_type: md_action.item_type,
+            updated_date: created_date,
+            updated_user: +bodyActivity.createdUser,
+          },
+        });
+
+        delete bodyActivity.id
+        await tx.md_database_activity.create({
+          data: {
+            database_id: database.id,
+            // org_id: bodyActivity.org_id,
+            // name: bodyActivity.name,
+            // short_name: bodyActivity.short_name,
+            // domain_name: bodyActivity.domain_name,
+            // scope: bodyActivity.scope,
+            // regulation_file_id: bodyActivity.regulation_file_id,
+            // status_description: bodyActivity?.status_description,
+            // change_description: bodyActivity.change_description,
+            // service_list: bodyActivity.service_list,
+            // other_info_list: bodyActivity.other_info_list,
+            // full_org_info: bodyActivity.full_org_info,
+            // full_user_info: bodyActivity.full_user_info,
+            // copyright_description: bodyActivity.copyright_description,
+            // is_active: bodyActivity.is_active,
+            // created_user: bodyActivity.createdUser,
+            // createdDate: created_date,
+            ...bodyActivity,
+            created_date: created_date,
+          },
+        });
+
+        delete bodyTechnology.id
+        await tx.md_database_technology.create({
+          data: {
+            database_id: database.id,
+            org_id: bodyActivity.org_id,
+            name: bodyTechnology.name,
+            short_name: bodyTechnology.short_name,
+
+            db_type: bodyTechnology.db_type.toString(),
+            db_manage_system: bodyTechnology.db_manage_system,
+            db_size: Number(bodyTechnology.db_size),
+            db_rows_count: Number(bodyTechnology.db_rows_count),
+            resource_location: bodyTechnology.resource_location,
+            diagram_file_id: bodyTechnology.diagram_file_id,
+            access_control_info: bodyTechnology.access_control_info.toString(),
+            file_type_info: bodyTechnology.file_type_info,
+            info_supply: bodyTechnology.info_supply,
+            service_name: bodyTechnology.service_name,
+            content_info_supply: bodyTechnology.content_info_supply,
+            input_values: bodyTechnology.input_values,
+            output_values: bodyTechnology.output_values,
+
+            is_active: true,
+            created_user: bodyActivity.created_user,
+            created_date: created_date,
+            updated_date: null,
+            updated_user: null,
+          },
+        });
+        
+      }
+
+      return database;
+    }, { maxWait: 10000, timeout: 20000 });
+    
+  } catch (error) {
+    console.error("❌ Transaction failed:", error);
+    console.log("❌ Transaction failed:", error);
+    // throw new Error("Failed to create database");
+    throw error; // IMPORTANT: rethrow the real error
+  }
+};
+
 // Update action ued duudah func
 
 const checkStatusMetadata = async (dbId?: number) => {
@@ -800,6 +1157,7 @@ const checkStatusMetadata = async (dbId?: number) => {
 };
 
 export {
+  createDatabaseAll,
   createDatabaseModel,
   getDatabaseLocationModel,
   getDatabaseModel,
@@ -810,4 +1168,5 @@ export {
   getOneDatabaseModelAdmin,
   getSpecificationModel,
   checkStatusMetadata,
+  getOneDatabaseOther,
 };

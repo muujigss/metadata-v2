@@ -7,7 +7,7 @@ export const sidebarTheme: CustomFlowbiteTheme["sidebar"] = {
       on: "w-16",
       off: "w-64",
     },
-    inner: "rounded bg-white px-3 py-4 dark:bg-gray-800",
+    inner: "rounded bg-white dark:bg-gray-800",
   },
   collapse: {
     button:
