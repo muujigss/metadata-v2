@@ -11,7 +11,7 @@ const Hero = ({ mainIndicator }: any) => {
       <div className="flex flex-wrap lg:flex-nowrap items-center w-full justify-between self-stretch gap-6 lg:gap-20 py-8 px-4 lg:px-24">
         <div className="flex flex-col items-center lg:items-start justify-between gap-4 w-auto mt-0 lg:mt-[120px]">
           <h1 className="text-white text-[42px] font-sans italic w-full lg:w-[800px]">
-            Төрийн мета өгөгдлийн нэгдсэн сан
+            Төрөлжсөн бүртгэлийн нэгдсэн сан
           </h1>
           <p className="text-[18px] font-normal text-justify text-white opacity-90 px-1">
           Энэхүү цахим хуудас нь төрийн байгууллагуудын үүсгэсэн<br />

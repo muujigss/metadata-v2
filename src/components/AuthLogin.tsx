@@ -43,7 +43,7 @@ const AuthLogin = () => {
         localStorage.setItem("email", response.user?.email);
         localStorage.setItem(
           "roles",
-          JSON.stringify(response.user?.roles) || null
+          JSON.stringify(response.user?.roles || null)
         );
         localStorage.setItem("org_id", response.user?.org_id);
         localStorage.setItem("user_id", response.user?.id);
@@ -95,7 +95,7 @@ const AuthLogin = () => {
                     gap: 1,
                   }}
                 >
-                  <FormLabel className=" text-text-body-medium text-black">
+                  <FormLabel className=" text-text-body-medium text-gray-300">
                     Нэвтрэх нэр
                   </FormLabel>
                   <InputComponent
@@ -117,7 +117,7 @@ const AuthLogin = () => {
                     gap: 1,
                   }}
                 >
-                  <FormLabel className=" text-text-body-medium text-black">
+                  <FormLabel className=" text-text-body-medium text-gray-300">
                     Нууц үг
                   </FormLabel>
                   <Box className="relative">
@@ -135,14 +135,14 @@ const AuthLogin = () => {
                       {show ? (
                         <EyeFillIcon
                           size={18}
-                          color="#005baa"
+                          color="#60A5FA"
                           onClick={() => setShow(!show)}
                           className="cursor-pointer"
                         />
                       ) : (
                         <EyeOffFillIcon
                           size={18}
-                          color="#005baa"
+                          color="#60A5FA"
                           onClick={() => setShow(!show)}
                           className="cursor-pointer"
                         />
@@ -159,7 +159,7 @@ const AuthLogin = () => {
                   }}
                 >
                   <Button
-                    className=" bg-primary-medium hover:bg-opacity-100"
+                    className=" bg-blue-600 hover:bg-blue-700 text-white py-2"
                     variant="contained"
                     color="info"
                     type="submit"
@@ -170,12 +170,12 @@ const AuthLogin = () => {
                 </Box>
               </div>
               <Link href="/login/forgot-password">
-                <Typography className=" text-text-body-medium text-black">
+                <Typography className=" text-text-body-medium text-gray-400 hover:text-white transition-colors">
                   Нууц үг мартсан?
                 </Typography>
               </Link>
               <Link href="/request-access" className="mt-4">
-                <Typography className=" text-text-body-medium text-primary-main font-semibold">
+                <Typography className=" text-text-body-medium text-blue-400 hover:text-blue-300 font-semibold transition-colors">
                   Байгууллагаар бүртгүүлэх
                 </Typography>
               </Link>

@@ -25,7 +25,7 @@ export default function RootLayout({
       </head>
       <GoogleAnalytics />
       <body>
-        <div className="relative w-full h-full bg-[#080812]">
+        <div className="relative w-full h-full bg-[#080812] top-glow">
           <div className="absolute inset-0 -top-[220px] bg-[url('/v2/bg-pattern.png')] bg-cover bg-no-repeat z-0"></div>
           <Header />
           <main className="flex flex-col items-center justify-between min-h-screen relative z-10 ">
