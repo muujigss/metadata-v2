@@ -178,7 +178,7 @@ const AuthLogin = () => {
               </Link>
               <Link href="/request-access" className="mt-4">
                 <Typography className=" text-text-body-medium text-blue-400 hover:text-blue-300 font-semibold transition-colors">
-                  Байгууллагаар бүртгүүлэх
+                  Байгууллагаар бүртгүүлэх хүсэлт
                 </Typography>
               </Link>
             </Form>

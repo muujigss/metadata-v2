@@ -9,6 +9,14 @@ export async function POST(req: Request) {
   if (!file) {
     return NextResponse.json({ error: "File missing" }, { status: 400 });
   }
+  const uploadDir = process.env.UPLOAD_DIR!;
+  if (!uploadDir) {
+    return NextResponse.json(
+      { message: "Файлын зам тодорхойгүй байна. Админ-д хэлнэ үү?" },
+      { status: 400 }
+    );
+  }
+
   const dt: any = await createFileModel(file, created_user);
 
   if (!dt) {

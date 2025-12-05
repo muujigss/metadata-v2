@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
 import { useState } from "react";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const FileComponent = ({
   onChange,
@@ -35,7 +36,7 @@ const FileComponent = ({
         },
       }}
     >
-      <Button variant="contained" component="label">
+      <Button variant="contained" component="label" startIcon={<CloudUploadIcon />}>
         Файл сонгох
         <input
           type="file"
