@@ -12,7 +12,15 @@ const createFileModel = async (file: any, created_user: any) => {
     const bytes = Buffer.from(await file.arrayBuffer());
     const filename = file.name;
   
-    const uploadDir = process.env.UPLOAD_DIR!;
+    const uploadDir = process.env.UPLOAD_DIR || "public/uploads";
+    
+    // Ensure directory exists
+    try {
+      await access(uploadDir);
+    } catch {
+      await mkdir(uploadDir, { recursive: true });
+    }
+
     const fullPath = path.join(uploadDir, filename);
   
     await fs.writeFile(fullPath, bytes);
@@ -20,7 +28,7 @@ const createFileModel = async (file: any, created_user: any) => {
     const fileData = {
       filename: filename,
       type: file?.type,
-      path: process.env.UPLOAD_DIR,
+      path: uploadDir,
       size: file?.size,
       created_user: created_user ? parseInt(created_user) : null
     }

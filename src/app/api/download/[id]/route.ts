@@ -6,12 +6,20 @@ const BASE_DIR = process.env.UPLOAD_DIR;
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: { id: string } }
 ) {
   console.log("BASE_DIR PATH:", BASE_DIR);
   console.log("params:", params);
-  const filename = params.id;
-  const absolutePath = path.join(BASE_DIR, filename);
+  
+  const uploadDir = process.env.UPLOAD_DIR || "public/uploads";
+  
+  if (!uploadDir) {
+    console.error("UPLOAD_DIR is not defined and fallback failed");
+    return new NextResponse("Server configuration error", { status: 500 });
+  }
+
+  const filename = decodeURIComponent(params.id);
+  const absolutePath = path.join(uploadDir, filename);
   console.log("DOWNLOAD PATH:", absolutePath);
 
   // Check if file exists
@@ -23,7 +31,7 @@ export async function GET(
     // Stream the file
     const fileBuffer = fs.readFileSync(absolutePath);
 
-    return new NextResponse(fileBuffer, {
+    return new NextResponse(new Uint8Array(fileBuffer), {
       status: 200,
       headers: {
         "Content-Type": "application/octet-stream",

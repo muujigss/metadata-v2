@@ -16,6 +16,7 @@ export async function GET() {
             is_active: false,
           },
         },
+        file: true,
       },
       orderBy: {
         created_date: "desc",

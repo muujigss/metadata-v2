@@ -122,7 +122,6 @@ const OrgRequestListPage = () => {
               <TableCell>И-мэйл</TableCell>
               <TableCell>Утас</TableCell>
               <TableCell>Админ хэрэглэгч</TableCell>
-              <TableCell>Албан бичиг</TableCell>
               <TableCell>Огноо</TableCell>
               <TableCell>Хугацаа</TableCell>
               <TableCell align="center">Үйлдэл</TableCell>
@@ -167,10 +166,7 @@ const OrgRequestListPage = () => {
                       <span className="text-red-500">Хэрэглэгчгүй</span>
                     )}
                   </TableCell>
-                  <TableCell>
-                    {/* Empty as requested */}
-                    <span className="text-gray-400">-</span>
-                  </TableCell>
+
                   <TableCell>
                     {new Date(req.created_date).toLocaleDateString()}
                   </TableCell>
@@ -315,6 +311,21 @@ const OrgRequestListPage = () => {
                       {selectedRequest.website ? (
                         <a href={selectedRequest.website} target="_blank" rel="noreferrer" className="text-blue-600 hover:underline">
                           {selectedRequest.website}
+                        </a>
+                      ) : "-"}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2">
+                    <span className="text-gray-500 font-medium">Албан бичиг:</span>
+                    <span className="col-span-2">
+                      {selectedRequest.file ? (
+                        <a 
+                          href={`/api/download/${selectedRequest.file.filename}`} 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="text-blue-600 hover:underline"
+                        >
+                          Татах
                         </a>
                       ) : "-"}
                     </span>
