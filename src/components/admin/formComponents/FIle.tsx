@@ -9,6 +9,7 @@ const FileComponent = ({
   value,
   errors,
   desabled,
+  accept,
 }: {
   onChange: any;
   label: string;
@@ -16,6 +17,7 @@ const FileComponent = ({
   value?: any;
   errors?: any;
   desabled?: any;
+  accept?: string;
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
@@ -40,6 +42,7 @@ const FileComponent = ({
         Файл сонгох
         <input
           type="file"
+          accept={accept}
           hidden
           onChange={(e) => onSubmit(e) }
         />

@@ -236,6 +236,7 @@ const DatabaseChangeRequest = ({
                     ) : <FileComponent
                           label="Тушаал"
                           name="file"
+                          accept=".pdf, .doc, .docx, .xls, .xlsx"
                           onChange={(fileData: any) => {
                             setSelectedFile(fileData);
                           }}

@@ -373,6 +373,7 @@ const CreateDatabase = ({
                         <FileComponent
                           label="Дотооддоо мөрдөж буй дүрэм, журам, шийдвэр"
                           name="file"
+                          accept=".pdf, .doc, .docx, .xls, .xlsx"
                           onChange={(fileData: any) => {
                             // setSelectedFile(fileData);
                           }}
@@ -645,6 +646,7 @@ const CreateDatabase = ({
                         <FileComponent
                           label="Мэдээллийн сангийн диаграм"
                           name="file"
+                          accept=".pdf, .doc, .docx, .xls, .xlsx"
                           onChange={(fileData: any) => {
                             // setSelectedFile(fileData);
                           }}
