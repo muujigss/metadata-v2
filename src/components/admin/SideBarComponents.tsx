@@ -16,6 +16,24 @@ const SidebarComponents = ({ database }: { database: IDatabase }) => {
             htmlFor="name"
             className="text-text-body-large font-medium justify-start"
           >
+            Хариуцдаг байгууллагын нэр
+          </label>
+          <p className="py-2 text-justify text-wrap">{database?.organization?.name}</p>
+        </div>
+        <div className="border-b ">
+          <label
+            htmlFor="name"
+            className="text-text-body-large font-medium justify-start"
+          >
+            Өгөгдлийн сангийн нэр
+          </label>
+          <p className="py-2 text-justify text-wrap">{database?.name}</p>
+        </div>
+        <div className="border-b ">
+          <label
+            htmlFor="name"
+            className="text-text-body-large font-medium justify-start"
+          >
             1. Тайлбар
           </label>
           <p className="py-2 text-justify text-wrap">{database?.description}</p>
