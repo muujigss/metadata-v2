@@ -96,16 +96,21 @@
 }
 
 /* Custom dark input style */
-.login-input input {
+/* Custom dark input style */
+.login-input input,
+.login-input .MuiInput-input {
   background-color: rgba(17, 24, 39, 0.6) !important; /* gray-900 with opacity */
   color: white !important;
-  border: 1px solid rgba(75, 85, 99, 0.5) !important; /* gray-600 with opacity */
+  border: 1px solid transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
 }
 
-.login-input input:focus {
+.login-input input:focus,
+.login-input .MuiInput-input:focus {
   border-color: #60A5FA !important; /* blue-400 */
   background-color: rgba(17, 24, 39, 0.8) !important;
-  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2) !important;
+  box-shadow: none !important;
 }
 
 .login-input input::placeholder {
@@ -115,7 +120,7 @@
 /* Request Access dark input style */
 .dark-input input,
 .dark-input .MuiInput-input {
-  background-color: #080812 !important;
+  background-color: rgba(17, 24, 39, 0.6) !important;
   color: white !important;
   border: 1px solid transparent !important;
   box-shadow: none !important;
@@ -125,6 +130,6 @@
 .dark-input input:focus,
 .dark-input .MuiInput-input:focus {
   border: 1px solid #60A5FA !important;
-  background-color: #080812 !important;
+  background-color: rgba(17, 24, 39, 0.8) !important;
   box-shadow: none !important;
 }
