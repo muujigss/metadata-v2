@@ -287,9 +287,9 @@ const NotificationDrawer = ({
         { notifList.length === 0 && (
           <span className="py-2 px-3">Өгөгдөл хоосон.</span>
         ) }
-        { notifList.map((item) => {
+        { notifList.map((item: any, i: number) => {
           return (
-            <div className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] 
+            <div key={i} className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] 
               ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'} 
             `}>
               <div>
@@ -305,7 +305,6 @@ const NotificationDrawer = ({
                     <RadioButtonUncheckedIcon fontSize="small" />
                   )
               }
-              
             </div>
           )
         }) }
