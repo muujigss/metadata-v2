@@ -47,6 +47,7 @@ model md_database {
   actions            md_action?         @relation(fields: [id], references: [item_id])
   log_database       log_database[]
   log_user_database  log_user_database[]
+  notif              md_notif[]
 }
 
 model md_database_activity {
@@ -427,6 +428,7 @@ model owner_info {
 
 model md_organization {
   id             Int           @id @default(autoincrement())
+  file_id        Int?
   name           String?
   phone          String?
   email          String?
@@ -443,6 +445,9 @@ model md_organization {
   databases      md_database[]
   users          md_users[]
   log_database   log_database[]
+  notif          md_notif[]
+  file           md_file?        @relation(fields: [file_id], references: [id])
+  
 }
 
 model md_indicator {
@@ -759,4 +764,22 @@ model md_file {
   created_user    Int?
   actions         md_action[]
   log_actions     log_action[]
+  organizations   md_organization[]
+}
+
+model md_notif {
+  id           String   @id @default(cuid())
+  user_id      Int?
+  admin_id     Int?
+  database_id  Int?
+  org_id       Int?
+
+  isViewAdmin  Boolean  @default(false)
+  isViewUser   Boolean  @default(false)
+
+  created_date  DateTime @default(now())
+  updated_date  DateTime @updatedAt
+
+  orgization    md_organization? @relation(fields: [org_id], references: [id])
+  database      md_database? @relation(fields: [database_id], references: [id])
 }
