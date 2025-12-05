@@ -22,6 +22,8 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import LogoPics from "@/components/layout/LogoPics";
 import FileComponent from "@/components/admin/formComponents/FIle";
+import { mailTemplateOrgNew } from "@/utils/helper-mail";
+import { sendMail } from "@/services/MailService";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -88,6 +90,8 @@ const RequestAccessPage = () => {
       const data = await response.json();
 
       if (response.ok) {
+        const template = await mailTemplateOrgNew(values.user_email, values.org_name, values.firstname, values.lastname)
+        await sendMail(template);
         setStatus("success");
         setMessage("Таны хүсэлтийг хүлээн авлаа. Бид шалгаад хариу мэдэгдэх болно.");
         // Optional: redirect after some time
