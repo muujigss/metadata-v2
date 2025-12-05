@@ -101,7 +101,6 @@
 .login-input .MuiInput-input {
   background-color: rgba(17, 24, 39, 0.6) !important; /* gray-900 with opacity */
   color: white !important;
-  border: 1px solid transparent !important;
   box-shadow: none !important;
   outline: none !important;
 }
@@ -122,14 +121,11 @@
 .dark-input .MuiInput-input {
   background-color: rgba(17, 24, 39, 0.6) !important;
   color: white !important;
-  border: 1px solid transparent !important;
   box-shadow: none !important;
-  outline: none !important;
 }
 
 .dark-input input:focus,
 .dark-input .MuiInput-input:focus {
   border: 1px solid #60A5FA !important;
-  background-color: rgba(17, 24, 39, 0.8) !important;
-  box-shadow: none !important;
+  background-color: rgba(17, 24, 39, 0.8);
 }
