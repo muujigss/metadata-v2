@@ -95,7 +95,7 @@ const AuthLogin = () => {
                     gap: 1,
                   }}
                 >
-                  <FormLabel className=" text-text-body-medium text-white">
+                  <FormLabel className="text-text-body-medium !text-white">
                     Нэвтрэх нэр
                   </FormLabel>
                   <InputComponent
@@ -117,7 +117,7 @@ const AuthLogin = () => {
                     gap: 1,
                   }}
                 >
-                  <FormLabel className=" text-text-body-medium text-white">
+                  <FormLabel className="text-text-body-medium !text-white">
                     Нууц үг
                   </FormLabel>
                   <Box className="relative">
