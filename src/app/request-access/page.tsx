@@ -125,13 +125,13 @@ const RequestAccessPage = () => {
         <Container maxWidth="md">
           <Paper elevation={0} className="p-8 border-none !bg-[#3D4E6C33] !text-white backdrop-blur-sm shadow-xl border border-gray-700 relative">
         <IconButton
-          className="absolute top-4 left-4 text-white hover:bg-white/10"
+          className="absolute top-4 left-4 !text-white hover:bg-white/10"
           onClick={() => router.push("/login")}
         >
           <HomeIcon />
         </IconButton>
         
-        <Typography className="uppercase text-text-title-medium mb-6 font-light text-center mt-8 text-white">
+        <Typography className="uppercase text-text-title-medium mb-6 font-light text-center mt-8 !text-white">
           Байгууллагаар бүртгүүлэх хүсэлт
         </Typography>
         
@@ -169,14 +169,14 @@ const RequestAccessPage = () => {
                   </Alert>
                 )}
 
-                <Typography variant="h6" className="mb-4 text-white">
+                <Typography variant="h6" className="mb-4 !text-white">
                   Байгууллагын мэдээлэл
                 </Typography>
                 
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Байгууллагын нэр <span className="text-red-500">*</span>
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -191,7 +191,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Товч нэр
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -205,7 +205,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         И-мэйл <span className="text-red-500">*</span>
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -220,7 +220,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Утас <span className="text-red-500">*</span>
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -235,7 +235,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Хаяг
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -249,7 +249,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Вэб сайт
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -265,14 +265,14 @@ const RequestAccessPage = () => {
 
                 <Divider className="my-6" />
 
-                <Typography variant="h6" className="mb-4 text-white">
+                <Typography variant="h6" className="mb-4 !text-white">
                   Админ хэрэглэгчийн мэдээлэл
                 </Typography>
 
                 <Grid container spacing={2}>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Овог <span className="text-red-500">*</span>
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -287,7 +287,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Нэр <span className="text-red-500">*</span>
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -302,7 +302,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         И-мэйл <span className="text-red-500">*</span>
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -317,7 +317,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Утас
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -331,7 +331,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Хэлтэс
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -345,7 +345,7 @@ const RequestAccessPage = () => {
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Box className="flex flex-col gap-1">
-                      <FormLabel className="text-text-body-medium text-gray-300">
+                      <FormLabel className="text-text-body-medium !text-white">
                         Албан тушаал
                       </FormLabel>
                       <InputComponent className="dark-input"
@@ -361,7 +361,7 @@ const RequestAccessPage = () => {
 
                 <Divider className="my-6" />
 
-                <Typography variant="h6" className="mb-4 text-white">
+                <Typography variant="h6" className="mb-4 !text-white">
                   Байгууллагын лого
                 </Typography>
 
