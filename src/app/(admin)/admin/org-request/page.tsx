@@ -83,7 +83,7 @@ const OrgRequestListPage = () => {
         alert("Алдаа гарлаа");
       }
     } catch (error) {
-      console.error("Error performing action", error);
+      console.error("Error performing action----------", error);
       alert("Алдаа гарлаа");
     }
   };
