@@ -321,8 +321,11 @@ const OrgRequestListPage = () => {
                       {selectedRequest.file ? (
                         <a
                           href={`/api/download/${selectedRequest.file.filename}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-blue-600 hover:underline"
                         >
-                          <Button variant="contained">Татах</Button>
+                          {selectedRequest.file.filename}
                         </a>
                       ) : "-"}
                     </span>

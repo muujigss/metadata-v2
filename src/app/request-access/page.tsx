@@ -17,7 +17,7 @@ import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
-import HomeIcon from "@mui/icons-material/Home";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import LogoPics from "@/components/layout/LogoPics";
@@ -132,7 +132,7 @@ const RequestAccessPage = () => {
           className="absolute top-4 left-4 !text-white hover:bg-white/10"
           onClick={() => router.push("/login")}
         >
-          <HomeIcon />
+          <ArrowBackIcon />
         </IconButton>
         
         <Typography className="uppercase text-text-title-medium mb-6 font-light text-center mt-8 !text-white">
