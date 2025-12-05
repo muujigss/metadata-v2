@@ -92,7 +92,7 @@ const Header = () => {
               <MenuIcon />
             </IconButton>
             <Typography variant="h6" className=" uppercase">
-              Төрийн мета өгөгдлийн нэгдсэн сан
+              Төрөлжсөн бүртгэлийн нэгдсэн сан
             </Typography>
           </Box>
           <Box sx={{ display: "flex", alignItems: "center" }}>

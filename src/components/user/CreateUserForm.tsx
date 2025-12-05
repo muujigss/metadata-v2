@@ -119,16 +119,16 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
      * 3	Мэдээлэл хариуцагч хэрэглэгч
      *
     */
-   const levelCodes = [2, 3];
-   if (!levelCodes.includes(level)) return;
-   let msg = ""
+    const levelCodes = [2, 3];
+    if (!levelCodes.includes(level) || level == 3) return;
+    let msg = ""
     const count = orgRoles.filter((role: any) => role.user_level == level);
     if (level == 2) {
       msg = "Мэдээлэл хариуцагч админ бүртгэлтэй байна."
     }
-    if (level == 3) {
-      msg = "Мэдээлэл хариуцагч хэрэглэгч бүртгэлтэй байна."
-    }
+    // if (level == 3) {
+    //   msg = "Мэдээлэл хариуцагч хэрэглэгч бүртгэлтэй байна."
+    // }
     if (count.length > 0) {
       setOpenAlert(true)
       setWarningMessage(msg);

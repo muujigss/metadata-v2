@@ -25,7 +25,7 @@ const AdminLayout = ({
   return (
     <html lang="en">
       <head>
-        <title>Төрийн мета өгөгдлийн нэгдсэн сан</title>
+        <title>Төрөлжсөн бүртгэлийн нэгдсэн сан</title>
       </head>
       <body>
         <AppRouterCacheProvider>

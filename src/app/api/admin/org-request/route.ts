@@ -69,7 +69,7 @@ export async function PUT(request: Request) {
     if (user.email) {
       await sendMail({
         to: user.email,
-        subject: "Төрийн мета өгөгдлийн нэгдсэн сан - Бүртгэл баталгаажлаа",
+        subject: "Төрөлжсөн бүртгэлийн нэгдсэн сан - Бүртгэл баталгаажлаа",
         html: `
           <h3>Сайн байна уу, ${user.lastname} овогтой ${user.firstname}</h3>
           <p>Таны <b>${org.name}</b> байгууллагын бүртгэл амжилттай баталгаажлаа.</p>
@@ -116,7 +116,7 @@ export async function DELETE(request: Request) {
     if (userEmail) {
       await sendMail({
         to: userEmail,
-        subject: "Төрийн мета өгөгдлийн нэгдсэн сан - Бүртгэл татгалзлаа",
+        subject: "Төрөлжсөн бүртгэлийн нэгдсэн сан - Бүртгэл татгалзлаа",
         html: `
           <p>Сайн байна уу,</p>
           <p>Таны байгууллагын бүртгэлийн хүсэлтээс татгалзсан байна.</p>

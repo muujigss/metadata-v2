@@ -37,7 +37,7 @@ export async function POST(req: Request) {
 
     // Send the email
     const info = await transporter.sendMail({
-      from: `"Төрийн мета өгөгдлийн нэгдсэн сан" <${user}>`, // Sender address
+      from: `"Төрөлжсөн бүртгэлийн нэгдсэн сан" <${user}>`, // Sender address
       to, // Recipient address
       subject, // Subject line
       html, // HTML body

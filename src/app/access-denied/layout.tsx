@@ -10,7 +10,7 @@ const LoginLayout = ({
   return (
     <html lang="en">
       <head>
-        <title>Төрийн мета өгөгдлийн нэгдсэн сан</title>
+        <title>Төрөлжсөн бүртгэлийн нэгдсэн сан</title>
       </head>
 
       <body>
@@ -21,8 +21,8 @@ const LoginLayout = ({
             </div>
             <div className=" flex flex-wrap items-center container mx-auto justify-center self-stretch">
               <div className="flex flex-col items-start justify-between gap-4 w-auto">
-                <h1 className="uppercase text-text-title-large bg-gradient-to-t from-primary-default to-tertirary-high bg-clip-text text-transparent ">
-                  Төрийн мета өгөгдлийн нэгдсэн сан
+                <h1 className="uppercase text-text-title-large text-white">
+                  Төрөлжсөн бүртгэлийн нэгдсэн сан
                 </h1>
               </div>
             </div>
