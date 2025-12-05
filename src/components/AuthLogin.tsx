@@ -51,7 +51,14 @@ const AuthLogin = () => {
 
         setUserInfo(response.user);
 
-        router.push("/admin/user");
+        if (response.user?.user_level === 1) {
+          router.push("/admin/request");
+        } else if (response.user?.user_level === 2) {
+          router.push("/admin/user");
+        } else if (response.user?.user_level === 3) {
+          router.push("/admin/database");
+        }
+
       } else {
         setStatus("error");
       }

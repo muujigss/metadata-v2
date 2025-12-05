@@ -135,7 +135,7 @@ const ActionType = ({
                       };
                     }
                   } else if (action_type == 6) {
-                    if (item.id == 7 || item.id == 4 || item.id == 10) {
+                    if (item.id == 4 || item.id == 10) {
                       return {
                         id: item.id,
                         name: item.name,
