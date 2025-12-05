@@ -11,6 +11,7 @@ datasource db {
 model md_database {
   id                 Int                @id @default(autoincrement())
   org_id             Int
+  file_id            Int?
   name               String?
   description        String?
   spec               Json?

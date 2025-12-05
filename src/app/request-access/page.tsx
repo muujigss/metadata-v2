@@ -21,6 +21,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/material/styles";
 import LogoPics from "@/components/layout/LogoPics";
+import FileComponent from "@/components/admin/formComponents/FIle";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -40,6 +41,7 @@ const RequestAccessPage = () => {
   const [message, setMessage] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const validationSchema = Yup.object({
     // Organization
@@ -58,6 +60,7 @@ const RequestAccessPage = () => {
     
     // File
     file: Yup.mixed().required("Байгууллагын лого оруулна уу."),
+    file_id: Yup.mixed().required("Тушаал оруулна уу."),
   });
 
   const onSubmit = async (values: any) => {
@@ -75,6 +78,7 @@ const RequestAccessPage = () => {
       });
       // Append file
       formData.append("file", values.file);
+      formData.append("file_id", values.file_id);
 
       const response = await fetch("/api/request-access", {
         method: "POST",
@@ -157,6 +161,7 @@ const RequestAccessPage = () => {
               department: "",
               position: "",
               file: null,
+              file_id: null,
             }}
             validationSchema={validationSchema}
             onSubmit={onSubmit}
@@ -361,41 +366,67 @@ const RequestAccessPage = () => {
 
                 <Divider className="my-6" />
 
-                <Typography variant="h6" className="mb-4 !text-white">
-                  Байгууллагын лого
-                </Typography>
-
-                <Box className="flex flex-col gap-2">
-                  <Button
-                    component="label"
-                    variant="outlined"
-                    startIcon={<CloudUploadIcon />}
-                    className="w-fit"
-                  >
-                    Лого хуулах
-                    <VisuallyHiddenInput
-                      type="file"
-                      accept="image/png, image/jpeg"
-                      onChange={(event) => {
-                        const file = event.target.files?.[0];
-                        if (file) {
-                          setFieldValue("file", file);
-                          setFileName(file.name);
-                        }
-                      }}
-                    />
-                  </Button>
-                  {fileName && (
-                    <Typography variant="body2" className="text-gray-600">
-                      Сонгогдсон файл: {fileName}
-                    </Typography>
-                  )}
-                  {touched.file && errors.file && (
-                    <Typography variant="caption" color="error">
-                      {errors.file as string}
-                    </Typography>
-                  )}
-                </Box>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Box className="flex flex-col gap-2">
+                      <FormLabel className="text-text-body-medium !text-white">
+                        Байгууллагын лого
+                      </FormLabel>
+                      <Button
+                        component="label"
+                        variant="outlined"
+                        startIcon={<CloudUploadIcon />}
+                        className="w-fit"
+                      >
+                        Лого хуулах
+                        <VisuallyHiddenInput
+                          type="file"
+                          accept="image/png, image/jpeg"
+                          onChange={(event) => {
+                            const file = event.target.files?.[0];
+                            if (file) {
+                              setFieldValue("file", file);
+                              setFileName(file.name);
+                            }
+                          }}
+                        />
+                      </Button>
+                      {fileName && (
+                        <Typography variant="body2" className="text-gray-600">
+                          Сонгогдсон файл: {fileName}
+                        </Typography>
+                      )}
+                      {touched.file && errors.file && (
+                        <Typography variant="caption" color="error">
+                          {errors.file as string}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Box className="flex flex-col gap-1">
+                      <FormLabel className="text-text-body-medium !text-white">
+                        Тушаал
+                      </FormLabel>
+                      <FileComponent
+                        label="Тушаал"
+                        name="file"
+                        accept=".pdf, .doc, .docx, .xls, .xlsx"
+                        onChange={(fileData: any) => {
+                          setSelectedFile(fileData);
+                          setFieldValue("file_id", fileData);
+                        }}
+                        value={values?.file_id}
+                        desabled={false}
+                      />
+                      {touched.file_id && errors.file_id && (
+                        <Typography variant="caption" color="error">
+                          {errors.file_id as string}
+                        </Typography>
+                      )}
+                    </Box>
+                  </Grid>
+                </Grid>
 
                 <Alert severity="info" className="mt-8 mb-4">
                   Таны хүсэлт 3 хоногийн дотор шийдвэрлэгдэх бөгөөд шийдвэрлэгдсэн үед бүртгэлтэй и-мэйл хаягаар мэдэгдэх болно.

@@ -31,6 +31,13 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    const _file_id = formData.get("file_id") as File;
+    if (!_file_id) {
+      return NextResponse.json(
+        { message: "Тушаал файл утга шаардана." },
+        { status: 400 }
+      );
+    }
 
     // Check if user email already exists
     const existingUser = await prisma.md_users.findFirst({
@@ -64,7 +71,6 @@ export async function POST(request: Request) {
     // Save file
     const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
     const dt: any = await createFileModel(file, null);
-  
     if (!dt) {
       return NextResponse.json({
         data: dt,
@@ -73,8 +79,24 @@ export async function POST(request: Request) {
         status: "error",
       });
     }
+
+    let saved_file_id = null
+    const dt2: any = await createFileModel(_file_id, null);
+    if (!dt2) {
+      return NextResponse.json({
+        data: dt2,
+        error: "Тушаал файл хадгалахад алдаа гарлаа",
+        message: "error",
+        status: "error",
+      });
+    } else {
+      saved_file_id = dt2?.file?.id
+    }
+
     const uploadDir = process.env.UPLOAD_DIR!;
     const fileUrl = `${uploadDir}/${filename}`;
+
+    
 
     // Create Organization (Inactive)
     const now = new Date();
@@ -98,7 +120,7 @@ export async function POST(request: Request) {
     const password = Math.random().toString(36).slice(-8);
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await prisma.md_users.create({
+    await prisma.md_users.create({
       data: {
         org_id: organization.id,
         user_level: 2, // Data Admin
@@ -119,7 +141,7 @@ export async function POST(request: Request) {
     // Update organization with file url in img_url
     await prisma.md_organization.update({
         where: { id: organization.id },
-        data: { img_url: fileUrl }
+        data: { img_url: fileUrl, file_id: saved_file_id }
     });
 
     return NextResponse.json({ success: true, message: "Request received" });
