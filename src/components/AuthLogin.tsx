@@ -99,6 +99,7 @@ const AuthLogin = () => {
                     Нэвтрэх нэр
                   </FormLabel>
                   <InputComponent
+                    className="login-input"
                     type="text"
                     name="email"
                     label=""
@@ -122,6 +123,7 @@ const AuthLogin = () => {
                   </FormLabel>
                   <Box className="relative">
                     <InputComponent
+                      className="login-input"
                       type={show ? "text" : "password"}
                       name="password"
                       label=""

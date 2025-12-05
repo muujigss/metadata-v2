@@ -8,6 +8,7 @@ const InputComponent = ({
   value,
   onChange,
   errors,
+  className,
 }: {
   type: string;
   name: string;
@@ -15,6 +16,7 @@ const InputComponent = ({
   value?: any;
   onChange: any;
   errors?: any;
+  className?: string;
 }) => {
   return (
     <Box
@@ -30,7 +32,7 @@ const InputComponent = ({
     >
       <StyledInput
         name={name}
-        className={"input"}
+        className={`input ${className || ""}`}
         id={`outlined-${name}`}
         type={type}
         defaultValue={value}

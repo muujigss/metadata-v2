@@ -123,7 +123,7 @@ const RequestAccessPage = () => {
         {/* Form Section */}
         <div className="py-8">
         <Container maxWidth="md">
-          <Paper elevation={0} className="p-8 border-none bg-[#3D4E6C33] backdrop-blur-sm shadow-xl border border-gray-700 relative">
+          <Paper elevation={0} className="p-8 border-none !bg-[#3D4E6C33] !text-white backdrop-blur-sm shadow-xl border border-gray-700 relative">
         <IconButton
           className="absolute top-4 left-4 text-white hover:bg-white/10"
           onClick={() => router.push("/login")}
@@ -179,7 +179,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Байгууллагын нэр <span className="text-red-500">*</span>
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="org_name"
                         label="Байгууллагын нэр"
@@ -194,7 +194,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Товч нэр
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="org_short_name"
                         label="Товч нэр"
@@ -208,7 +208,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         И-мэйл <span className="text-red-500">*</span>
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="email"
                         name="org_email"
                         label="И-мэйл"
@@ -223,7 +223,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Утас <span className="text-red-500">*</span>
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="org_phone"
                         label="Утас"
@@ -238,7 +238,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Хаяг
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="org_address"
                         label="Хаяг"
@@ -252,7 +252,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Вэб сайт
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="org_website"
                         label="Вэб сайт"
@@ -275,7 +275,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Овог <span className="text-red-500">*</span>
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="lastname"
                         label="Овог"
@@ -290,7 +290,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Нэр <span className="text-red-500">*</span>
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="firstname"
                         label="Нэр"
@@ -305,7 +305,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         И-мэйл <span className="text-red-500">*</span>
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="email"
                         name="user_email"
                         label="И-мэйл"
@@ -320,7 +320,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Утас
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="user_phone"
                         label="Утас"
@@ -334,7 +334,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Хэлтэс
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="department"
                         label="Хэлтэс"
@@ -348,7 +348,7 @@ const RequestAccessPage = () => {
                       <FormLabel className="text-text-body-medium text-gray-300">
                         Албан тушаал
                       </FormLabel>
-                      <InputComponent
+                      <InputComponent className="dark-input"
                         type="text"
                         name="position"
                         label="Албан тушаал"
