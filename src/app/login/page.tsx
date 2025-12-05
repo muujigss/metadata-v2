@@ -8,7 +8,7 @@ const LoginPage = () => {
   return (
     <div className="flex flex-col lg:flex-row w-full min-h-screen overflow-hidden">
       {/* Left Side - Login Form */}
-      <div className="flex flex-col items-center justify-start w-full lg:w-1/2 p-8 lg:p-16 pt-64 relative z-10 translate-x-40 translate-y-40">
+      <div className="flex flex-col items-center justify-start w-full lg:w-1/2 p-8 lg:p-16 pt-64 relative z-10 !translate-x-40 translate-y-40">
         <div className="w-full max-w-md p-8 rounded-2xl bg-[#3D4E6C33] backdrop-blur-sm shadow-xl border border-gray-700">
           <Typography className="uppercase text-text-title-medium mb-6 font-bold text-center text-white">
             Системд Нэвтрэх
