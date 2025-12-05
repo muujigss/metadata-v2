@@ -769,17 +769,20 @@ model md_file {
 }
 
 model md_notif {
-  id           String   @id @default(cuid())
-  user_id      Int?
-  admin_id     Int?
-  database_id  Int?
-  org_id       Int?
+  id            Int      @id @default(autoincrement())
+  database_id   Int?
+  org_id        Int?
 
-  isViewAdmin  Boolean  @default(false)
-  isViewUser   Boolean  @default(false)
+  text          String?
+  description   String?
+  icon          String?
+  is_view_admin Boolean  @default(false)
+  is_view_user  Boolean  @default(false)
 
   created_date  DateTime @default(now())
-  updated_date  DateTime @updatedAt
+  created_user  Int?
+  updated_date  DateTime?
+  updated_user  Int?
 
   orgization    md_organization? @relation(fields: [org_id], references: [id])
   database      md_database? @relation(fields: [database_id], references: [id])

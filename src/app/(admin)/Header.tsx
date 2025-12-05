@@ -7,15 +7,17 @@ import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import MenuIcon from "@mui/icons-material/Menu";
 import Person2RoundedIcon from "@mui/icons-material/Person2Rounded";
 import MailOutlined from "@mui/icons-material/MailOutlined";
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {
-  Avatar,
   Box,
   Button,
   Divider,
   IconButton,
   List,
   Toolbar,
-  Tooltip,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
@@ -23,25 +25,37 @@ import { useState } from "react";
 import MainList from "./MainList";
 import useCurrentUser from "@/utils/useCurrentUser";
 import { ICurrentUserContext } from "@/utils/context";
-import Link from "next/link";
 import { useGetUserLevel, useGetUserRole } from "@/utils/customHooks";
 import { Kbd } from "flowbite-react";
 import { ISpecification } from "@/interfaces/ISpecification";
+import { getNotifCount } from "@/services/NotifService";
+import { useQuery } from "@tanstack/react-query";
+import moment from "moment";
 
 const Header = () => {
   const [open, setOpen] = useState(true);
   const [openProfile, setOpenProfile] = useState(false);
+  const [openNotif, setOpenNotif] = useState(false);
   const router = useRouter();
 
   const { userInfo } = useCurrentUser() as ICurrentUserContext;
   let firstname = userInfo?.firstname;
   let lastname = userInfo?.lastname;
 
+  const { data: notifData } = useQuery({
+    queryKey: ["getNotifCount on admin"],
+    queryFn: () => getNotifCount(),
+    // enabled: !!id
+  });
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
   const toggleProfileDrawer = () => {
     setOpenProfile(!openProfile);
+  };
+  const toggleNotifDrawer = () => {
+    setOpenNotif(!openNotif);
   };
 
   const handleSubmit = async () => {
@@ -95,7 +109,15 @@ const Header = () => {
               Төрөлжсөн бүртгэлийн нэгдсэн сан
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box sx={{ display: "flex", alignItems: "center" }} className="gap-10">
+            <div className="flex relative p-3 cursor-pointer hover:bg-[#42a5f5] hover:rounded-xl" onClick={toggleNotifDrawer}>
+              <NotificationsNoneIcon className="" />
+              <div
+                className="absolute -top-0 -right-1 bg-pink-500 text-white font-bold w-7 h-7 flex items-center justify-center rounded-full text-[12px]"
+              >
+                {notifData?.count}
+              </div>
+            </div>
             <Button
               color="secondary"
               variant="text"
@@ -121,6 +143,12 @@ const Header = () => {
           <ProfileDrawer
             handleSubmit={handleSubmit}
             openProfile={openProfile}
+          />
+        )}
+        {openNotif && (
+          <NotificationDrawer
+            handleSubmit={handleSubmit}
+            openNotif={openNotif}
           />
         )}
       </AppBar>
@@ -154,13 +182,9 @@ const ProfileDrawer = ({
   handleSubmit: any;
 }) => {
   const { userInfo } = useCurrentUser();
-
   const { data: userLevels } = useGetUserLevel();
   const { data: userRoles } = useGetUserRole();
-
   let roles = userInfo?.roles;
-
-  // console.log({ userLevels, userInfo, userRoles });
 
   return (
     <Box
@@ -215,6 +239,78 @@ const ProfileDrawer = ({
         <LogoutRoundedIcon fontSize="small" />
       </Button>
     </Box>
+  );
+};
+const NotificationDrawer = ({
+  openNotif,
+  handleSubmit,
+}: {
+  openNotif: boolean;
+  handleSubmit: any;
+}) => {
+  const { userInfo } = useCurrentUser() as ICurrentUserContext;
+  // console.log('----userLevel-----', userInfo?.user_level)
+  const [notifList, setNotifList] = useState([
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: false },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: false },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
+  ]);
+
+  const { data: notifData } = useQuery({
+    queryKey: ["getNotifCount on admin"],
+    queryFn: () => getNotifCount(),
+    enabled: openNotif
+  });
+  // console.log('----notifData-----', notifData)
+
+  return (
+    <div className="w-[280px] absolute right-[250px] top-[64px] bg-[#42a5f5]">
+      <div className="p-5 cursor-pointer flex gap-3 hover:bg-[#42a5f5] border-b">
+        Бүгдийг уншсан болгох <CheckBoxIcon />
+      </div>
+      <div className="flex flex-col overflow-y-auto h-[300px]">
+        { notifList.length === 0 && (
+          <span className="py-2 px-3">Өгөгдөл хоосон.</span>
+        ) }
+        { notifList.map((item) => {
+          return (
+            <div className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] 
+              ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'} 
+            `}>
+              <div>
+                <span className="text-[12px] font-bold">{item?.text}</span><br />
+                <span className="text-[10px]">{moment(item?.created_date).format("YYYY-MM-DD")}</span>
+              </div>
+              {
+                Number(userInfo?.user_level) === 1 && item.is_view_admin
+                  ? (
+                      <RadioButtonCheckedIcon fontSize="small" />
+                    )
+                  : (
+                    <RadioButtonUncheckedIcon fontSize="small" />
+                  )
+              }
+              
+            </div>
+          )
+        }) }
+      </div>
+    </div>
   );
 };
 export default Header;
