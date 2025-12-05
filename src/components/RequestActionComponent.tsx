@@ -11,6 +11,7 @@ import {
   TableBody,
   Typography,
   Button,
+  Chip,
 } from "@mui/material";
 import moment from "moment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -66,6 +67,23 @@ const RequestActionComponent = ({
       }
     </Typography>;
   }
+
+  const getDeadlineStatus = (createdDate: string) => {
+    const created = new Date(createdDate);
+    const deadline = new Date(created.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
+    const now = new Date();
+    const diff = deadline.getTime() - now.getTime();
+    const diffHours = Math.floor(diff / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diff < 0) {
+      return { label: "Хугацаа хэтэрсэн", color: "error" as const, expired: true };
+    } else if (diffHours < 24) {
+      return { label: `${diffHours} цаг үлдсэн`, color: "warning" as const, expired: false };
+    } else {
+      return { label: `${diffDays} өдөр үлдсэн`, color: "warning" as const, expired: false };
+    }
+  };
 
   if (isLoading) return <Loader />;
   return (
@@ -135,6 +153,19 @@ const RequestActionComponent = ({
                   </TableCell>
                   <TableCell>
                     {moment(item.updated_date).format("YYYY-MM-DD HH:mm:ss")}
+                  </TableCell>
+                  <TableCell>
+                    {(() => {
+                      const status = getDeadlineStatus(item?.created_date);
+                      return (
+                        <Chip 
+                          label={status.label} 
+                          color={status.color} 
+                          size="small" 
+                          variant={status.expired ? "filled" : "outlined"}
+                        />
+                      );
+                    })()}
                   </TableCell>
                   <TableCell align="center">
                     <div className="flex justify-center gap-2">

@@ -20,6 +20,7 @@ const RequestActionPage = async () => {
     { field: "position", headerName: "Албан тушаал", width: 10 },
     { field: "action_type", headerName: "Төлөв", width: 10 },
     { field: "updated_date", headerName: "Илгээсэн огноо", width: 10 },
+    { field: "created_date", headerName: "Хугацаа", width: 10 },
     { field: "action", headerName: "", width: 10 },
   ];
 
