@@ -1,12 +1,13 @@
 "use server";
 import prisma from "@/utils/prisma";
 import fs from "fs/promises";
+import { access, mkdir } from "fs/promises";
 import path from "path";
 
 const createFileModel = async (file: any, created_user: any) => {
   try {
     if (!file) throw new Error("File is required");
-    if (!created_user) throw new Error("created_user is required");
+    // if (!created_user) throw new Error("created_user is required");
   
     const bytes = Buffer.from(await file.arrayBuffer());
     const filename = file.name;
@@ -21,7 +22,7 @@ const createFileModel = async (file: any, created_user: any) => {
       type: file?.type,
       path: process.env.UPLOAD_DIR,
       size: file?.size,
-      created_user: parseInt(created_user)
+      created_user: created_user ? parseInt(created_user) : null
     }
 
     // Create md_file record

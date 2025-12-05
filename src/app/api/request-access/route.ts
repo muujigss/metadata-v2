@@ -1,9 +1,7 @@
 import { NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
 import prisma from "@/utils/prisma";
 import bcrypt from "bcrypt";
-import moment from "moment";
+import { createFileModel } from "@/services/model/FileModel";
 
 export async function POST(request: Request) {
   try {
@@ -27,10 +25,9 @@ export async function POST(request: Request) {
 
     // File
     const file = formData.get("file") as File;
-
     if (!file) {
       return NextResponse.json(
-        { message: "File is required" },
+        { message: "Файл утга шаардана." },
         { status: 400 }
       );
     }
@@ -65,22 +62,22 @@ export async function POST(request: Request) {
     }
 
     // Save file
-    const buffer = Buffer.from(await file.arrayBuffer());
     const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
-    const uploadDir = path.join(process.cwd(), "public/uploads/requests");
-    
-    try {
-        await mkdir(uploadDir, { recursive: true });
-    } catch (e) {
-        // ignore if exists
+    const dt: any = await createFileModel(file, null);
+  
+    if (!dt) {
+      return NextResponse.json({
+        data: dt,
+        error: "Файл хадгалахад алдаа гарлаа",
+        message: "error",
+        status: "error",
+      });
     }
-
-    await writeFile(path.join(uploadDir, filename), buffer);
-    const fileUrl = `/uploads/requests/${filename}`;
+    const uploadDir = process.env.UPLOAD_DIR!;
+    const fileUrl = `${uploadDir}/${filename}`;
 
     // Create Organization (Inactive)
     const now = new Date();
-    const created_date = now.toISOString();
 
     const organization = await prisma.md_organization.create({
       data: {
