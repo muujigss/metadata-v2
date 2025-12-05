@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import moment from "moment";
 import { cookies } from "next/headers";
 import { sendMail } from "../MailService";
+import { mailTemplateNewUser } from "@/utils/helper-mail";
 
 const getUserModel = async (user_level: number, org_id: number) => {
   try {
@@ -205,17 +206,16 @@ const createUserModel = async (data: IUser) => {
           });
         });
 
-      const userDatabase = await prisma.md_user_database.createMany({
+      await prisma.md_user_database.createMany({
         data: dbs,
       });
 
-      // send passwor to email
-
-      const to = email;
-      const subject = "Тавтай морил";
-      const html = `Сайн байна уу, <br/><br/> Төрөлжсөн бүртгэлийн нэгдсэн санд хандах эрхийг илгээж байна. <br/><br/> Таны нэвтрэх нэр: <b>${email}</b> <br/><br/> Таны нууц үг:<b>${password}</b> <br/><br/> Хандах холбоос:  <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/><br/> Баярлалаа`;
-
-      const mail = await sendMail({ to, subject, html });
+      // const to = email;
+      // const subject = "Тавтай морил";
+      // const html = `Сайн байна уу, <br/><br/> Төрөлжсөн бүртгэлийн нэгдсэн санд хандах эрхийг илгээж байна. <br/><br/> Таны нэвтрэх нэр: <b>${email}</b> <br/><br/> Таны нууц үг:<b>${password}</b> <br/><br/> Хандах холбоос:  <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/><br/> Баярлалаа`;
+      // await sendMail({ to, subject, html });
+      const template = await mailTemplateNewUser(email, password, process.env.HOST_BASE_URL)
+      await sendMail(template)
     } else {
       user = await prisma.md_users.update({
         where: {

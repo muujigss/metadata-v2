@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/utils/prisma";
 import bcrypt from "bcrypt";
 import { sendMail } from "@/services/MailService";
+import { mailTemplateOrgConfirm } from "@/utils/helper-mail";
 
 // GET: List all pending requests (inactive organizations)
 export async function GET() {
@@ -68,19 +69,8 @@ export async function PUT(request: Request) {
 
     // Send Approval Email
     if (user.email) {
-      await sendMail({
-        to: user.email,
-        subject: "Төрөлжсөн бүртгэлийн нэгдсэн сан - Бүртгэл баталгаажлаа",
-        html: `
-          <h3>Сайн байна уу, ${user.lastname} овогтой ${user.firstname}</h3>
-          <p>Таны <b>${org.name}</b> байгууллагын бүртгэл амжилттай баталгаажлаа.</p>
-          <p>Та системд дараах мэдээллээр нэвтэрнэ үү:</p>
-          <p><b>Нэвтрэх нэр (Email):</b> ${user.email}</p>
-          <p><b>Нууц үг:</b> ${newPassword}</p>
-          <br/>
-          <a href="${process.env.HOST_BASE_URL}/login">Нэвтрэх</a>
-        `
-      });
+      const template = await mailTemplateOrgConfirm(user.email, org.name, user.firstname, user.lastname, newPassword, process.env.HOST_BASE_URL)
+      await sendMail(template)
     }
 
     return NextResponse.json({ success: true, message: "Approved" });

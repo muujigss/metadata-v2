@@ -4,6 +4,7 @@ import { IAction } from "@/interfaces/IAction";
 import { sendMail } from "./MailService";
 import { checkStatusMetadata } from "./model/DatabaseModel";
 import { getUserInfoByLevelModel, getUserInfoModel } from "./model/UserModel";
+import { mailTemplateDbStatusChangeUser } from "@/utils/helper-mail";
 
 const checkValidationStatus = async (db_id: number) => {
   const checkStatus = await checkStatusMetadata(db_id);
@@ -29,29 +30,39 @@ const updateActionService = async (data: IAction) => {
     const info = await getUserInfoModel(parseInt(data.user_id));
     const userInfoAdmin = await getUserInfoByLevelModel(1);
 
-    let mailObj = {};
+    // let mailObj = {};
+    let subject = ''
+    let text = ''
     if (info || userInfoAdmin) {
       if (data.action_type == 2) {
-        mailObj = {
-          to: userInfoAdmin?.email,
-          subject: "Баталгаажуулах хүсэлт",
-          html: `Сайн байна уу, <br/><br/> Таньд дараах байгууллагаас хүсэлт ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b> <br/><br/> Та Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
-        };
+        subject = 'Баталгаажуулах хүсэлт'
+        text = `Таньд дараах байгууллагаас хүсэлт ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b>`
+        // mailObj = {
+        //   to: userInfoAdmin?.email,
+        //   subject: "Баталгаажуулах хүсэлт",
+        //   html: `Сайн байна уу, <br/><br/> Таньд дараах байгууллагаас хүсэлт ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b> <br/><br/> Та Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
+        // };
       } else if (data.action_type == 3) {
-        mailObj = {
-          to: info?.email,
-          subject: "Баталгаажсан хүсэлт",
-          html: `Сайн байна уу, <br/><br/> Таны илгээсэн хүсэлт баталгаажсан байна. Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/><br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
-        };
+        subject = 'Баталгаажуулах хүсэлт'
+        text = `Таны илгээсэн хүсэлт баталгаажсан байна.`
+        // mailObj = {
+        //   to: info?.email,
+        //   subject: "Баталгаажсан хүсэлт",
+        //   html: `Сайн байна уу, <br/><br/> Таны илгээсэн хүсэлт баталгаажсан байна. Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/><br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
+        // };
       } else if (data.action_type == 4) {
-        mailObj = {
-          to: info?.email,
-          subject: "Буцаагдсан хүсэлт",
-          html: `Сайн байна уу, <br/><br/> Таны илгээсэн хүсэлт буцаагдсан байна. Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/><br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
-        };
+        subject = 'Буцаагдсан хүсэлт'
+        text = `Таны илгээсэн хүсэлт буцаагдсан байна.`
+        // mailObj = {
+        //   to: info?.email,
+        //   subject: "Буцаагдсан хүсэлт",
+        //   html: `Сайн байна уу, <br/><br/> Таны илгээсэн хүсэлт буцаагдсан байна. Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/><br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
+        // };
       }
 
-      // let aa = sendMail(mailObj);
+      // sendMail(mailObj);
+      const template = await mailTemplateDbStatusChangeUser(userInfoAdmin?.email, subject, text, process.env.HOST_BASE_URL)
+      await sendMail(template)
     }
 
     if (!res.ok) {
