@@ -46,7 +46,7 @@ const RequestActionComponent = ({
   };
 
   
-  const viewActionType = (action_type: number) => {
+  const viewActionType = (action_type: number, description?: string) => {
     const txtStatusColor =
       action_type == 1
         ? "primary"
@@ -55,18 +55,29 @@ const RequestActionComponent = ({
         : action_type == 3
         ? "success"
         : "error";
-    return <Typography
-      color={txtStatusColor}
-      sx={{
-        display: "flex",
-      }}
-    >
-      {
-        actionType?.find((x: any) => x.id === action_type)
-          ?.name
-      }
-    </Typography>;
-  }
+    return (
+      <Box>
+        <Typography
+          color={txtStatusColor}
+          sx={{
+            display: "flex",
+            fontWeight: "bold",
+            fontSize: "0.875rem",
+          }}
+        >
+          {actionType?.find((x: any) => x.id === action_type)?.name}
+        </Typography>
+        {description && (
+          <Typography
+            variant="caption"
+            sx={{ display: "block", color: "text.secondary", mt: 0.5 }}
+          >
+            {description}
+          </Typography>
+        )}
+      </Box>
+    );
+  };
 
   const getDeadlineStatus = (updatedDate: string, action_type: number) => {
     const created = new Date(updatedDate);
@@ -152,7 +163,7 @@ const RequestActionComponent = ({
                   <TableCell> {item.user?.department}</TableCell>
                   <TableCell> {item.user?.position}</TableCell>
                   <TableCell>
-                    {viewActionType(item.action_type || 0)}
+                    {viewActionType(item.action_type || 0, item.description)}
                   </TableCell>
                   <TableCell>
                     {moment(item.updated_date).format("YYYY-MM-DD HH:mm:ss")}

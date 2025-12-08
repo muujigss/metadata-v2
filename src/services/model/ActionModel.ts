@@ -22,6 +22,7 @@ const getActionsModel = async () => {
         item_id: true,
         item_type: true,
         action_type: true,
+        description: true,
         user_id: true,
         file_id: true,
         created_date: true,
