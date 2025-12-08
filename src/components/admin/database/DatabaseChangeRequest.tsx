@@ -88,11 +88,6 @@ const DatabaseChangeRequest = ({
         return;
       }
 
-      const formData = new FormData();
-      formData.append("created_user", userInfo?.id?.toString() || "");
-      if (selectedFile) {
-        formData.append("file", selectedFile);
-      }
       const responseFile = await saveFile();
 
       if (responseFile && responseFile.file) {
@@ -110,7 +105,8 @@ const DatabaseChangeRequest = ({
     } catch (err) {
       setStatus('error');
       setAlert('error');
-      setWarningMessage(err.toString());
+      // setWarningMessage(err.toString());
+      setWarningMessage("Өгөгдлийн сан, Хүснэгт, Үзүүлэлт идэвхитэй эсэхийг шалгана уу!")
     } finally {
       setLoading(false);
     }
@@ -240,7 +236,7 @@ const DatabaseChangeRequest = ({
                           onChange={(fileData: any) => {
                             setSelectedFile(fileData);
                           }}
-                          value={values?.file_id}
+                          value={selectedFile}
                           desabled={false}
                         />
                   }

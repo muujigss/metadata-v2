@@ -38,10 +38,12 @@ const updateActionService = async (data: IAction) => {
     // let mailObj = {};
     let subject = ''
     let text = ''
+    let toMail = ''
     if (info || userInfoAdmin) {
       if (data.action_type == 2) {
         subject = 'Баталгаажуулах хүсэлт'
         text = `Таньд дараах байгууллагаас хүсэлт ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b>`
+        toMail = userInfoAdmin?.email ?? ''
         // mailObj = {
         //   to: userInfoAdmin?.email,
         //   subject: "Баталгаажуулах хүсэлт",
@@ -50,6 +52,7 @@ const updateActionService = async (data: IAction) => {
       } else if (data.action_type == 3) {
         subject = 'Баталгаажуулах хүсэлт'
         text = `Таны илгээсэн хүсэлт баталгаажсан байна.`
+        toMail = info?.email ?? ''
         // mailObj = {
         //   to: info?.email,
         //   subject: "Баталгаажсан хүсэлт",
@@ -58,6 +61,7 @@ const updateActionService = async (data: IAction) => {
       } else if (data.action_type == 4) {
         subject = 'Буцаагдсан хүсэлт'
         text = `Таны илгээсэн хүсэлт буцаагдсан байна.`
+        toMail = info?.email ?? ''
         // mailObj = {
         //   to: info?.email,
         //   subject: "Буцаагдсан хүсэлт",
@@ -67,7 +71,7 @@ const updateActionService = async (data: IAction) => {
 
       // sendMail(mailObj);
 
-      const template = await mailTemplateDbStatusChangeUser(userInfoAdmin?.email, subject, text, process.env.HOST_BASE_URL)
+      const template = await mailTemplateDbStatusChangeUser(toMail, subject, text, process.env.HOST_BASE_URL)
       await sendMail(template)
     }
 
