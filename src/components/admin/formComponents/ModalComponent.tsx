@@ -38,7 +38,7 @@ const ModalComponent = ({
           {type == "table"
             ? "Хүснэгт нэмэх"
             : type == "form"
-            ? "Маягт нэмэх"
+            ? "Маягт  нэмэх"
             : type == "classification"
             ? "Ангилал, код нэмэх"
             : type == "database"
