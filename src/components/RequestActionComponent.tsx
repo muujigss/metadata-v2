@@ -68,9 +68,10 @@ const RequestActionComponent = ({
     </Typography>;
   }
 
-  const getDeadlineStatus = (createdDate: string) => {
+  const getDeadlineStatus = (createdDate: string, action_type: number) => {
     const created = new Date(createdDate);
-    const deadline = new Date(created.getTime() + 3 * 24 * 60 * 60 * 1000); // 3 days
+    const days = action_type === 6 ? 7 : 14;
+    const deadline = new Date(created.getTime() + days * 24 * 60 * 60 * 1000);
     const now = new Date();
     const diff = deadline.getTime() - now.getTime();
     const diffHours = Math.floor(diff / (1000 * 60 * 60));
@@ -111,14 +112,14 @@ const RequestActionComponent = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((item: IAction, i: number) => {
+            {data?.map((item: any, i: number) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={i}>
                   <TableCell>{i + 1}</TableCell>
                   <TableCell>
-                    {item?.databases[0]?.organization?.img_url ? (
+                    {item?.databases?.[0]?.organization?.img_url ? (
                       <img 
-                        src={item?.databases[0]?.organization?.img_url} 
+                        src={item.databases[0].organization.img_url} 
                         alt="Logo" 
                         className="w-12 h-12 object-contain rounded border"
                       />
@@ -130,7 +131,7 @@ const RequestActionComponent = ({
                   </TableCell>
                   <TableCell>
                     <Link
-                      href={`/admin/database?org=${item?.databases[0]?.organization?.id}`}
+                      href={`/admin/database?org=${item?.databases?.[0]?.organization?.id}`}
                     >
                       <Typography
                         sx={{
@@ -139,24 +140,24 @@ const RequestActionComponent = ({
                           display: "flex",
                         }}
                       >
-                        {item?.databases[0]?.organization?.name}
+                        {item?.databases?.[0]?.organization?.name}
                         <ArrowRightSLineIcon />
                       </Typography>
                     </Link>
                   </TableCell>
-                  <TableCell>{item.databases[0]?.name}</TableCell>
+                  <TableCell>{item.databases?.[0]?.name}</TableCell>
                   <TableCell> {item.user?.firstname}</TableCell>
                   <TableCell> {item.user?.department}</TableCell>
                   <TableCell> {item.user?.position}</TableCell>
                   <TableCell>
-                    {viewActionType(item.action_type)}
+                    {viewActionType(item.action_type || 0)}
                   </TableCell>
                   <TableCell>
                     {moment(item.updated_date).format("YYYY-MM-DD HH:mm:ss")}
                   </TableCell>
                   <TableCell>
                     {(() => {
-                      const status = getDeadlineStatus(item?.created_date);
+                      const status = getDeadlineStatus(item?.updated_date || "", item?.action_type || 0);
                       return (
                         <Chip 
                           label={status.label} 
@@ -193,7 +194,7 @@ const RequestActionComponent = ({
             id={Number(selected?.id)}
             open={openModal}
             type={"DatabaseChangeRequest"}
-            data={selected?.databases[0]}
+            data={selected?.databases?.[0]}
             status={"view"}
             file={selected?.file}
             setOpen={setOpenModal}
