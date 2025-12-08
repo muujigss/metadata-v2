@@ -45,7 +45,7 @@ const DatabaseAdminPage = async ({
             data={data?.data}
             total={data?.allresults}
           />
-          {!orgId && data?.data?.length > 14 && (
+          {data?.data?.length > 14 && (
             <Box className="flex justify-items-start">
               <PaginationComp
                 currentPage={currentPage}
