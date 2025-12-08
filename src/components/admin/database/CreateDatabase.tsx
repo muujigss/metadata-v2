@@ -167,7 +167,7 @@ const CreateDatabase = ({
     tab1_db_type: dbTechnologyData?.db_type || "", // 5.11.2.2
     tab1_db_manage_system: dbTechnologyData?.db_manage_system || "", // 5.11.2.3
     tab1_db_size: dbTechnologyData?.db_size || 0, // 5.11.2.4
-    tab1_db_rows_count: dbTechnologyData?.db_db_rows_countsize || 0, // 5.11.2.5
+    tab1_db_rows_count: dbTechnologyData?.db_rows_count || 0, // 5.11.2.5
     tab1_resource_location: dbTechnologyData?.resource_location || "", //  5.11.2.6
     tab1_diagram_file_id: dbTechnologyData?.diagram_file_id || null, //  5.11.2.7
     tab1_access_control_info: dbTechnologyData?.access_control_info || "", //  5.11.2.8
