@@ -196,9 +196,9 @@ const RequestActionComponent = ({
             id={Number(selected?.id)}
             open={openModal}
             type={"DatabaseChangeRequest"}
-            data={selected?.databases?.[0]}
+            data={selected?.databases}
             status={"view"}
-            file={selected?.file}
+            file={selected?.file_id}
             setOpen={setOpenModal}
             setAlert={setShowAlert}
           />
