@@ -30,6 +30,7 @@ import AutocompleteIntroduction from "../form/SearchSelectComponent";
 import TooltipComponent from "../formComponents/TooltipComponent";
 import FileComponent from "../formComponents/FIle";
 import DeleteIcon from '@mui/icons-material/Delete';
+import SaveIcon from '@mui/icons-material/Save';
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -37,7 +38,7 @@ const ReactQuill = dynamic(() => import("react-quill"), {
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import CurrentUserContext, { ICurrentUserContext } from "@/utils/context";
-import { createFileService, getFileService } from "@/services/FileService";
+import { createFileService } from "@/services/FileService";
 import { StyledInput } from "../theme/InputTheme";
 
 interface Item {
@@ -192,8 +193,15 @@ const CreateDatabase = ({
       setSelectedTab1_diagram_file_id(dbTechnologyData?.diagram_file);
     }
   }, [dbTechnologyData?.diagram_file]);
+  useEffect(() => {
+    if (dbActivityData?.service_list) {
+      const parsed = dbActivityData?.service_list.map((item: string, index: number) => { return { id: `item-${index + 1}-${Date.now()}`, value: item } })
+      setServiceItems(parsed)
+    }
+  }, [dbActivityData?.service_list]);
 
   const onSubmit = async (values: IDatabase) => {
+    setLoading(true);
     try {
       const data = {
         id: values?.id,
@@ -261,30 +269,28 @@ const CreateDatabase = ({
         created_user: values?.createdUser,
       };
 
-      const responseFileTab0_regulation_file_id = await saveFile(selectedTab0_regulation_file_id);
-      const responseFileTab1_diagram_file_id = await saveFile(selectedTab1_diagram_file_id);
-
-      if (responseFileTab0_regulation_file_id && responseFileTab1_diagram_file_id) {
-        dataTab0.regulation_file_id = responseFileTab0_regulation_file_id.file.id
-        dataTab1.diagram_file_id = responseFileTab1_diagram_file_id.file.id
-        const body = {
-          bodyDatabase: data, bodyActivity: dataTab0, bodyTechnology: dataTab1
-        }
+      let regulationFileId = dbActivityData?.regulation_file_id;
+      let diagramFileId = dbTechnologyData?.diagram_file_id;
+      if (!dbActivityData || !dbTechnologyData) {
+        regulationFileId = (await saveFile(selectedTab0_regulation_file_id))?.file?.id;
+        diagramFileId = (await saveFile(selectedTab1_diagram_file_id))?.file?.id;
+      } else {
+        regulationFileId = await uploadIfChanged(
+          selectedTab0_regulation_file_id,
+          dbActivityData.regulation_file_id
+        );
   
-        setLoading(true);
-        const response = await createDatabaseAll(body);
-        if (response.status == "success") {
-          window.location.reload();
-          setOpen(false);
-          setSidebarStatus(false);
-        } else {
-          setOpen(false);
-          setSidebarStatus(false);
-        }
-        setLoading(false);
-        setOpen(false);
-        setSidebarStatus(false);
+        diagramFileId = await uploadIfChanged(
+          selectedTab1_diagram_file_id,
+          dbTechnologyData.diagram_file_id
+        );
       }
+      const body = {
+        bodyDatabase: data,
+        bodyActivity: { ...dataTab0, regulation_file_id: regulationFileId },
+        bodyTechnology: { ...dataTab1, diagram_file_id: diagramFileId }
+      };
+      await saveData(body)
     } catch (err) {
       console.log('-----err-----', err)
       setStatus('error');
@@ -294,6 +300,20 @@ const CreateDatabase = ({
       setLoading(false);
     }
   };
+  const saveData = async (body: any) => {
+    const response = await createDatabaseAll(body);
+    if (response.status == "success") {
+      window.location.reload();
+      setOpen(false);
+      setSidebarStatus(false);
+    } else {
+      setOpen(false);
+      setSidebarStatus(false);
+    }
+    setLoading(false);
+    setOpen(false);
+    setSidebarStatus(false);
+  }
   const saveFile = async (file: any) => {
     try {
       if (!file) {
@@ -310,6 +330,15 @@ const CreateDatabase = ({
       throw error;
     }
   }
+  const uploadIfChanged = async (newFile: any, oldFileId: any) => {
+    if (!newFile) return oldFileId; 
+    
+    const isChanged = newFile?.id !== oldFileId;
+    if (!isChanged) return oldFileId;
+  
+    const uploaded = await saveFile(newFile);
+    return uploaded?.file?.id ?? oldFileId;
+  };
 
   const getValidationSchema = () => {
     switch (step) {
@@ -1283,9 +1312,11 @@ const CreateDatabase = ({
                           variant="contained"
                           color="success"
                           type="submit"
-                          size="small"
+                          size="large"
+                          disabled={loading}
+                          startIcon={<SaveIcon />}
                         >
-                          Хадгалах
+                          {loading ? "Хадгалж байна..." : "Хадгалах"}
                         </Button>
                       </div>
                     </>
