@@ -2,12 +2,13 @@ import { createDatabaseAll } from "@/services/DatabaseService";
 import {
   useGetDbLocation,
   useGetDbType,
+  useGetDbTypeSystem,
   useGetLicence,
   useGetOrgs,
   useGetSectors,
   useGetSpecification,
 } from "@/utils/customHooks";
-import { Alert, Button, Input, Box, Snackbar, Tabs, Tab, Typography, TextField } from "@mui/material";
+import { Alert, Button, Input, Box, Snackbar, Tabs, Tab, Typography } from "@mui/material";
 import { Sidebar } from "flowbite-react";
 import { Formik } from "formik";
 import { useContext, useEffect, useState } from "react";
@@ -68,6 +69,7 @@ const CreateDatabase = ({
   setSidebarStatus?: any;
 }) => {
   const { data: dbTypes } = useGetDbType();
+  const { data: dbTypeSystems } = useGetDbTypeSystem();
   const { data: specifications } = useGetSpecification();
   const { data: organizations } = useGetOrgs();
   const { data: sector } = useGetSectors();
@@ -762,7 +764,17 @@ const CreateDatabase = ({
                           <LabelComponent label="5.11.2.3. Мэдээллийн сан удирдах системийн нэр" />
                           <TooltipComponent content="Мэдээллийн сан удирдах системийн нэр" />
                         </Box>
-                        <InputComponent
+                        <SelectComponent
+                          options={dbTypeSystems}
+                          label="Мэдээллийн сангийн төрөл"
+                          name="tab1_db_manage_system"
+                          defaultValue={Number(values?.tab1_db_manage_system)}
+                          onChange={(e: any, value: any) => {
+                            setFieldValue("tab1_db_manage_system", value);
+                          }}
+                          errors={errors?.tab1_db_manage_system}
+                        />
+                        {/* <InputComponent
                           type="text"
                           name="tab1_db_manage_system"
                           label="Мэдээллийн сан удирдах системийн нэр"
@@ -771,7 +783,7 @@ const CreateDatabase = ({
                             setFieldValue("tab1_db_manage_system", e.target.value);
                           }}
                           errors={errors.tab1_db_manage_system}
-                        />
+                        /> */}
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>

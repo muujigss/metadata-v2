@@ -477,6 +477,16 @@ const getDatabaseTypeModel = async () => {
   }
 };
 
+const getDatabaseTypeSystemModel = async () => {
+  try {
+    const database_type_system = await prisma.lib_db_type_system.findMany();
+    return database_type_system;
+  } catch (error) {
+    console.error("Error in getDatabaseTypeSystemModel:", error);
+    throw new Error("Failed to fetch forms");
+  }
+};
+
 const getDatabaseLocationModel = async () => {
   try {
     const database_location = await prisma.lib_db_location.findMany();
@@ -920,7 +930,7 @@ const createDatabaseAll = async (data: any) => {
             short_name: bodyTechnology.short_name,
 
             db_type: bodyTechnology.db_type.toString(),
-            db_manage_system: bodyTechnology.db_manage_system,
+            db_manage_system: bodyTechnology.db_manage_system.toString(),
             db_size: Number(bodyTechnology.db_size),
             db_rows_count: Number(bodyTechnology.db_rows_count),
             resource_location: bodyTechnology.resource_location,
@@ -1080,7 +1090,7 @@ const createDatabaseAll = async (data: any) => {
             short_name: bodyTechnology.short_name,
 
             db_type: bodyTechnology.db_type.toString(),
-            db_manage_system: bodyTechnology.db_manage_system,
+            db_manage_system: bodyTechnology.db_manage_system.toString(),
             db_size: Number(bodyTechnology.db_size),
             db_rows_count: Number(bodyTechnology.db_rows_count),
             resource_location: bodyTechnology.resource_location,
@@ -1196,4 +1206,5 @@ export {
   getSpecificationModel,
   checkStatusMetadata,
   getOneDatabaseOther,
+  getDatabaseTypeSystemModel,
 };

@@ -299,6 +299,16 @@ model lib_db_type {
   databases    md_database[]
 }
 
+model lib_db_type_system {
+  id           Int           @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime      @default(now())
+  created_user Int?
+  updated_date DateTime      @default(now())
+  updated_user Int?
+}
+
 model lib_sector {
   id           Int           @id @default(autoincrement())
   code         String        @unique

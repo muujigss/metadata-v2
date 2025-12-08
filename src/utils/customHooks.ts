@@ -12,6 +12,7 @@ import getFrequencies from "@/services/LibFrequencyService";
 import {
   getDatabaseLocation,
   getDatabaseType,
+  getDatabaseTypeSystem,
   getLicence,
   getSpecification,
 } from "@/services/DatabaseService";
@@ -63,6 +64,14 @@ export const useGetDbType = () => {
   return useQuery({
     queryKey: ["fetch db type"],
     queryFn: () => getDatabaseType(),
+    refetchOnWindowFocus: true,
+  });
+};
+
+export const useGetDbTypeSystem = () => {
+  return useQuery({
+    queryKey: ["fetch db type system"],
+    queryFn: () => getDatabaseTypeSystem(),
     refetchOnWindowFocus: true,
   });
 };

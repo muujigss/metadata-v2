@@ -67,6 +67,17 @@ const getDatabaseType = async () => {
 
   return res.json();
 };
+const getDatabaseTypeSystem = async () => {
+  const res = await fetch(`${process.env.BASE_URL}/api/database-type-system`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
 
 const getDatabaseLocation = async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/database-location`, {
@@ -125,6 +136,7 @@ export {
   getOneDatabaseAdmin,
   getSpecification,
   getDatabaseType,
+  getDatabaseTypeSystem,
   getDatabaseLocation,
   getLicence,
   createDatabase,
