@@ -429,6 +429,8 @@ model owner_info {
 model md_organization {
   id             Int           @id @default(autoincrement())
   file_id        Int?
+  type           String?
+  status         String?
   name           String?
   phone          String?
   email          String?

@@ -9,7 +9,7 @@ export async function GET() {
   try {
     const requests = await prisma.md_organization.findMany({
       where: {
-        is_active: false,
+        is_active: false, // type: new, approve, reject
       },
       include: {
         users: {
