@@ -61,6 +61,7 @@ const updateActionService = async (data: IAction) => {
       }
 
       // sendMail(mailObj);
+
       const template = await mailTemplateDbStatusChangeUser(userInfoAdmin?.email, subject, text, process.env.HOST_BASE_URL)
       await sendMail(template)
     }

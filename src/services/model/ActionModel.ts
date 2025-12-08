@@ -109,6 +109,35 @@ const updateActionsModel = async (
     //     },
     //   });
     // }
+    const libActionType = await prisma.lib_action_type.findUnique({
+      where: {
+        id: md_action.action_type,
+      },
+    })
+    const mdUser = await prisma.md_users.findUnique({
+      where: {
+        id: md_action.action_type,
+      },
+    })
+    if (libActionType && mdUser) {
+      await prisma.md_notif.create({
+        data: {
+          database: { connect: { id: md_action.item_id } },
+          action: { connect: { id: md_action.id } },
+          org_id: mdUser?.org_id,
+          type: md_action.action_type.toString(),
+          text: libActionType?.name,
+          description: '',
+          icon: null,
+          is_view_admin: false,
+          is_view_user: true,
+          created_user: user_id,
+          created_date: created_date,
+          updated_user: null,
+          updated_date: null,
+        },
+      });
+    }
 
     await prisma.log_action.create({
       data: {

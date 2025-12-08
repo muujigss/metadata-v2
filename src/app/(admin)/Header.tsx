@@ -28,7 +28,7 @@ import { ICurrentUserContext } from "@/utils/context";
 import { useGetUserLevel, useGetUserRole } from "@/utils/customHooks";
 import { Kbd } from "flowbite-react";
 import { ISpecification } from "@/interfaces/ISpecification";
-import { getNotifCount } from "@/services/NotifService";
+import { getNotif, getNotifCount, updateNotif } from "@/services/NotifService";
 import { useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
@@ -43,8 +43,8 @@ const Header = () => {
   let lastname = userInfo?.lastname;
 
   const { data: notifData } = useQuery({
-    queryKey: ["getNotifCount on admin"],
-    queryFn: () => getNotifCount(),
+    queryKey: ["getNotifCount on admin", userInfo?.id, userInfo?.user_level],
+    queryFn: () => getNotifCount(userInfo?.id, userInfo?.user_level),
     // enabled: !!id
   });
 
@@ -73,6 +73,12 @@ const Header = () => {
       router.push("/login");
     } else {
       console.log("error");
+    }
+  };
+
+  const handUpdateNotif = async (id: any) => {
+    if (Number(userInfo?.user_level) === 1) {
+      await updateNotif(userInfo?.id, id);
     }
   };
 
@@ -147,7 +153,7 @@ const Header = () => {
         )}
         {openNotif && (
           <NotificationDrawer
-            handleSubmit={handleSubmit}
+            handUpdateNotif={handUpdateNotif}
             openNotif={openNotif}
           />
         )}
@@ -243,68 +249,53 @@ const ProfileDrawer = ({
 };
 const NotificationDrawer = ({
   openNotif,
-  handleSubmit,
+  handUpdateNotif,
 }: {
   openNotif: boolean;
-  handleSubmit: any;
+  handUpdateNotif: any;
 }) => {
   const { userInfo } = useCurrentUser() as ICurrentUserContext;
   // console.log('----userLevel-----', userInfo?.user_level)
-  const [notifList, setNotifList] = useState([
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: false },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: false },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-    // { text: 'Хүсэлт буцаалаа', database_name: 'test db 1', created_date: new Date(), is_view_user: true, is_view_admin: true },
-  ]);
 
   const { data: notifData } = useQuery({
-    queryKey: ["getNotifCount on admin"],
-    queryFn: () => getNotifCount(),
+    queryKey: ["getNotifCount on admin", userInfo?.id],
+    queryFn: () => getNotif(userInfo?.id),
     enabled: openNotif
   });
-  // console.log('----notifData-----', notifData)
 
   return (
     <div className="w-[280px] absolute right-[250px] top-[64px] bg-[#42a5f5]">
-      <div className="p-5 cursor-pointer flex gap-3 hover:bg-[#42a5f5] border-b">
+      {/* <div className="p-5 cursor-pointer flex gap-3 hover:bg-[#42a5f5] border-b">
         Бүгдийг уншсан болгох <CheckBoxIcon />
-      </div>
+      </div> */}
       <div className="flex flex-col overflow-y-auto h-[300px]">
-        { notifList.length === 0 && (
+        { notifData?.data.length === 0 && (
           <span className="py-2 px-3">Өгөгдөл хоосон.</span>
         ) }
-        { notifList.map((item: any, i: number) => {
+        { notifData?.data.map((item: any, i: number) => {
           return (
             <div key={i} className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] 
-              ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'} 
-            `}>
-              <div>
-                <span className="text-[12px] font-bold">{item?.text}</span><br />
+              ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
+              `}
+              onClick={() => handUpdateNotif(item.id)}
+            >
+              <div className="flex flex-col">
                 <span className="text-[10px]">{moment(item?.created_date).format("YYYY-MM-DD")}</span>
+                <span className="text-[12px] font-bold">{item?.text}</span><br />
+                <span className="text-[10px]">{item?.database?.name}</span>
               </div>
-              {
-                Number(userInfo?.user_level) === 1 && item.is_view_admin
-                  ? (
-                      <RadioButtonCheckedIcon fontSize="small" />
+              <div className="pt-2">
+                {
+                  // Number(userInfo?.user_level) === 1 && item.is_view_admin
+                  item.is_view_admin
+                    ? (
+                        <RadioButtonCheckedIcon fontSize="small" />
+                      )
+                    : (
+                      <RadioButtonUncheckedIcon fontSize="small" />
                     )
-                  : (
-                    <RadioButtonUncheckedIcon fontSize="small" />
-                  )
-              }
+                }
+              </div>
             </div>
           )
         }) }
