@@ -14,6 +14,7 @@ const checkValidationStatus = async (db_id: number) => {
 };
 
 const updateActionService = async (data: IAction) => {
+  try {
     await checkValidationStatus(data?.item_id);
     const res = await fetch(`${process.env.BASE_URL}/api/action`, {
       method: "POST",
@@ -71,6 +72,10 @@ const updateActionService = async (data: IAction) => {
     }
 
     return res.json();
+  } catch (error) {
+    console.error("Error in updateActionService:", error);
+    throw new Error(error.toString());
+  }
 };
 
 const getActionService = async () => {
