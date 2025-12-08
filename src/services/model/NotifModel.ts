@@ -5,7 +5,7 @@ export const getNotifCount = async (user_id: number, user_level: number) => {
   try {
     const filter = { is_view_admin: false }
     if (user_level !== 1) {
-      filter.created_user = user_id
+      filter.created_user = Number(user_id)
     }
     const count = await prisma.md_notif.count({
       where: filter
