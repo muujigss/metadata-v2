@@ -10,18 +10,18 @@ import MailOutlined from "@mui/icons-material/MailOutlined";
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import {
   Box,
   Button,
   Divider,
   IconButton,
   List,
+  Skeleton,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MainList from "./MainList";
 import useCurrentUser from "@/utils/useCurrentUser";
 import { ICurrentUserContext } from "@/utils/context";
@@ -29,24 +29,35 @@ import { useGetUserLevel, useGetUserRole } from "@/utils/customHooks";
 import { Kbd } from "flowbite-react";
 import { ISpecification } from "@/interfaces/ISpecification";
 import { getNotif, getNotifCount, updateNotif } from "@/services/NotifService";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import moment from "moment";
 
 const Header = () => {
   const [open, setOpen] = useState(true);
   const [openProfile, setOpenProfile] = useState(false);
   const [openNotif, setOpenNotif] = useState(false);
+  const [notifCount, setNotifCount] = useState(0);
   const router = useRouter();
 
   const { userInfo } = useCurrentUser() as ICurrentUserContext;
   let firstname = userInfo?.firstname;
   let lastname = userInfo?.lastname;
 
-  const { data: notifData } = useQuery({
-    queryKey: ["getNotifCount on admin", userInfo?.id, userInfo?.user_level],
-    queryFn: () => getNotifCount(userInfo?.id, userInfo?.user_level),
-    // enabled: !!id
-  });
+  useEffect(() => {
+    if (userInfo) {
+      fetchNotifCount();
+    }
+  }, [userInfo]);
+
+  const fetchNotifCount = async () => {
+    try {
+      const data = await getNotifCount(userInfo?.id, userInfo?.user_level);
+      if (data) {
+        setNotifCount(data?.count);
+      }
+    } catch (error) {
+    }
+  };
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -76,9 +87,11 @@ const Header = () => {
     }
   };
 
-  const handUpdateNotif = async (id: any) => {
+  const handUpdateNotif = async (item: any) => {
     if (Number(userInfo?.user_level) === 1) {
-      await updateNotif(userInfo?.id, id);
+      await updateNotif(userInfo?.id, item.id);
+      fetchNotifCount()
+      router.push(`/admin/database?org_id=${item?.database?.organization?.id}`);
     }
   };
 
@@ -121,7 +134,7 @@ const Header = () => {
               <div
                 className="absolute -top-0 -right-1 bg-pink-500 text-white font-bold w-7 h-7 flex items-center justify-center rounded-full text-[12px]"
               >
-                {notifData?.count}
+                {notifCount}
               </div>
             </div>
             <Button
@@ -255,52 +268,92 @@ const NotificationDrawer = ({
   handUpdateNotif: any;
 }) => {
   const { userInfo } = useCurrentUser() as ICurrentUserContext;
-  // console.log('----userLevel-----', userInfo?.user_level)
+  const [isLoading, setIsLoading] = useState(false);
+  const [notifList, setNotifList] = useState([]);
 
-  const { data: notifData } = useQuery({
-    queryKey: ["getNotifCount on admin", userInfo?.id],
-    queryFn: () => getNotif(userInfo?.id),
-    enabled: openNotif
-  });
+  useEffect(() => {
+    fetchNotif();
+  }, []);
+
+  const fetchNotif = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getNotif(userInfo?.id);
+      if (data) {
+        setNotifList(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch requests", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleUpdateItem = (item: any) => {
+    handUpdateNotif(item)
+    setNotifList(prev =>
+      prev.map(n =>
+        n.id === item.id
+          ? { ...n, is_view_admin: true }
+          : n
+      )
+    );
+  }
 
   return (
     <div className="w-[280px] absolute right-[250px] top-[64px] bg-[#42a5f5]">
-      {/* <div className="p-5 cursor-pointer flex gap-3 hover:bg-[#42a5f5] border-b">
-        Бүгдийг уншсан болгох <CheckBoxIcon />
-      </div> */}
-      <div className="flex flex-col overflow-y-auto h-[300px]">
-        { notifData?.data.length === 0 && (
-          <span className="py-2 px-3">Өгөгдөл хоосон.</span>
-        ) }
-        { notifData?.data.map((item: any, i: number) => {
-          return (
-            <div key={i} className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] border-b 
-              // ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
-              ${(item.is_view_admin) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
-              `}
-              onClick={() => handUpdateNotif(item.id)}
-            >
-              <div className="flex flex-col">
-                <span className="text-[10px]">{moment(item?.created_date).format("YYYY-MM-DD")}</span>
-                <span className="text-[12px] font-bold">{item?.text}</span><br />
-                <span className="text-[10px]">{item?.database?.name}</span>
-              </div>
-              <div className="pt-2">
-                {
-                  // Number(userInfo?.user_level) === 1 && item.is_view_admin
-                  item.is_view_admin
-                    ? (
-                        <RadioButtonCheckedIcon fontSize="small" />
-                      )
-                    : (
-                      <RadioButtonUncheckedIcon fontSize="small" />
-                    )
-                }
-              </div>
-            </div>
+      {
+        isLoading
+          ? (
+            <>
+              <Skeleton
+                animation="wave"
+                variant="rectangular"
+                height={100}
+                sx={{
+                  borderRadius: (theme) => theme.shape.borderRadius / 5,
+                }}
+              ></Skeleton>
+            </>
           )
-        }) }
-      </div>
+          : (
+              <>
+                <div className="flex flex-col overflow-y-auto h-[300px]">
+                  { notifList.length === 0 && (
+                    <span className="py-2 px-3">Өгөгдөл хоосон.</span>
+                  ) }
+                  { notifList.map((item: any, i: number) => {
+                    return (
+                      <div key={i} className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] border-b 
+                        // ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
+                        ${(item.is_view_admin) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
+                        `}
+                        onClick={() => handleUpdateItem(item)}
+                      >
+                        <div className="flex flex-col">
+                          <span className="text-[10px]">{moment(item?.created_date).format("YYYY-MM-DD")}</span>
+                          <span className="text-[12px] font-bold">{item?.text}</span><br />
+                          <span className="text-[10px]">{item?.database?.name}</span>
+                        </div>
+                        <div className="pt-2">
+                          {
+                            // Number(userInfo?.user_level) === 1 && item.is_view_admin
+                            item.is_view_admin
+                              ? (
+                                  <RadioButtonCheckedIcon fontSize="small" />
+                                )
+                              : (
+                                <RadioButtonUncheckedIcon fontSize="small" />
+                              )
+                          }
+                        </div>
+                      </div>
+                    )
+                  }) }
+                </div>
+              </>
+          )
+      }
     </div>
   );
 };
