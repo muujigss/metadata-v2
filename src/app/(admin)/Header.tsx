@@ -21,7 +21,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import MainList from "./MainList";
 import useCurrentUser from "@/utils/useCurrentUser";
 import { ICurrentUserContext } from "@/utils/context";
@@ -49,15 +49,16 @@ const Header = () => {
     }
   }, [userInfo]);
 
-  const fetchNotifCount = async () => {
+  const fetchNotifCount = useCallback(async () => {
     try {
       const data = await getNotifCount(userInfo?.id, userInfo?.user_level);
       if (data) {
         setNotifCount(data?.count);
       }
     } catch (error) {
+      console.error(error);
     }
-  };
+  }, [userInfo?.id, userInfo?.user_level]);
 
   const toggleDrawer = () => {
     setOpen(!open);
@@ -275,19 +276,17 @@ const NotificationDrawer = ({
     fetchNotif();
   }, []);
 
-  const fetchNotif = async () => {
+  const fetchNotif = useCallback(async () => {
     try {
       setIsLoading(true);
       const data = await getNotif(userInfo?.id);
-      if (data) {
-        setNotifList(data);
-      }
+      if (data) setNotifList(data);
     } catch (error) {
       console.error("Failed to fetch requests", error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [userInfo?.id]);
 
   const handleUpdateItem = (item: any) => {
     handUpdateNotif(item)
