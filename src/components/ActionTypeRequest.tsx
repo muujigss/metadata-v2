@@ -1,6 +1,6 @@
 "use client";
 import { useGetActionType } from "@/utils/customHooks";
-import { Alert, Box, Button, Typography } from "@mui/material";
+import { Alert, Box, Button } from "@mui/material";
 import { useState } from "react";
 import { SelectComponent } from "./admin/form";
 import TooltipComponent from "./admin/formComponents/TooltipComponent";
@@ -45,7 +45,7 @@ const ActionTypeRequest = ({
 
     } catch (error) {
     } finally {
-      console.log("finally");
+      console.log("----finally----");
       setLoading(false);
     }
   };
