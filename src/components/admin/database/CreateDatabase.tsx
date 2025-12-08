@@ -79,6 +79,7 @@ const CreateDatabase = ({
   const [warningMessage, setWarningMessage] = useState("");
   const { userInfo } = useContext(CurrentUserContext) as ICurrentUserContext;
   const [selectedTab0_regulation_file_id, setSelectedTab0_regulation_file_id] = useState<File | null>(null);
+  const [selectedTab0_copyright_file_id, setSelectedTab0_copyright_file_id] = useState<File | null>(null);
   const [selectedTab1_diagram_file_id, setSelectedTab1_diagram_file_id] = useState<File | null>(null);
   const [serviceItems, setServiceItems] = useState<Item[]>([]);
 
@@ -189,6 +190,11 @@ const CreateDatabase = ({
     }
   }, [dbActivityData?.regulation_file]);
   useEffect(() => {
+    if (dbActivityData?.copyright_file_id) {
+      setSelectedTab0_copyright_file_id(dbActivityData?.copyright_file);
+    }
+  }, [dbActivityData?.copyright_file_id]);
+  useEffect(() => {
     if (dbTechnologyData?.diagram_file) {
       setSelectedTab1_diagram_file_id(dbTechnologyData?.diagram_file);
     }
@@ -268,12 +274,16 @@ const CreateDatabase = ({
         is_active: true,
         created_user: values?.createdUser,
       };
-
+      
       let regulationFileId = dbActivityData?.regulation_file_id;
       let diagramFileId = dbTechnologyData?.diagram_file_id;
+      let copyrightFileId = dbActivityData?.copyright_file_id;
       if (!dbActivityData || !dbTechnologyData) {
         regulationFileId = (await saveFile(selectedTab0_regulation_file_id))?.file?.id;
         diagramFileId = (await saveFile(selectedTab1_diagram_file_id))?.file?.id;
+        if (selectedTab0_copyright_file_id) {
+          copyrightFileId = (await saveFile(selectedTab0_copyright_file_id))?.file?.id;
+        }
       } else {
         regulationFileId = await uploadIfChanged(
           selectedTab0_regulation_file_id,
@@ -284,10 +294,16 @@ const CreateDatabase = ({
           selectedTab1_diagram_file_id,
           dbTechnologyData.diagram_file_id
         );
+        if (selectedTab0_copyright_file_id) {
+          copyrightFileId = await uploadIfChanged(
+            selectedTab0_copyright_file_id,
+            dbActivityData.copyright_file_id
+          );
+        }
       }
       const body = {
         bodyDatabase: data,
-        bodyActivity: { ...dataTab0, regulation_file_id: regulationFileId },
+        bodyActivity: { ...dataTab0, regulation_file_id: regulationFileId, copyright_file_id: copyrightFileId },
         bodyTechnology: { ...dataTab1, diagram_file_id: diagramFileId }
       };
       await saveData(body)
@@ -602,22 +618,6 @@ const CreateDatabase = ({
                             })}
                           </div>
                         </div>
-                        {/* <div>
-                          <ReactQuill
-                            value={values?.tab0_service_list}
-                            onChange={(content) => {
-                              const textContent = content.replace(/<[^>]*>/g, "");
-                              if (textContent) setFieldValue("tab0_service_list", content)
-                              else setFieldValue("tab0_service_list", null)
-                            }}
-                            onBlur={() => setFieldTouched("tab0_service_list", true)}
-                          />
-                          {errors.tab0_service_list && (
-                            <p className="text-red-600 text-text-body-small mt-2 p-1">
-                              {errors.tab0_service_list}
-                            </p>
-                          )}
-                        </div> */}
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -686,6 +686,22 @@ const CreateDatabase = ({
                             </p>
                           )}
                         </div>
+                      </FormBox>
+                      <FormBox>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <LabelComponent label="5.11.1.12. Зохиогчийн эрх гэрчилгээ" />
+                          <TooltipComponent content="Зохиогчийн эрх гэрчилгээ" />
+                        </Box>
+                        <FileComponent
+                          label="Зохиогчийн эрх гэрчилгээ"
+                          name="file"
+                          accept=".pdf, .doc, .docx, .xls, .xlsx"
+                          onChange={(fileData: any) => {
+                            setSelectedTab0_copyright_file_id(fileData);
+                          }}
+                          value={selectedTab0_copyright_file_id}
+                          desabled={false}
+                        />
                       </FormBox>
                     </>
                   )
