@@ -28,8 +28,6 @@ const DatabaseAdminPage = async ({
   let user_level = cookieStore.get("user_level")?.value;
   let orgId = user_level == "1" ? orgText : cookieStore.get("org_id")?.value;
 
-  if (searchParams?.org_id) orgId = searchParams?.org_id
-
   const data: any = await getDatabaseModel(+skip, take, currentPage, {
     userId: userId,
     orgId: orgText,

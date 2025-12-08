@@ -130,8 +130,11 @@ const RequestActionComponent = ({
                     )}
                   </TableCell>
                   <TableCell>
+                    {item?.databases?.[0]?.organization?.name}
+                  </TableCell>
+                  <TableCell>
                     <Link
-                      href={`/admin/database?org=${item?.databases?.[0]?.organization?.id}`}
+                      href={`/admin/database?org=${item?.databases?.[0]?.organization?.id}&id=${item.databases?.[0]?.id}`}
                     >
                       <Typography
                         sx={{
@@ -140,12 +143,11 @@ const RequestActionComponent = ({
                           display: "flex",
                         }}
                       >
-                        {item?.databases?.[0]?.organization?.name}
+                        {item.databases?.[0]?.name}
                         <ArrowRightSLineIcon />
                       </Typography>
                     </Link>
                   </TableCell>
-                  <TableCell>{item.databases?.[0]?.name}</TableCell>
                   <TableCell> {item.user?.firstname}</TableCell>
                   <TableCell> {item.user?.department}</TableCell>
                   <TableCell> {item.user?.position}</TableCell>
