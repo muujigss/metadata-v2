@@ -91,7 +91,7 @@ const Header = () => {
     if (Number(userInfo?.user_level) === 1) {
       await updateNotif(userInfo?.id, item.id);
       fetchNotifCount()
-      router.push(`/admin/database?org_id=${item?.database?.organization?.id}`);
+      router.push(`/admin/database?org_id=${item?.database?.organization?.id}&id=${item?.database?.id}`);
     }
   };
 

@@ -6,7 +6,7 @@ import { Box, Button, Paper, Tooltip, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import { Badge } from "flowbite-react";
 import Link from "next/link";
-import { Suspense, use, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import AddLineIcon from "remixicon-react/AddLineIcon";
 import GridLineIcon from "remixicon-react/GridLineIcon";
 import DataGridComponent from "../DataGridComponent";
@@ -17,6 +17,7 @@ import OrgSidebar from "./OrgSidebar";
 import { useGetOrgInfo } from "@/utils/customHooks";
 import AdminBreadCrumpMenu from "../AdminBreadCrumpMenu";
 import useCurrentUser from "@/utils/useCurrentUser";
+import { useSearchParams } from "next/navigation";
 
 const DBList = ({
   userId,
@@ -29,6 +30,9 @@ const DBList = ({
   total?: number;
   orgId?: number;
 }) => {
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+
   const { data: orgInfo } = useGetOrgInfo(Number(orgId));
 
   const columns = [
@@ -73,6 +77,12 @@ const DBList = ({
   const [showAlert, setShowAlert] = useState("");
   const [selectedDbId, setSelectedDbId] = useState<number>(0);
   const { userInfo } = useCurrentUser();
+
+  useEffect(() => {
+    if (id) {
+      handleClick(Number(id));
+    }
+  }, [id]);
 
   const handleClick = (id: number) => {
     setSelectedDbId(id);
