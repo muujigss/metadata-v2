@@ -552,7 +552,7 @@ const CreateDatabase = ({
                           <div className="mt-3 flex gap-2 flex-col">
                             {serviceItems.map((item, index) => {
                               return (
-                                <div className="flex gap-3 items-center">
+                                <div className="flex gap-3 items-center" key={index}>
                                   { index + 1 }.
                                   <StyledInput
                                     name={`outlined-service`}
