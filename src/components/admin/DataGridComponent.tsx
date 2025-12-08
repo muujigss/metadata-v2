@@ -29,7 +29,7 @@ const DataGridComponent = ({
   const { data: actionType, isLoading: actionTypeLoading } = useGetActionType();
   if (actionTypeLoading) return <Loader />;
   return (
-    <TableContainer sx={{ maxHeight: 700 }}>
+    <TableContainer sx={{ maxHeight: 550 }}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>

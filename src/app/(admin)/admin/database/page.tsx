@@ -45,16 +45,14 @@ const DatabaseAdminPage = async ({
             data={data?.data}
             total={data?.allresults}
           />
-          {data?.data?.length > 14 && (
-            <Box className="flex justify-items-start">
-              <PaginationComp
-                currentPage={currentPage}
-                totalPages={data?.allresults}
-                perPage={data?.perPage}
-                lastPage={data?.lastPage}
-              />
-            </Box>
-          )}
+          <Box className="flex justify-items-start">
+            <PaginationComp
+              currentPage={currentPage}
+              totalPages={data?.allresults}
+              perPage={data?.perPage}
+              lastPage={data?.lastPage}
+            />
+          </Box>
         </Suspense>
       </Box>
     </>
