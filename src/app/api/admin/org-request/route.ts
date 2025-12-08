@@ -11,7 +11,7 @@ export async function GET() {
       where: {
         OR: [
             { is_active: false },
-            { type: { in: ["new", "rejected"] } }
+            { type: { in: ["new", "rejected", "approved"] } }
         ]
       },
       include: {

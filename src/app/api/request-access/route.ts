@@ -121,7 +121,7 @@ export async function POST(request: Request) {
     const password = Math.random().toString(36).slice(-8);
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    await prisma.md_users.create({
+    const created_user = await prisma.md_users.create({
       data: {
         org_id: organization.id,
         user_level: 2, // Data Admin
@@ -143,6 +143,19 @@ export async function POST(request: Request) {
     await prisma.md_organization.update({
         where: { id: organization.id },
         data: { img_url: fileUrl, file_id: saved_file_id }
+    });
+
+    // Create md_action to track this request in admin panel
+    await prisma.md_action.create({
+      data: {
+        item_id: organization.id,
+        item_type: "organization",
+        action_type: 1, // New organization request
+        user_id: created_user.id,
+        file_id: saved_file_id,
+        created_date: now,
+        updated_date: now,
+      },
     });
 
     return NextResponse.json({ success: true, message: "Request received" });

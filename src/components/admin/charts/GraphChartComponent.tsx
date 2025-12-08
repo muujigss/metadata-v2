@@ -118,7 +118,12 @@ const GraphChartComponent = ({
   };
 
   const onChartClick = (params: any) => {
-    if (!params.data.children || params.data.children.length === 0) {
+    // Indicator (үзүүлэлт) дээр дарахыг хориглох - тэдгээр нь улбар шар өнгөтэй (#F2BE7A)
+    const isIndicator = params.data.itemStyle?.color === "#D79034" || 
+                        params.data.label?.backgroundColor === "#F2BE7A";
+    
+    // Зөвхөн indicator биш бөгөөд children байхгүй үед л дарах боломжтой
+    if (!isIndicator && (!params.data.children || params.data.children.length === 0)) {
       setSearchValue(params.data.name);
       setAllData(false);
     }
@@ -371,14 +376,19 @@ const GraphChartComponent = ({
           p: 2,
         }}
       >
-        <div className="w-1/2">
+        <div className="w-full">
           <ReactECharts
             option={option}
-            style={{ height: "800px", width: "100%" }}
+            style={{ 
+              height: "100vh", 
+              width: "100%",
+              minHeight: "500px",
+              maxHeight: "1000px"
+            }}
             onEvents={{ click: onChartClick }}
           />
         </div>
-        <div className="w-1/2 flex flex-col">
+        {/* <div className="w-1/2 flex flex-col">
           {searchValue && (
             <TreeView data={groupedData} activeName={searchValue} />
           )}
@@ -415,7 +425,7 @@ const GraphChartComponent = ({
               </Button>
             </Box>
           )}
-        </div>
+        </div> */}
       </Box>
       <Box>
         {allData && allOrgData.length > 10 && (

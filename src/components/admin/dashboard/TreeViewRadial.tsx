@@ -123,7 +123,12 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
   const groupedData = searchIndicator ? searchIndicator.slice(0, 10) : [];
 
   const onChartClick = (params: any) => {
-    if (!params.data.children || params.data.children.length === 0) {
+    // Indicator (үзүүлэлт) дээр дарахыг хориглох - тэдгээр нь улбар шар өнгөтэй (#F2BE7A)
+    const isIndicator = params.data.itemStyle?.color === "#D79034" || 
+                        params.data.label?.backgroundColor === "#F2BE7A";
+    
+    // Зөвхөн indicator биш бөгөөд children байхгүй үед л дарах боломжтой
+    if (!isIndicator && (!params.data.children || params.data.children.length === 0)) {
       setSearchValue(params.data.name);
       setAllData(false);
     }
@@ -154,8 +159,8 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
         layout: "radial",
         top: "20%",
         bottom: "20%",
-        left: "20%",
-        right: "20%",
+        left: "10%",
+        right: "10%",
         symbol: "emptyCircle",
         expandAndCollapse: true,
         animationDuration: 550,
@@ -276,14 +281,19 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "row", width: "100%", height: "100%" }}>
-        <div className="w-1/2">
+        <div className="w-full">
           <ReactECharts
             option={option}
-            style={{ width: "100%", height: 750 }}
+            style={{ 
+              width: "100%", 
+              height: "100vh",
+              minHeight: "500px",
+              maxHeight: "1000px"
+            }}
             onEvents={{ click: onChartClick }}
           />
         </div>
-        <div className="w-1/2 flex flex-col">
+        {/* <div className="w-1/2 flex flex-col">
           {searchValue && (
             <TreeView data={groupedData} activeName={searchValue} />
           )}
@@ -320,7 +330,7 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
               </Button>
             </Box>
           )}
-        </div>
+        </div> */}
       </Box>
       <Box>
         {allData && searchIndicator && searchIndicator.length > 10 && (

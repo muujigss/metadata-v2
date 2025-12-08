@@ -107,7 +107,10 @@ const RequestAccessPage = () => {
     org_email: Yup.string()
       .email("Зөв и-мэйл хаяг оруулна уу.")
       .required("Байгууллагын и-мэйл оруулна уу."),
-    org_phone: Yup.string().required("Байгууллагын утас оруулна уу."),
+    org_phone: Yup.string()
+      .required("Байгууллагын утас оруулна уу.")
+      .matches(/^[0-9+\-\s()]*$/, "Зөвхөн тоо оруулна уу."),
+    org_website: Yup.string().url("Зөв веб хаяг оруулна уу (жишээ: https://example.com)"),
     
     // User
     lastname: Yup.string().required("Овог оруулна уу."),
@@ -115,10 +118,17 @@ const RequestAccessPage = () => {
     user_email: Yup.string()
       .email("Зөв и-мэйл хаяг оруулна уу.")
       .required("Хэрэглэгчийн и-мэйл оруулна уу."),
+    user_phone: Yup.string()
+      .matches(/^[0-9+\-\s()]*$/, "Зөвхөн дугаар оруулна уу."),
     
     // File
     file: Yup.mixed().required("Байгууллагын лого оруулна уу."),
-    file_id: Yup.mixed().required("Тушаал оруулна уу."),
+    file_id: Yup.mixed()
+      .required("Тушаал оруулна уу.")
+      .test('fileSize', 'Файлын хэмжээ 20MB-аас бага байх ёстой.', (value: any) => {
+        if (!value) return true;
+        return value.size <= 20 * 1024 * 1024;
+      }),
   });
 
   const onSubmit = async (values: any) => {
