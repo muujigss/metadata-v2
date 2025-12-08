@@ -14,7 +14,7 @@ const checkValidationStatus = async (db_id: number) => {
 };
 
 const updateActionService = async (data: IAction) => {
-  try {
+  // try {
     // await checkValidationStatus(data?.item_id);
     const checkStatus = await checkStatusMetadata(data?.item_id);
     if (!checkStatus?.status) {
@@ -76,10 +76,10 @@ const updateActionService = async (data: IAction) => {
     }
 
     return res.json();
-  } catch (error) {
-    console.error("Error in updateActionService:", error);
-    throw new Error(error.toString());
-  }
+  // } catch (error) {
+  //   console.error("Error in updateActionService:", error);
+  //   throw new Error(error.toString());
+  // }
 };
 
 const getActionService = async () => {
