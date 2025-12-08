@@ -7,10 +7,10 @@ import {
   useGetSectors,
   useGetSpecification,
 } from "@/utils/customHooks";
-import { Alert, Button, Input, Box, Snackbar, Tabs, Tab } from "@mui/material";
+import { Alert, Button, Input, Box, Snackbar, Tabs, Tab, Typography, TextField } from "@mui/material";
 import { Sidebar } from "flowbite-react";
 import { Formik } from "formik";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Loader from "../../Loader";
 import { validationSchema, validationTab0Schema, validationTab1Schema } from "./DBValidationSchema";
 import {
@@ -29,12 +29,21 @@ import { sidebarTheme } from "@/components/componentTheme/SidebarTheme";
 import AutocompleteIntroduction from "../form/SearchSelectComponent";
 import TooltipComponent from "../formComponents/TooltipComponent";
 import FileComponent from "../formComponents/FIle";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
 });
 import "react-quill/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import CurrentUserContext, { ICurrentUserContext } from "@/utils/context";
+import { createFileService, getFileService } from "@/services/FileService";
+import { StyledInput } from "../theme/InputTheme";
+
+interface Item {
+  id: string;
+  value: string;
+}
 
 const CreateDatabase = ({
   userId,
@@ -67,10 +76,31 @@ const CreateDatabase = ({
   const [status, setStatus] = useState("");
   const [step, setStep] = useState(0);
   const [warningMessage, setWarningMessage] = useState("");
+  const { userInfo } = useContext(CurrentUserContext) as ICurrentUserContext;
+  const [selectedTab0_regulation_file_id, setSelectedTab0_regulation_file_id] = useState<File | null>(null);
+  const [selectedTab1_diagram_file_id, setSelectedTab1_diagram_file_id] = useState<File | null>(null);
+  const [serviceItems, setServiceItems] = useState<Item[]>([]);
+
+  const addItem = () => {
+    setServiceItems(prev => [
+      ...prev,
+      { id: `item-${prev.length}-${Date.now()}`, value: "" }
+    ]);
+  };
+  const handleChangeService = (id: string, value: string) => {
+    setServiceItems(prev =>
+      prev.map(item => (item.id === id ? { ...item, value } : item))
+    );
+  };
+  const handleDeleteService = (id: string) => {
+    setServiceItems(prev => prev.filter(item => item.id !== id));
+  };
 
   const orgData = organizations?.map((org: IOrganization) => {
     return { name: org.name, id: org.id };
   });
+
+  const selectedOrg = organizations?.find((org: IOrganization) => org.id = orgId)
 
   const sectorOptions = sector?.map((sector: any) => {
     return { name: sector.name, id: sector.id };
@@ -111,8 +141,10 @@ const CreateDatabase = ({
     tab0_name: dbActivityData?.name || "",
     tab0_short_name: dbActivityData?.short_name || "",
     tab0_domain_name: dbActivityData?.domain_name || "", // 5.11.1.3
+    tab0_purpose: dbActivityData?.purpose || "", // 5.11.1.4
+    tab0_activity: dbActivityData?.activity || "", // 5.11.1.4
     tab0_scope: dbActivityData?.scope || "", // 5.11.1.4
-    tab0_regulation_file_id: dbActivityData?.service_name || null, // 5.11.1.5
+    tab0_regulation_file_id: dbActivityData?.regulation_file_id || null, // 5.11.1.5
     tab0_status_description: dbActivityData?.status_description || "", // 5.11.1.6
     tab0_change_description: dbActivityData?.change_description || "", //  5.11.1.7
     tab0_service_list: dbActivityData?.service_list || "", //  5.11.1.8
@@ -120,6 +152,7 @@ const CreateDatabase = ({
     tab0_full_org_info: dbActivityData?.full_org_info || "", //  5.11.1.10
     tab0_full_user_info: dbActivityData?.full_user_info || "", //  5.11.1.11
     tab0_copyright_description: dbActivityData?.copyright_description || "", //  5.11.1.12
+    tab0_copyright_file_id: dbActivityData?.copyright_file_id || null, //  5.11.1.12
     tab0_is_active: dbActivityData?.is_active || false,
     tab0_createdUser: userId || 0,
   };
@@ -148,6 +181,17 @@ const CreateDatabase = ({
     ...initDB1,
     ...initDB2,
   };
+
+  useEffect(() => {
+    if (dbActivityData?.regulation_file) {
+      setSelectedTab0_regulation_file_id(dbActivityData?.regulation_file);
+    }
+  }, [dbActivityData?.regulation_file]);
+  useEffect(() => {
+    if (dbTechnologyData?.diagram_file) {
+      setSelectedTab1_diagram_file_id(dbTechnologyData?.diagram_file);
+    }
+  }, [dbTechnologyData?.diagram_file]);
 
   const onSubmit = async (values: IDatabase) => {
     try {
@@ -180,15 +224,18 @@ const CreateDatabase = ({
         name: values?.tab0_name,
         short_name: values?.tab0_short_name,
         domain_name: values?.tab0_domain_name,
+        purpose: values?.tab0_purpose,
+        activity: values?.tab0_activity,
         scope: values?.tab0_scope,
-        regulation_file_id: values?.tab0_regulation_file_id,
+        regulation_file_id: null,
         status_description: values?.tab0_status_description,
         change_description: values?.tab0_change_description,
         service_list: values?.tab0_service_list,
         other_info_list: values?.tab0_other_info_list,
-        full_org_info: values?.tab0_full_org_info,
-        full_user_info: values?.tab0_full_user_info,
+        full_org_info: `${selectedOrg?.name}, ${selectedOrg?.address}, ${selectedOrg?.phone}, ${selectedOrg?.email}`,
+        full_user_info: `${userInfo?.lastname} ${userInfo?.firstname}, ${userInfo?.phone_number}, ${userInfo?.email}`,
         copyright_description: values?.tab0_copyright_description,
+        copyright_file_id: null,
         is_active: true,
         created_user: values?.createdUser,
       };
@@ -202,7 +249,7 @@ const CreateDatabase = ({
         db_size: values?.tab1_db_size,
         db_rows_count: values?.tab1_db_rows_count,
         resource_location: values?.tab1_resource_location,
-        diagram_file_id: values?.tab1_diagram_file_id,
+        diagram_file_id: null,
         access_control_info: values?.tab1_access_control_info,
         file_type_info: values?.tab1_file_type_info,
         info_supply: values?.tab1_info_supply,
@@ -214,23 +261,30 @@ const CreateDatabase = ({
         created_user: values?.createdUser,
       };
 
-      const body = {
-        bodyDatabase: data, bodyActivity: dataTab0, bodyTechnology: dataTab1
-      }
+      const responseFileTab0_regulation_file_id = await saveFile(selectedTab0_regulation_file_id);
+      const responseFileTab1_diagram_file_id = await saveFile(selectedTab1_diagram_file_id);
 
-      setLoading(true);
-      const response = await createDatabaseAll(body);
-      if (response.status == "success") {
-        window.location.reload();
-        setOpen(false);
-        setSidebarStatus(false);
-      } else {
+      if (responseFileTab0_regulation_file_id && responseFileTab1_diagram_file_id) {
+        dataTab0.regulation_file_id = responseFileTab0_regulation_file_id.file.id
+        dataTab1.diagram_file_id = responseFileTab1_diagram_file_id.file.id
+        const body = {
+          bodyDatabase: data, bodyActivity: dataTab0, bodyTechnology: dataTab1
+        }
+  
+        setLoading(true);
+        const response = await createDatabaseAll(body);
+        if (response.status == "success") {
+          window.location.reload();
+          setOpen(false);
+          setSidebarStatus(false);
+        } else {
+          setOpen(false);
+          setSidebarStatus(false);
+        }
+        setLoading(false);
         setOpen(false);
         setSidebarStatus(false);
       }
-      setLoading(false);
-      setOpen(false);
-      setSidebarStatus(false);
     } catch (err) {
       console.log('-----err-----', err)
       setStatus('error');
@@ -240,6 +294,22 @@ const CreateDatabase = ({
       setLoading(false);
     }
   };
+  const saveFile = async (file: any) => {
+    try {
+      if (!file) {
+        setStatus('error');
+        setWarningMessage("Файл заавал хавсаргах шаардлагатай.");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("created_user", userInfo?.id?.toString() || "");
+      formData.append("file", file);
+      const responseFile = (await createFileService(formData)).data;
+      return responseFile;
+    } catch (error) {
+      throw error;
+    }
+  }
 
   const getValidationSchema = () => {
     switch (step) {
@@ -288,6 +358,26 @@ const CreateDatabase = ({
                     console.log('-----errors------', errors)
                     if (Object.keys(errors).length !== 0) return; // block
                   }
+                  if (step === 0) {
+                    if (!selectedTab0_regulation_file_id) {
+                      setStatus('error');
+                      setWarningMessage("Дотооддоо мөрдөж буй дүрэм, журам, шийдвэр файлыг заавал хавсаргах шаардлагатай.");
+                      return;
+                    }
+                    setFieldValue("tab0_service_list", serviceItems.map(a => a.value))
+                    if (!serviceItems.length === 0) {
+                      setStatus('error');
+                      setWarningMessage("Үзүүлэх үйлчилгээний жагсаалт шаардлагатай.");
+                      return;
+                    }
+                  }
+                  if (step === 1) {
+                    if (!selectedTab1_diagram_file_id) {
+                      setStatus('error');
+                      setWarningMessage("Мэдээллийн сангийн диаграм файлыг заавал хавсаргах шаардлагатай.");
+                      return;
+                    }
+                  }
                   setStep(newStep);
                 }}>
                   <Tab label="Үйл ажиллагааны мэдээлэл">
@@ -330,7 +420,6 @@ const CreateDatabase = ({
                           onChange={(e: any) => {
                             setFieldValue("tab0_short_name", e.target.value);
                           }}
-                          errors={errors.tab0_short_name}
                         />
                       </FormBox>
                       <FormBox>
@@ -351,13 +440,45 @@ const CreateDatabase = ({
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <LabelComponent label="5.11.1.4. Зорилго, үйл ажиллагаа, хамрах хүрээ" />
-                          <TooltipComponent content="Зорилго, үйл ажиллагаа, хамрах хүрээ" />
+                          <LabelComponent label="5.11.1.4. Зорилго" />
+                          <TooltipComponent content="Зорилго" />
+                        </Box>
+                        <TextAreaComponent
+                          type="text"
+                          name="tab0_purpose"
+                          label="Зорилго"
+                          value={values?.tab0_purpose}
+                          onChange={(e: any) => {
+                            setFieldValue("tab0_purpose", e.target.value);
+                          }}
+                          errors={errors.tab0_purpose}
+                        />
+                      </FormBox>
+                      <FormBox>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <LabelComponent label="5.11.1.4. Үйл ажиллагаа" />
+                          <TooltipComponent content="Үйл ажиллагаа" />
+                        </Box>
+                        <TextAreaComponent
+                          type="text"
+                          name="tab0_activity"
+                          label="Үйл ажиллагаа"
+                          value={values?.tab0_activity}
+                          onChange={(e: any) => {
+                            setFieldValue("tab0_activity", e.target.value);
+                          }}
+                          errors={errors.tab0_activity}
+                        />
+                      </FormBox>
+                      <FormBox>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <LabelComponent label="5.11.1.4. Хамрах хүрээ" />
+                          <TooltipComponent content="Хамрах хүрээ" />
                         </Box>
                         <TextAreaComponent
                           type="text"
                           name="tab0_scope"
-                          label="Зорилго, үйл ажиллагаа, хамрах хүрээ"
+                          label="Хамрах хүрээ"
                           value={values?.tab0_scope}
                           onChange={(e: any) => {
                             setFieldValue("tab0_scope", e.target.value);
@@ -375,9 +496,9 @@ const CreateDatabase = ({
                           name="file"
                           accept=".pdf, .doc, .docx, .xls, .xlsx"
                           onChange={(fileData: any) => {
-                            // setSelectedFile(fileData);
+                            setSelectedTab0_regulation_file_id(fileData);
                           }}
-                          value={values?.tab0_regulation_file_id}
+                          value={selectedTab0_regulation_file_id}
                           desabled={false}
                         />
                       </FormBox>
@@ -402,16 +523,22 @@ const CreateDatabase = ({
                           <LabelComponent label="5.11.1.7. Сан бүртдүүлэх ашиглах, солилцох үйл ажиллагаанд мөрдөж буй стандарт" />
                           <TooltipComponent content="Сан бүртдүүлэх ашиглах, солилцох үйл ажиллагаанд мөрдөж буй стандарт" />
                         </Box>
-                        <TextAreaComponent
-                          type="text"
-                          name="tab0_change_description"
-                          label="Сан бүртдүүлэх ашиглах, солилцох үйл ажиллагаанд мөрдөж буй стандарт"
-                          value={values?.tab0_change_description}
-                          onChange={(e: any) => {
-                            setFieldValue("tab0_change_description", e.target.value);
-                          }}
-                          errors={errors.tab0_change_description}
-                        />
+                        <div>
+                          <ReactQuill
+                            value={values?.tab0_change_description}
+                            onChange={(content) => {
+                              const textContent = content.replace(/<[^>]*>/g, "");
+                              if (textContent) setFieldValue("tab0_change_description", content)
+                              else setFieldValue("tab0_change_description", null)
+                            }}
+                            onBlur={() => setFieldTouched("tab0_change_description", true)}
+                          />
+                          {errors.tab0_change_description && (
+                            <p className="text-red-600 text-text-body-small mt-2 p-1">
+                              {errors.tab0_change_description}
+                            </p>
+                          )}
+                        </div>
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -419,6 +546,34 @@ const CreateDatabase = ({
                           <TooltipComponent content="Үзүүлэх үйлчилгээний жагсаалт" />
                         </Box>
                         <div>
+                          <Button onClick={addItem} variant="outlined">
+                            Үйлчилгээ нэмэх
+                          </Button>
+                          <div className="mt-3 flex gap-2 flex-col">
+                            {serviceItems.map((item, index) => {
+                              return (
+                                <div className="flex gap-3 items-center">
+                                  { index + 1 }.
+                                  <StyledInput
+                                    name={`outlined-service`}
+                                    className="input w-full"
+                                    id={`outlined-service`}
+                                    type="text"
+                                    value={item.value}
+                                    onChange={(e) => handleChangeService(item.id, e.target.value)}
+                                    placeholder={`Үйлчилгээ ${index+1}`}
+                                    fullWidth
+                                    size="small"
+                                  />
+                                  <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => handleDeleteService(item.id)}>
+                                    <Typography variant="caption">Устгах</Typography>
+                                  </Button>
+                                </div>
+                              )
+                            })}
+                          </div>
+                        </div>
+                        {/* <div>
                           <ReactQuill
                             value={values?.tab0_service_list}
                             onChange={(content) => {
@@ -433,7 +588,7 @@ const CreateDatabase = ({
                               {errors.tab0_service_list}
                             </p>
                           )}
-                        </div>
+                        </div> */}
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -462,19 +617,11 @@ const CreateDatabase = ({
                           <TooltipComponent content="Харуцагч байгууллагын нэр, хаяг, утасны дугаар, цахим шуудан" />
                         </Box>
                         <div>
-                          <ReactQuill
-                            value={values?.tab0_full_org_info}
-                            onChange={(content) => {
-                              const textContent = content.replace(/<[^>]*>/g, "");
-                              if (textContent) setFieldValue("tab0_full_org_info", content)
-                              else setFieldValue("tab0_full_org_info", null)
-                            }}
-                          />
-                          {errors.tab0_full_org_info && (
-                            <p className="text-red-600 text-text-body-small mt-2 p-1">
-                              {errors.tab0_full_org_info}
-                            </p>
-                          )}
+                          {
+                            selectedOrg && (
+                              `${selectedOrg?.name}, ${selectedOrg?.address}, ${selectedOrg?.phone}, ${selectedOrg?.email}`
+                            )
+                          }
                         </div>
                       </FormBox>
                       <FormBox>
@@ -483,19 +630,11 @@ const CreateDatabase = ({
                           <TooltipComponent content="Харуцсан ажилтны нэр, хаяг, утасны дугаар, цахим шуудан" />
                         </Box>
                         <div>
-                          <ReactQuill
-                            value={values?.tab0_full_user_info}
-                            onChange={(content) => {
-                              const textContent = content.replace(/<[^>]*>/g, "");
-                              if (textContent) setFieldValue("tab0_full_user_info", content)
-                              else setFieldValue("tab0_full_user_info", null)
-                            }}
-                          />
-                          {errors.tab0_full_user_info && (
-                            <p className="text-red-600 text-text-body-small mt-2 p-1">
-                              {errors.tab0_full_user_info}
-                            </p>
-                          )}
+                          {
+                            userInfo && (
+                              `${userInfo?.lastname} ${userInfo?.firstname}, ${userInfo?.phone_number}, ${userInfo?.email}`
+                            )
+                          }
                         </div>
                       </FormBox>
                       <FormBox>
@@ -539,7 +678,6 @@ const CreateDatabase = ({
                           onChange={(e: any) => {
                             setFieldValue("tab1_name", e.target.value);
                           }}
-                          errors={errors.tab1_name}
                         />
                       </FormBox>
                       <FormBox>
@@ -648,9 +786,9 @@ const CreateDatabase = ({
                           name="file"
                           accept=".pdf, .doc, .docx, .xls, .xlsx"
                           onChange={(fileData: any) => {
-                            // setSelectedFile(fileData);
+                            setSelectedTab1_diagram_file_id(fileData);
                           }}
-                          value={values?.tab1_diagram_file_id}
+                          value={selectedTab1_diagram_file_id}
                           desabled={false}
                         />
                       </FormBox>

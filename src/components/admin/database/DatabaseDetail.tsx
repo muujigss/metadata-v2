@@ -43,6 +43,7 @@ const DatabaseDetail = ({
     queryKey: ["get db other detail on admin", dbId],
     queryFn: () => getOneDatabaseOther(dbId),
   });
+  console.log('-----dataOther-----', dataOther)
 
   if (isLoading) return <Loader />;
   if (loading) return <Loader />;
@@ -60,7 +61,7 @@ const DatabaseDetail = ({
       >
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Typography variant="h6" color="info.dark">
-            Өгөгдлийн сангийн мета мэдээлэл
+            Төрөлжсөн сангийн бүртгэлийн мэдээлэл
           </Typography>
         </Box>
         <Box

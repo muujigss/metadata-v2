@@ -421,9 +421,27 @@ const getOneDatabaseOther = async (database_id: number) => {
         typeof value === 'bigint' ? value.toString() : value
       ));
     };
+    const parsedActivity = activity.length > 0 ? serializeBigInt(activity[0]) : null
+    const parsedTechnology = technology.length > 0 ? serializeBigInt(technology[0]) : null
+    if (parsedActivity?.regulation_file_id) {
+      const regulation_file = await prisma.md_file.findUnique({
+        where: { id: parsedActivity?.regulation_file_id}
+      })
+      if (parsedActivity) {
+        parsedActivity.regulation_file = regulation_file;
+      }
+    }
+    if (parsedTechnology?.diagram_file_id) {
+      const diagram_file = await prisma.md_file.findUnique({
+        where: { id: parsedTechnology?.diagram_file_id}
+      })
+      if (parsedTechnology) {
+        parsedTechnology.diagram_file = diagram_file;
+      }
+    }
     return {
-      activity: activity.length > 0 ? serializeBigInt(activity[0]) : null,
-      technology: technology.length > 0 ? serializeBigInt(technology[0]) : null
+      activity: parsedActivity,
+      technology: parsedTechnology
     };
   } catch (error) {
     console.error("Error in getOneDatabaseOther:", error);

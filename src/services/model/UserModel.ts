@@ -68,6 +68,7 @@ const loginUserModel = async (email: string, password: string) => {
         roles: true,
         password: true,
         email: true,
+        phone_number: true,
         firstname: true,
         lastname: true,
         user_level: true,

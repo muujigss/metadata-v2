@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 const FileComponent = ({
@@ -21,6 +21,13 @@ const FileComponent = ({
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   
+  
+  useEffect(() => {
+    if (value) {
+      setSelectedFile(value);
+    }
+  }, [value]);
+
   const onSubmit = async (e: any) => {
     setSelectedFile(e.target.files?.[0] ?? null)
     onChange(e.target.files?.[0]);
@@ -49,7 +56,8 @@ const FileComponent = ({
       </Button>
       <Box sx={{ display: "flex", alignItems: "center" }}>
       </Box>
-      {selectedFile && <Typography variant="body2" className="ml-5">{selectedFile.name}</Typography>}
+      {/* {selectedFile && <Typography variant="body2" className="ml-5">{selectedFile.name}</Typography>} */}
+      {value && <Typography variant="body2" className="ml-5">{value.filename ? value.filename : value.name}</Typography>}
       {errors && (
         <p className="text-red-600 text-text-body-small mt-2 p-1">{errors}</p>
       )}

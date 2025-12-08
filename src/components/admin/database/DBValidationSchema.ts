@@ -90,19 +90,21 @@ const validationTab0Schema = Yup.object({
   tab0_name: Yup.string().required("Системийн нэр оруулна уу."),
   tab0_short_name: Yup.string().required("Системийн товч нэр оруулна уу."),
   tab0_domain_name: Yup.string().required("Системийн домэйн нэр оруулна уу."),
-  tab0_scope: Yup.string().required("Зорилго, үйл ажиллагаа, хамрах хүрээ оруулна уу."),
+  tab0_purpose: Yup.string().required("Зорилго оруулна уу."),
+  tab0_activity: Yup.string().required("Үйл ажиллагаа оруулна уу."),
+  tab0_scope: Yup.string().required("Хамрах хүрээ оруулна уу."),
   // tab0_regulation_file_id: Yup.string().required("Дотооддоо мөрдөж буй дүрэм, журам, шийдвэр оруулна уу."),
   tab0_status_description: Yup.string().required("Сан шинээр үүсгэх, бүтцийн өөрчлөлт оруулсан, ашиглалтаас гаргасан мэдээлэл оруулна уу."),
   tab0_change_description: Yup.string().required("Сан бүртдүүлэх ашиглах, солилцох үйл ажиллагаанд мөрдөж буй стандарт оруулна уу."),
-  tab0_service_list: Yup.string().required("Үзүүлэх үйлчилгээний жагсаалт оруулна уу."),
+  tab0_service_list: Yup.array().of(Yup.string()).optional(), // "Үзүүлэх үйлчилгээний жагсаалт оруулна уу."
   tab0_other_info_list: Yup.string().required("Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл оруулна уу."),
-  tab0_full_org_info: Yup.string().required("Харуцагч байгууллагын нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
-  tab0_full_user_info: Yup.string().required("Харуцсан ажилтны нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
+  // tab0_full_org_info: Yup.string().required("Харуцагч байгууллагын нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
+  // tab0_full_user_info: Yup.string().required("Харуцсан ажилтны нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
   tab0_copyright_description: Yup.string().required("Програм хангамж, мэдээллийн сангийн зохиогчийн эрхийн мэдээлэл оруулна уу."),
 });
 
 const validationTab1Schema = Yup.object({
-  tab1_name: Yup.string().required("Мэдээллийн сангийн нэр оруулна уу."),
+  // tab1_name: Yup.string().required("Мэдээллийн сангийн нэр оруулна уу."),
   tab1_short_name: Yup.string().required("Мэдээллийн сангийн товч нэр оруулна уу."),
   tab1_db_type: Yup.string().required("Мэдээллийн сангийн төрөл оруулна уу."),
   tab1_db_manage_system: Yup.string().required("Мэдээллийн сан удирдах системийн нэр оруулна уу."),

@@ -57,15 +57,18 @@ model md_database_activity {
   name                   String
   short_name             String?
   domain_name            String?
+  purpose                String?
+  activity               String?
   scope                  String?
   regulation_file_id     Int?
   status_description     String?
   change_description     String?
-  service_list           String?
+  service_list           String[]
   other_info_list        String?
   full_org_info          String?
   full_user_info         String?
   copyright_description  String?
+  copyright_file_id      Int?
   is_active              Boolean?
   created_user            Int?
   created_date            DateTime
