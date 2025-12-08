@@ -88,7 +88,7 @@ const validationSchema = Yup.object({
 
 const validationTab0Schema = Yup.object({
   tab0_name: Yup.string().required("Системийн нэр оруулна уу."),
-  tab0_short_name: Yup.string().required("Системийн товч нэр оруулна уу."),
+  // tab0_short_name: Yup.string().required("Системийн товч нэр оруулна уу."),
   tab0_domain_name: Yup.string().required("Системийн домэйн нэр оруулна уу."),
   tab0_purpose: Yup.string().required("Зорилго оруулна уу."),
   tab0_activity: Yup.string().required("Үйл ажиллагаа оруулна уу."),
@@ -104,8 +104,8 @@ const validationTab0Schema = Yup.object({
 });
 
 const validationTab1Schema = Yup.object({
-  // tab1_name: Yup.string().required("Мэдээллийн сангийн нэр оруулна уу."),
-  tab1_short_name: Yup.string().required("Мэдээллийн сангийн товч нэр оруулна уу."),
+  tab1_name: Yup.string().required("Мэдээллийн сангийн нэр оруулна уу."),
+  // tab1_short_name: Yup.string().required("Мэдээллийн сангийн товч нэр оруулна уу."),
   tab1_db_type: Yup.string().required("Мэдээллийн сангийн төрөл оруулна уу."),
   tab1_db_manage_system: Yup.string().required("Мэдээллийн сан удирдах системийн нэр оруулна уу."),
   tab1_db_size: Yup.string().required("Мэдээллийн сангийн хэмжээ оруулна уу."),
@@ -114,11 +114,11 @@ const validationTab1Schema = Yup.object({
   // tab1_diagram_file_id: Yup.string().required("Мэдээллийн сангийн диаграм оруулна уу."),
   tab1_access_control_info: Yup.string().required("Хандах эрхийн зохицуулалтын мэдээлэл, тайлбар оруулна уу."),
   tab1_file_type_info: Yup.string().required("Мэдээллийн санд хадгалагдаж буй файлын төрлүүд оруулна уу."),
-  tab1_info_supply: Yup.string().required("Мэдээллийн хариуцагчаас үндсэн системд нийлүүлж буй мэдээлэл оруулна уу."),
-  tab1_service_name: Yup.string().required("Сервисийн нэр оруулна уу."),
-  tab1_content_info_supply: Yup.string().required("Нийлүүлэх мэдээллийн агуулга оруулна уу."),
-  tab1_input_values: Yup.string().required("Оролтын утгууд (төрөл, утга, тайлбар) оруулна уу."),
-  tab1_output_values: Yup.string().required("Гаралтын утгууд (төрөл, утга, тайлбар) оруулна уу."),
+  // tab1_info_supply: Yup.string().required("Мэдээллийн хариуцагчаас үндсэн системд нийлүүлж буй мэдээлэл оруулна уу."),
+  // tab1_service_name: Yup.string().required("Сервисийн нэр оруулна уу."),
+  // tab1_content_info_supply: Yup.string().required("Нийлүүлэх мэдээллийн агуулга оруулна уу."),
+  // tab1_input_values: Yup.string().required("Оролтын утгууд (төрөл, утга, тайлбар) оруулна уу."),
+  // tab1_output_values: Yup.string().required("Гаралтын утгууд (төрөл, утга, тайлбар) оруулна уу."),
 });
 
 export { validationSchema, validationTab0Schema, validationTab1Schema };

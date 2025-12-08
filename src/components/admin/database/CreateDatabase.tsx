@@ -778,27 +778,30 @@ const CreateDatabase = ({
                           <LabelComponent label="5.11.2.4. Мэдээллийн сангийн хэмжээ" />
                           <TooltipComponent content="Мэдээллийн сангийн хэмжээ" />
                         </Box>
-                        <InputComponent
-                          type="number"
-                          name="tab1_db_size"
-                          value={values?.tab1_db_size}
-                          label="Мэдээллийн сангийн хэмжээ"
-                          onChange={(e: any) => {
-                            setFieldValue("tab1_db_size", e.target.value);
-                          }}
-                          errors={errors?.tab1_db_size}
-                        />
+                        <div className="flex gap-1 items-center">
+                          <InputComponent
+                            type="number"
+                            name="tab1_db_size"
+                            value={values?.tab1_db_size}
+                            label="Мэдээллийн сангийн хэмжээ"
+                            onChange={(e: any) => {
+                              setFieldValue("tab1_db_size", e.target.value);
+                            }}
+                            errors={errors?.tab1_db_size}
+                          />
+                          /Хэмжээ - Mb/
+                        </div>
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <LabelComponent label="5.11.2.5. Мэдээллийн сан дан бичлэгийн тоо" />
-                          <TooltipComponent content="Мэдээллийн сан дан бичлэгийн тоо" />
+                          <LabelComponent label="5.11.2.5. Мэдээллийн сан дан Үндсэн бичлэгийн тоо" />
+                          <TooltipComponent content="Мэдээллийн сан дан Үндсэн бичлэгийн тоо" />
                         </Box>
                         <InputComponent
                           type="number"
                           name="tab1_db_rows_count"
                           value={values?.tab1_db_rows_count}
-                          label="Мэдээллийн сан дан бичлэгийн тоо"
+                          label="Мэдээллийн сан дан Үндсэн бичлэгийн тоо"
                           onChange={(e: any) => {
                             setFieldValue("tab1_db_rows_count", e.target.value);
                           }}
@@ -879,7 +882,7 @@ const CreateDatabase = ({
                           )}
                         </div>
                       </FormBox>
-                      <FormBox>
+                      {/* <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
                           <LabelComponent label="5.11.2.10. Мэдээллийн хариуцагчаас үндсэн системд нийлүүлж буй мэдээлэл" />
                           <TooltipComponent content="Мэдээллийн хариуцагчаас үндсэн системд нийлүүлж буй мэдээлэл" />
@@ -978,7 +981,7 @@ const CreateDatabase = ({
                             </p>
                           )}
                         </div>
-                      </FormBox>
+                      </FormBox> */}
                     </>
                   )
                 }
