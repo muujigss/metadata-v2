@@ -68,8 +68,8 @@ const RequestActionComponent = ({
     </Typography>;
   }
 
-  const getDeadlineStatus = (createdDate: string, action_type: number) => {
-    const created = new Date(createdDate);
+  const getDeadlineStatus = (updatedDate: string, action_type: number) => {
+    const created = new Date(updatedDate);
     const days = action_type === 6 ? 7 : 14;
     const deadline = new Date(created.getTime() + days * 24 * 60 * 60 * 1000);
     const now = new Date();
