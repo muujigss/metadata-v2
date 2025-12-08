@@ -275,7 +275,8 @@ const NotificationDrawer = ({
         { notifData?.data.map((item: any, i: number) => {
           return (
             <div key={i} className={`cursor-pointer flex justify-between py-2 px-3 hover:bg-[#1976d2] border-b 
-              ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
+              // ${(Number(userInfo?.user_level) === 1 && item.is_view_admin) || (Number(userInfo?.user_level) === 2 && item.is_view_user) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
+              ${(item.is_view_admin) ? 'bg-[#1976d2]' : 'bg-[#42a5f5]'}
               `}
               onClick={() => handUpdateNotif(item.id)}
             >

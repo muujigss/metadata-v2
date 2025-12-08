@@ -8,6 +8,7 @@ type Props = {
 
 export async function GET(request: Request, { params: { id } }: Props) {
   const idCheck = Number(id);
+  console.log('--GET--idCheck----', idCheck)
   const dt = await getOneFileModel(idCheck);
 
   return NextResponse.json(dt);
