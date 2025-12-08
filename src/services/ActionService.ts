@@ -15,7 +15,11 @@ const checkValidationStatus = async (db_id: number) => {
 
 const updateActionService = async (data: IAction) => {
   try {
-    await checkValidationStatus(data?.item_id);
+    // await checkValidationStatus(data?.item_id);
+    const checkStatus = await checkStatusMetadata(data?.item_id);
+    if (!checkStatus?.status) {
+      throw new Error(checkStatus?.message);
+    }
     const res = await fetch(`${process.env.BASE_URL}/api/action`, {
       method: "POST",
       headers: {
