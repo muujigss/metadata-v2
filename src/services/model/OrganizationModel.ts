@@ -16,6 +16,7 @@ export const getOrganizationModel = async () => {
         phone: true,
         img_url: true,
         is_active: true,
+        type: true,
         databases: {
           select: {
             id: true,
@@ -24,7 +25,13 @@ export const getOrganizationModel = async () => {
             is_form: true,
           },
         },
-      },
+      } as any,
+      where: {
+        OR: [
+          { is_active: true },
+          { type: "approved" }
+        ]
+      } as any,
     });
     return organizations;
   } catch (error) {

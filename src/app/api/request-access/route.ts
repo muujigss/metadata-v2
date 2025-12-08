@@ -110,6 +110,7 @@ export async function POST(request: Request) {
         address: org_address,
         website: org_website,
         is_active: false, // Inactive
+        type: "new",
         created_date: now,
         updated_date: now,
       },

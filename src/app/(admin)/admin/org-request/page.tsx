@@ -15,6 +15,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
@@ -31,6 +32,7 @@ const OrgRequestListPage = () => {
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null);
+  const [rejectReason, setRejectReason] = useState("");
 
   const fetchRequests = async () => {
     try {
@@ -52,6 +54,7 @@ const OrgRequestListPage = () => {
   const handleAction = (request: any, type: "approve" | "reject") => {
     setSelectedRequest(request);
     setActionType(type);
+    setRejectReason(""); // Reset reason
     setOpenDialog(true);
   };
 
@@ -72,6 +75,7 @@ const OrgRequestListPage = () => {
         body: JSON.stringify({
           org_id: selectedRequest.id,
           user_id: selectedRequest.users[0]?.id,
+          status: actionType === "reject" ? rejectReason : undefined,
         }),
       });
 
@@ -117,12 +121,10 @@ const OrgRequestListPage = () => {
         <Table>
           <TableHead className="bg-gray-50">
             <TableRow>
-              <TableCell>Лого</TableCell>
               <TableCell>Байгууллага</TableCell>
-              <TableCell>И-мэйл</TableCell>
-              <TableCell>Утас</TableCell>
               <TableCell>Админ хэрэглэгч</TableCell>
               <TableCell>Огноо</TableCell>
+              <TableCell>Төлөв</TableCell>
               <TableCell>Хугацаа</TableCell>
               <TableCell align="center">Үйлдэл</TableCell>
             </TableRow>
@@ -130,7 +132,7 @@ const OrgRequestListPage = () => {
           <TableBody>
             {requests.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} align="center" className="py-8 text-gray-500">
+                <TableCell colSpan={6} align="center" className="py-8 text-gray-500">
                   Хүсэлт байхгүй байна
                 </TableCell>
               </TableRow>
@@ -138,24 +140,9 @@ const OrgRequestListPage = () => {
               requests.map((req) => (
                 <TableRow key={req.id} hover>
                   <TableCell>
-                    {req.img_url ? (
-                      <img 
-                        src={req.img_url} 
-                        alt="Logo" 
-                        className="w-12 h-12 object-contain rounded border"
-                      />
-                    ) : (
-                      <div className="w-12 h-12 bg-gray-100 rounded flex items-center justify-center text-xs text-gray-400">
-                        No logo
-                      </div>
-                    )}
-                  </TableCell>
-                  <TableCell>
                     <div className="font-medium">{req.name}</div>
                     <div className="text-xs text-gray-500">{req.org_short_name}</div>
                   </TableCell>
-                  <TableCell>{req.email}</TableCell>
-                  <TableCell>{req.phone}</TableCell>
                   <TableCell>
                     {req.users[0] ? (
                       <div>
@@ -166,9 +153,15 @@ const OrgRequestListPage = () => {
                       <span className="text-red-500">Хэрэглэгчгүй</span>
                     )}
                   </TableCell>
-
                   <TableCell>
                     {new Date(req.created_date).toLocaleDateString()}
+                  </TableCell>
+                  <TableCell>
+                    {req.type === 'rejected' ? (
+                       <Chip label="Татгалзсан" color="error" size="small" variant="outlined" />
+                    ) : (
+                       <Chip label="Шинэ" color="primary" size="small" variant="outlined" />
+                    )}
                   </TableCell>
                   <TableCell>
                     {(() => {
@@ -194,24 +187,6 @@ const OrgRequestListPage = () => {
                       >
                         Харах
                       </Button>
-                      <Button
-                        variant="contained"
-                        color="success"
-                        size="small"
-                        startIcon={<CheckCircleIcon />}
-                        onClick={() => handleAction(req, "approve")}
-                      >
-                        Зөвшөөрөх
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        size="small"
-                        startIcon={<CancelIcon />}
-                        onClick={() => handleAction(req, "reject")}
-                      >
-                        Татгалзах
-                      </Button>
                     </div>
                   </TableCell>
                 </TableRow>
@@ -231,8 +206,22 @@ const OrgRequestListPage = () => {
             Та <b>{selectedRequest?.name}</b> байгууллагын хүсэлтийг{" "}
             {actionType === "approve" ? "зөвшөөрөх" : "татгалзах"}дээ итгэлтэй байна уу?
             {actionType === "reject" && (
-              <div className="mt-2 text-red-600 text-sm">
-                Татгалзсан тохиолдолд хүсэлт устах болно.
+              <div className="mt-4">
+                 <TextField
+                    autoFocus
+                    margin="dense"
+                    id="reason"
+                    label="Татгалзах шалтгаан"
+                    type="text"
+                    fullWidth
+                    variant="outlined"
+                    value={rejectReason}
+                    onChange={(e) => setRejectReason(e.target.value)}
+                    required
+                 />
+                 <div className="mt-2 text-red-600 text-sm">
+                   Татгалзсан тохиолдолд хүсэлтийн төлөв "Татгалзсан" болж өөрчлөгдөнө.
+                 </div>
               </div>
             )}
           </DialogContentText>
@@ -272,16 +261,19 @@ const OrgRequestListPage = () => {
                   Байгууллагын мэдээлэл
                 </h3>
                 <div className="space-y-4">
-                  <div className="flex justify-center mb-4">
+                  <div className="flex justify-center mb-6">
                     {selectedRequest.img_url ? (
-                      <img 
-                        src={selectedRequest.img_url} 
-                        alt="Logo" 
-                        className="h-32 object-contain rounded border p-2"
-                      />
+                      <div className="relative w-full h-40 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center p-4">
+                        <img 
+                          src={selectedRequest.img_url.startsWith("http") || selectedRequest.img_url.startsWith("/") ? selectedRequest.img_url : `/${selectedRequest.img_url}`} 
+                          alt="Logo" 
+                          className="max-w-full max-h-full object-contain"
+                        />
+                      </div>
                     ) : (
-                      <div className="h-32 w-32 bg-gray-100 rounded flex items-center justify-center text-gray-400">
-                        No Logo
+                      <div className="w-full h-40 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center text-gray-400 flex-col gap-2">
+                        <div className="text-4xl">🏢</div>
+                        <span className="text-sm">Лого байхгүй</span>
                       </div>
                     )}
                   </div>
@@ -367,6 +359,12 @@ const OrgRequestListPage = () => {
                 ) : (
                   <div className="text-red-500">Хэрэглэгчийн мэдээлэл байхгүй</div>
                 )}
+
+                  {selectedRequest.type === 'rejected' && selectedRequest.status && (
+                    <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded text-red-700">
+                        <span className="font-semibold">Татгалзсан шалтгаан:</span> {selectedRequest.status}
+                    </div>
+                  )}
 
                 <div className="mt-8 flex justify-end gap-3">
                   <Button 

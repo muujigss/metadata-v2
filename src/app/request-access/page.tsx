@@ -11,14 +11,23 @@ import {
   Grid,
   IconButton,
   Paper,
+  Slider,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
   Typography,
-} from "@mui/material";
+} from "@mui/material"; 
+import Cropper from "react-easy-crop";
+import { getCroppedFile } from "@/utils/cropImage";
 import { Form, Formik } from "formik";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import RotateRightIcon from '@mui/icons-material/RotateRight';
 import { styled } from "@mui/material/styles";
 import LogoPics from "@/components/layout/LogoPics";
 import FileComponent from "@/components/admin/formComponents/FIle";
@@ -44,6 +53,53 @@ const RequestAccessPage = () => {
   const [loading, setLoading] = useState(false);
   const [fileName, setFileName] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  // Crop state
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState(0);
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+  const [cropDialogOpen, setCropDialogOpen] = useState(false);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [currentFileName, setCurrentFileName] = useState("");
+  const [formikSetFieldValue, setFormikSetFieldValue] = useState<any>(null);
+
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  };
+
+  const handleFileChange = async (event: any, setFieldValue: any) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0];
+      setCurrentFileName(file.name);
+      setFormikSetFieldValue(() => setFieldValue);
+      const imageDataUrl = await readFile(file);
+      setImageSrc(imageDataUrl as string);
+      setCropDialogOpen(true);
+    }
+  };
+
+  const readFile = (file: File) => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.addEventListener("load", () => resolve(reader.result), false);
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const handleSaveCrop = async () => {
+    try {
+      if (imageSrc && croppedAreaPixels && formikSetFieldValue) {
+        const croppedFile = await getCroppedFile(imageSrc, croppedAreaPixels, currentFileName, rotation);
+        formikSetFieldValue("file", croppedFile);
+        setFileName(currentFileName);
+        setCropDialogOpen(false);
+      }
+    } catch (e) {
+      console.error(e);
+      setCropDialogOpen(false);
+    }
+  };
 
   const validationSchema = Yup.object({
     // Organization
@@ -385,14 +441,8 @@ const RequestAccessPage = () => {
                         Лого хуулах
                         <VisuallyHiddenInput
                           type="file"
-                          accept="image/png, image/jpeg"
-                          onChange={(event) => {
-                            const file = event.target.files?.[0];
-                            if (file) {
-                              setFieldValue("file", file);
-                              setFileName(file.name);
-                            }
-                          }}
+                          accept="image/*"
+                          onChange={(event) => handleFileChange(event, setFieldValue)}
                         />
                       </Button>
                       {fileName && (
@@ -455,6 +505,86 @@ const RequestAccessPage = () => {
     </Container>
         </div>
       </div>
+      
+      <Dialog
+        open={cropDialogOpen}
+        onClose={() => setCropDialogOpen(false)}
+        maxWidth="sm"
+        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: "#1e1e1e",
+            color: "white",
+            backgroundImage: "none",
+            borderRadius: 2
+          }
+        }}
+      >
+        <DialogTitle sx={{ borderBottom: '1px solid #333' }}>Лого зураг тайрах</DialogTitle>
+        <DialogContent sx={{ mt: 2 }}>
+            <Box className="relative w-full h-[300px] bg-black rounded overflow-hidden mb-6 border border-gray-700">
+                {imageSrc && (
+                    <Cropper
+                    image={imageSrc}
+                    crop={crop}
+                    zoom={zoom}
+                    rotation={rotation}
+                    aspect={1}
+                    onCropChange={setCrop}
+                    onRotationChange={setRotation}
+                    onCropComplete={onCropComplete}
+                    onZoomChange={setZoom}
+                    />
+                )}
+            </Box>
+            
+            <Grid container spacing={3} alignItems="center">
+              <Grid item xs={12}>
+                <Box display="flex" alignItems="center" gap={2}>
+                  <RotateRightIcon sx={{ color: '#aaa' }} />
+                  <Typography variant="body2" sx={{ minWidth: 60, color:'#aaa' }}>Эргүүлэх</Typography>
+                  <Slider
+                      value={rotation}
+                      min={0}
+                      max={360}
+                      step={1}
+                      aria-labelledby="Rotation"
+                      onChange={(e, val) => setRotation(Number(val))}
+                      sx={{ 
+                        color: '#518df9',
+                        '& .MuiSlider-thumb': {
+                          '&:hover, &.Mui-focusVisible': {
+                            boxShadow: '0px 0px 0px 8px rgba(81, 141, 249, 0.16)',
+                          },
+                        },
+                      }}
+                  />
+                </Box>
+              </Grid>
+              <Grid item xs={12}>
+                <Box display="flex" alignItems="center" gap={2}>
+                  <ZoomInIcon sx={{ color: '#aaa' }} />
+                  <Typography variant="body2" sx={{ minWidth: 60, color:'#aaa' }}>Томруулах</Typography>
+                  <Slider
+                      value={zoom}
+                      min={1}
+                      max={3}
+                      step={0.1}
+                      aria-labelledby="Zoom"
+                      onChange={(e, val) => setZoom(Number(val))}
+                      sx={{ color: '#518df9' }}
+                  />
+                </Box>
+              </Grid>
+            </Grid>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, borderTop: '1px solid #333' }}>
+            <Button onClick={() => setCropDialogOpen(false)} sx={{ color: '#aaa' }}>Болих</Button>
+            <Button onClick={handleSaveCrop} variant="contained" color="primary">
+                Хадгалах
+            </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

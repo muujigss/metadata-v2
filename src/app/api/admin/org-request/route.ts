@@ -4,12 +4,15 @@ import bcrypt from "bcrypt";
 import { sendMail } from "@/services/MailService";
 import { mailTemplateOrgConfirm } from "@/utils/helper-mail";
 
-// GET: List all pending requests (inactive organizations)
+// GET: List all pending requests (new or rejected)
 export async function GET() {
   try {
     const requests = await prisma.md_organization.findMany({
       where: {
-        is_active: false, // type: new, approve, reject
+        OR: [
+            { is_active: false },
+            { type: { in: ["new", "rejected"] } }
+        ]
       },
       include: {
         users: {
@@ -54,7 +57,11 @@ export async function PUT(request: Request) {
     // Activate Organization
     const org = await prisma.md_organization.update({
       where: { id: org_id },
-      data: { is_active: true },
+      data: { 
+        is_active: true,
+        type: "approved",
+        status: "approved"
+      },
     });
 
     // Activate User and update password
@@ -83,11 +90,11 @@ export async function PUT(request: Request) {
   }
 }
 
-// DELETE: Reject request
+// DELETE: Reject request (Soft Delete / Update Status)
 export async function DELETE(request: Request) {
   try {
     const body = await request.json();
-    const { org_id, user_id } = body;
+    const { org_id, user_id, status } = body;
 
     if (!org_id) {
       return NextResponse.json(
@@ -96,7 +103,7 @@ export async function DELETE(request: Request) {
       );
     }
 
-    // Get user email before deleting
+    // Get user email
     let userEmail = "";
     if (user_id) {
       const user = await prisma.md_users.findUnique({ where: { id: user_id } });
@@ -111,24 +118,28 @@ export async function DELETE(request: Request) {
         html: `
           <p>Сайн байна уу,</p>
           <p>Таны байгууллагын бүртгэлийн хүсэлтээс татгалзсан байна.</p>
+          <p>Шалтгаан: ${status || "Тодорхойгүй"}</p>
           <p>Дэлгэрэнгүй мэдээллийг админтай холбогдож авна уу.</p>
         `
       });
     }
 
-    // Delete User first (foreign key constraint)
-    if (user_id) {
-      await prisma.md_users.delete({
-        where: { id: user_id },
-      });
-    }
-
-    // Delete Organization
-    await prisma.md_organization.delete({
+    /* 
+       Instead of deleting, we update the status to "rejected".
+       The user also remains inactive.
+    */
+    
+    // Update Organization
+    await prisma.md_organization.update({
       where: { id: org_id },
+      data: {
+        type: "rejected",
+        status: status || "Rejected",
+        is_active: false
+      }
     });
 
-    return NextResponse.json({ success: true, message: "Rejected and deleted" });
+    return NextResponse.json({ success: true, message: "Rejected" });
   } catch (error) {
     console.error("Error rejecting request:", error);
     return NextResponse.json(
