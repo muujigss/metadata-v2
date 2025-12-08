@@ -431,6 +431,14 @@ const getOneDatabaseOther = async (database_id: number) => {
         parsedActivity.regulation_file = regulation_file;
       }
     }
+    if (parsedActivity?.copyright_file_id) {
+      const copyright_file = await prisma.md_file.findUnique({
+        where: { id: parsedActivity?.copyright_file_id}
+      })
+      if (parsedActivity) {
+        parsedActivity.copyright_file = copyright_file;
+      }
+    }
     if (parsedTechnology?.diagram_file_id) {
       const diagram_file = await prisma.md_file.findUnique({
         where: { id: parsedTechnology?.diagram_file_id}
@@ -896,6 +904,7 @@ const createDatabaseAll = async (data: any) => {
             full_org_info: bodyActivity.full_org_info,
             full_user_info: bodyActivity.full_user_info,
             copyright_description: bodyActivity.copyright_description,
+            copyright_file_id: bodyActivity.copyright_file_id,
             is_active: bodyActivity.is_active,
             updated_user: bodyDatabase.createdUser,
             updated_date: updated_date,
