@@ -57,7 +57,7 @@ const MainList = () => {
           </Tooltip>
         </Link>
       )}
-      {userInfo?.user_level != 1 && (
+      {/* {userInfo?.user_level != 1 && ( */}
         <Link href={"/admin/database"}>
           <Tooltip title={"Өгөгдлийн сан"}>
             <ListItemButton
@@ -73,7 +73,7 @@ const MainList = () => {
             </ListItemButton>
           </Tooltip>
         </Link>
-      )}
+      {/* )} */}
       {(userInfo?.user_level == 1 || userInfo?.user_level == 2) && (
         <Link href={"/admin/user"}>
           <Tooltip title={"Хэрэглэгч"}>
