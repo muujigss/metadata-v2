@@ -1,9 +1,11 @@
 import { getLibActionTypeModel, getLibChangeActionTypeModel } from "@/services/model/ActionModel";
+import { getDatabaseLocationModel, getLicenceModel, getSpecificationModel } from "@/services/model/DatabaseModel";
 import { getSourcesModel } from "@/services/model/LibSourceModel";
 import { getUnitModel } from "@/services/model/LibUnitModel";
 import { getUserLevelModel } from "@/services/model/LibUserLevelModel";
 import { getUserRoleModel } from "@/services/model/LibUserRoleModel";
 import { getValueTypeModel } from "@/services/model/LibValueTypeModel";
+import { getSectorModel } from "@/services/model/SectorModel";
 
 import { NextResponse } from "next/server";
 
@@ -27,6 +29,14 @@ export async function GET(request: Request, { params: { slug } }: Props) {
     dt = await getLibActionTypeModel();
   } else if (slug == "changeactiontype") {
     dt = await getLibChangeActionTypeModel();
+  } else if (slug == 'specification') {
+    dt = await getSpecificationModel();
+  } else if (slug == 'sector') {
+    dt = await getSectorModel();
+  } else if (slug == 'database-location') {
+    dt = await getDatabaseLocationModel();
+  } else if (slug == 'license') {
+    dt = await getLicenceModel();
   }
 
   return NextResponse.json(dt);

@@ -8,6 +8,7 @@ import Building2FillIcon from "remixicon-react/Building2FillIcon";
 import DashboardFillIcon from "remixicon-react/DashboardFillIcon";
 import Database2FillIcon from "remixicon-react/Database2FillIcon";
 import QuestionLineIcon from "remixicon-react/QuestionLineIcon";
+import ListSettingsLineIcon from "remixicon-react/ListSettingsLineIcon";
 import ChatHistoryLineIcon from "remixicon-react/ChatHistoryLineIcon";
 import VideoLineIcon from "remixicon-react/VideoLineIcon";
 import InformationFillIcon from "remixicon-react/InformationFillIcon";
@@ -154,6 +155,23 @@ const MainList = () => {
                 <FileCopyLineIcon color="#518df9" />
               </ListItemIcon>
               <ListItemText primary={"Давхардсан үзүүлэлт"} />
+            </ListItemButton>
+          </Tooltip>
+        </Link>
+      )}
+      {userInfo?.user_level == 1 && (
+        <Link href={"/admin/reference"}>
+          <Tooltip title={"Лавлах сан"}>
+            <ListItemButton
+              sx={{
+                backgroundColor:
+                  pathname == "/admin/reference" ? "aliceblue" : "",
+              }}
+            >
+              <ListItemIcon>
+                <ListSettingsLineIcon color="#518df9" />
+              </ListItemIcon>
+              <ListItemText primary={"Лавлах сан"} />
             </ListItemButton>
           </Tooltip>
         </Link>

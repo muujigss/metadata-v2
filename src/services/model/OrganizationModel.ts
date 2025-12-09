@@ -1,5 +1,11 @@
 import prisma from "@/utils/prisma";
 
+/**
+ * @from:        sdfsdf
+ * @params:      sdfsdf
+ * @return:      Array
+ * @description: sdfsdf
+ */
 export const getOrganizationModel = async () => {
   try {
     const organizations = await prisma.md_organization.findMany({
