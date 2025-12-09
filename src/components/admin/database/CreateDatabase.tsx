@@ -305,7 +305,7 @@ const CreateDatabase = ({
     if (dbActivityData?.copyright_file_id) {
       setSelectedTab0_copyright_file_id(dbActivityData?.copyright_file);
     }
-  }, [dbActivityData?.copyright_file_id]);
+  }, [dbActivityData?.copyright_file_id, dbActivityData?.copyright_file]);
   useEffect(() => {
     if (dbTechnologyData?.diagram_file) {
       setSelectedTab1_diagram_file_id(dbTechnologyData?.diagram_file);
