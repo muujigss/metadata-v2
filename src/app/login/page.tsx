@@ -1,7 +1,7 @@
 "use client";
 
 import AuthLogin from "@/components/AuthLogin";
-import ThreeDModel from "@/components/ThreeDModel";
+import OrgLogoWall from "@/components/organization/OrgLogoWall";
 import { Divider, Typography } from "@mui/material";
 
 const LoginPage = () => {
@@ -19,8 +19,8 @@ const LoginPage = () => {
       </div>
 
       {/* Right Side - 3D Animation */}
-      <div className="hidden lg:flex w-full lg:w-1/2 items-start justify-center pt-24 relative">
-        <ThreeDModel />
+      <div className="hidden lg:flex w-full lg:w-1/2 items-center justify-center relative overflow-hidden h-screen">
+        <OrgLogoWall />
       </div>
     </div>
   );

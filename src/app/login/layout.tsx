@@ -1,6 +1,9 @@
+"use client";
 import LogoPics from "@/components/layout/LogoPics";
 import React from "react";
 import "../styles/globals.css";
+import UserProvider from "@/components/providers/UserProvider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const LoginLayout = ({
   children,
@@ -26,7 +29,11 @@ const LoginLayout = ({
                 </h1>
               </div>
             </div>
-            <div>{children}</div>
+            <div>
+              <QueryClientProvider client={new QueryClient()}>
+                <UserProvider>{children}</UserProvider>
+              </QueryClientProvider>
+            </div>
           </div>
         </div>
       </body>

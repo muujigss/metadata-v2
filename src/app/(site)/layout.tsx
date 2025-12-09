@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
+import UserProvider from "@/components/providers/UserProvider";
 
 export default function RootLayout({
   children,
@@ -31,7 +32,7 @@ export default function RootLayout({
           <main className="flex flex-col items-center justify-between min-h-screen relative z-10 ">
             <div className="w-full flex-grow">
               <QueryClientProvider client={queryClient}>
-                {children}
+                <UserProvider>{children}</UserProvider>
               </QueryClientProvider>
             </div>
           </main>

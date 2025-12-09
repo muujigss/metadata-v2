@@ -8,6 +8,7 @@ import { StyledRoot } from "@/components/admin/theme/StyledRoot";
 import Footer from "@/components/layout/Footer";
 import { Box, CssBaseline } from "@mui/material";
 import Header from "./Header";
+import UserProvider from "@/components/providers/UserProvider";
 
 const AdminLayout = ({
   children,
@@ -31,27 +32,29 @@ const AdminLayout = ({
         <AppRouterCacheProvider>
           <StyledRoot>
             <QueryClientProvider client={queryClient}>
-              <Box
-                width={"100%"}
-                height={"screen"}
-                sx={{ display: "flex", position: "relative", left: 0, top: 0 }}
-              >
-                <CssBaseline />
-                <Header />
+              <UserProvider>
                 <Box
-                  component={"main"}
-                  sx={{
-                    position: "relative",
-                    top: "64px",
-                    padding: "15px",
-                    flexGrow: 1,
-                    // height: "100vh",
-                    // overflow: "auto",
-                  }}
+                  width={"100%"}
+                  height={"screen"}
+                  sx={{ display: "flex", position: "relative", left: 0, top: 0 }}
                 >
-                  {children}
+                  <CssBaseline />
+                  <Header />
+                  <Box
+                    component={"main"}
+                    sx={{
+                      position: "relative",
+                      top: "64px",
+                      padding: "15px",
+                      flexGrow: 1,
+                      // height: "100vh",
+                      // overflow: "auto",
+                    }}
+                  >
+                    {children}
+                  </Box>
                 </Box>
-              </Box>
+              </UserProvider>
             </QueryClientProvider>
             {/* <Footer /> */}
           </StyledRoot>
