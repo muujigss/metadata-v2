@@ -447,9 +447,7 @@ const CreateDatabase = ({
                       setWarningMessage("Үзүүлэх үйлчилгээний жагсаалт шаардлагатай.");
                       return;
                     }
-                    if (otherInfoItems.length > 0) {
-                      setFieldValue("tab0_other_info_list", otherInfoItems.map(a => a.value))
-                    }
+                    setFieldValue("tab0_other_info_list", otherInfoItems.map(a => a.value))
                   }
                   if (step === 1) {
                     if (!selectedTab1_diagram_file_id) {
