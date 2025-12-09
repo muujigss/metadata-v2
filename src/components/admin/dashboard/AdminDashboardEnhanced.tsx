@@ -27,18 +27,68 @@ import TreeViewRadial from "./TreeViewRadial";
 interface AdminDashboardProps {
   mainIndicator: any;
   databaseLocations: any;
+  databaseLocations: any;
   allOrg: any;
+  duplicateIndicators?: any[];
 }
 
 const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
   mainIndicator,
   databaseLocations,
   allOrg,
+  duplicateIndicators = [],
 }) => {
   const theme = useTheme();
   const orgName = databaseLocations?.orgName;
   const userLevel = databaseLocations?.userLevel;
   const tblData = databaseLocations?.dbTable;
+
+  // Process Duplicate Data for Top 20 Pie Chart
+  const topDuplicates = [...duplicateIndicators]
+    .sort((a, b) => b.count - a.count)
+    .slice(0, 20)
+    .map((item) => ({
+      name: item.name,
+      value: item.count,
+    }));
+
+  const duplicatePieOption = {
+    title: {
+      text: "Хамгийн их давхардсан 20 үзүүлэлт",
+      left: "center",
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: "{b}: {c} ({d}%)",
+    },
+    legend: {
+      type: "scroll",
+      orient: "vertical",
+      right: 10,
+      top: 20,
+      bottom: 20,
+      formatter: (name: string) => {
+        const item = topDuplicates.find((p) => p.name === name);
+        return `${name} - ${item?.value || 0}`;
+      },
+    },
+    series: [
+      {
+        name: "Давхцал",
+        type: "pie",
+        radius: "55%",
+        center: ["40%", "50%"],
+        data: topDuplicates,
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+      },
+    ],
+  };
 
   // --- Stat Cards Data ---
   const statCards = [
@@ -210,6 +260,15 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
             <ReactECharts option={frequencyOption} style={{ height: "100%" }} />
+          </Paper>
+        </Grid>
+      </Grid>
+      
+      {/* Charts Row 2 - Duplicates */}
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid item xs={12}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 500 }}>
+            <ReactECharts option={duplicatePieOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
       </Grid>
