@@ -1,6 +1,26 @@
-# meta-data
+# meta-data /Төрөлжсөн бүртгэлийн нэгдсэн сан/
 
 ## Node version 18
+
+
+ ## DEV
+ - npm install
+ - npm run dev
+
+ ## PROD
+ - npm install
+ - npm run build
+
+## PM2
+ - npm install -g pm2
+ - pm2 start .next/standalone/server.js --name metadata --env PORT=3001
+ - pm2 save && pm2 startup
+
+ ## Технологиуд
+
+ - Nextjs
+ - Prisma ORM
+ - Postgresql
 
 
 ## Prisma
@@ -8,5 +28,30 @@
 Generate models
  - npx prisma generate
 
-This will update your Postgres table with the correct types
+Postgres table update хийнэ.
  - npx prisma migrate dev
+
+
+ ## Directory бүтэц
+
+ ```sh
+.
+├── prisma/                 # Prisma ORM
+├── src/
+|     |
+|     |- app/
+│       ├── (routes)/       # Route groups to organize pages by section
+│       ├── api/            # Serverless API route handlers
+│       ├── layout.tsx      # Root layout shared across all pages
+│       ├── page.tsx        # Main (/) page
+│       └── globals.css     # Global styles
+|     |
+|     |-components/         # UI components
+│
+├── public/                 # Static files (images, icons, robots.txt, etc.)
+│
+├── next.config.js          # Next.js configuration
+├── package.json
+└── tsconfig.json
+
+ ```

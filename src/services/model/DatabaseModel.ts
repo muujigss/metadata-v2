@@ -5,6 +5,12 @@ import { Prisma } from "@prisma/client";
 import { stat } from "fs";
 import moment from "moment";
 
+/**
+ * @from:        /api/export/excel/database/route
+ * @params:      -
+ * @return:      Array
+ * @description: Өгөгдлийн сангийн бүх жагсаалт
+ */
 const getDatabaseModelList = async () => {
   try {
     const databases = await prisma.md_database.findMany({
@@ -28,6 +34,13 @@ const getDatabaseModelList = async () => {
   }
 };
 
+
+/**
+ * @from:        /admin/admin/database/page, /api/database/route, /components/database/DbList
+ * @params:      -
+ * @return:      Array
+ * @description: Өгөгдлийн сангийн жагсаалт pagination байгаа
+ */
 const getDatabaseModel = async (
   page: number,
   take: number,
@@ -183,6 +196,12 @@ const getDatabaseModel = async (
   }
 };
 
+/**
+ * @from:        /api/database/admin/[id]/route
+ * @params:      id
+ * @return:      Object - md_database
+ * @description: Admin хэсгээс Өгөгдлийн сангийн id-аар тухайн өгөгдлийн санг буцаана.
+ */
 const getOneDatabaseModelAdmin = async (id: number) => {
   try {
     const databases = await prisma.md_database.findUnique({
@@ -302,6 +321,13 @@ const getOneDatabaseModelAdmin = async (id: number) => {
     throw new Error("Failed to fetch forms");
   }
 };
+
+/**
+ * @from:        /api/database/[id]/route
+ * @params:      id
+ * @return:      Object - md_database
+ * @description: Өгөгдлийн сангийн id-аар тухайн өгөгдлийн санг буцаана.
+ */
 const getOneDatabaseModel = async (id: number) => {
   try {
     const databases = await prisma.md_database.findUnique({
@@ -426,6 +452,14 @@ const getOneDatabaseModel = async (id: number) => {
     throw new Error("Failed to fetch forms");
   }
 };
+
+/**
+ * @from:        /api/database/[id]/route
+ * @params:      database_id
+ * @return:      Object - { md_database_activity, md_database_technology }
+ * @description: Өгөгдлийн сангийн id-аар тухайн өгөгдлийн сантай
+ *               холбоотой [Үйл ажиллагааны мэдээлэл, Технологийн орчны мэдээлэл] буцаана.
+ */
 const getOneDatabaseOther = async (database_id: number) => {
   try {
     const activity = await prisma.$queryRaw<any[]>`
@@ -819,6 +853,14 @@ const createDatabaseModel = async (data: IDatabase) => {
   }
 };
 
+
+/**
+ * @from:        /api/database/createAll/route
+ * @body:        { md_database, md_database_activity, md_database_technology }
+ * @return:      Object - md_database
+ * @description: [Үйл ажиллагааны мэдээлэл, Технологийн орчны мэдээлэл, Мета өгөгдлийн мэдээлэл]
+ *               Хадгалах үйлдэл хийнэ.
+ */
 const createDatabaseAll = async (data: any) => {
   const { bodyDatabase, bodyActivity, bodyTechnology } = data;
 
