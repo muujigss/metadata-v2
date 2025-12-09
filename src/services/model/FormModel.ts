@@ -2,6 +2,12 @@ import prisma from "@/utils/prisma";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
+/**
+ * @from:        src/app/api/form
+ * @params:      page, take, pageNumber, filter
+ * @return:      Object
+ * @description: Маягтын жагсаалтыг шүүлтүүртэйгээр авах
+ */
 const getFormsModel = async (
   page: number,
   take: number,
@@ -120,6 +126,12 @@ const getFormsModel = async (
     throw new Error("Failed to fetch forms");
   }
 };
+/**
+ * @from:        src/app/api/form/[id]
+ * @params:      id
+ * @return:      Object
+ * @description: Маягтын дэлгэрэнгүй мэдээллийг ID-гаар авах
+ */
 const getFormModel = async (id: number) => {
   try {
     const form = await prisma.md_form.findUnique({
@@ -209,6 +221,12 @@ const getFormModel = async (id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/api/form/databases/[id]
+ * @params:      org_id
+ * @return:      Array
+ * @description: Байгууллагын идэвхтэй батлагдсан өгөгдлийн сангуудыг авах
+ */
 const getOrgDBsByIdModel = async (org_id: number) => {
   try {
     const org = await prisma.md_database.findMany({
@@ -231,6 +249,12 @@ const getOrgDBsByIdModel = async (org_id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/api/form/databases/[id]
+ * @params:      tbl_id
+ * @return:      Object
+ * @description: Хүснэгтийн ID-гаар харьяалагдах байгууллага болон өгөгдлийн сангийн бүтцийг авах
+ */
 const getOrgTablesByIdModel = async (tbl_id: number) => {
   try {
     const table = await prisma.md_table.findUnique({
@@ -299,6 +323,12 @@ const getOrgTablesByIdModel = async (tbl_id: number) => {
   }
 };
 ////////getOrgTablesByIdModel - old - getTableListbyDbId
+/**
+ * @from:        src/app/api/form/databases/[id]
+ * @params:      id
+ * @return:      Object
+ * @description: Өгөгдлийн сангийн ID-гаар хүснэгтүүдийн жагсаалтыг авах
+ */
 const getTableListbyDbId = async (id: number) => {
   try {
     const db = await prisma.md_database.findUnique({
@@ -330,6 +360,12 @@ const getTableListbyDbId = async (id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/api/form/databases/[id]
+ * @params:      form_id
+ * @return:      Object
+ * @description: Маягтын ID-гаар харьяалагдах байгууллага болон маягтуудын бүтцийг авах
+ */
 const getOrgFormsByIdModel = async (form_id: number) => {
   try {
     const form = await prisma.md_form.findUnique({
@@ -378,6 +414,12 @@ const getOrgFormsByIdModel = async (form_id: number) => {
 };
 
 ////////getOrgTablesByIdModel - old - getTableListbyDbId
+/**
+ * @from:        src/app/api/form/databases/[id]
+ * @params:      id
+ * @return:      Object
+ * @description: Өгөгдлийн сангийн ID-гаар маягтуудын жагсаалтыг авах
+ */
 const getFormListbyDbId = async (id: number) => {
   try {
     const db = await prisma.md_database.findUnique({
@@ -407,6 +449,12 @@ const getFormListbyDbId = async (id: number) => {
     throw new Error("Failed to fetch getOrgTablesByIdModel");
   }
 };
+/**
+ * @from:        src/app/api/form/databases/[id]
+ * @params:      db_id, tbl_id, form_id
+ * @return:      Object
+ * @description: Өгөгдлийн сан, хүснэгт эсвэл маягтын ID-гаар байгууллагын бүтцийг авах
+ */
 const getFormsByDbIdModel = async (
   db_id: number = 0,
   tbl_id: number = 0,
@@ -476,6 +524,12 @@ const getFormsByDbIdModel = async (
   }
 };
 
+/**
+ * @from:        src/app/api/form/[id]
+ * @params:      form_id, updateForm
+ * @return:      Object
+ * @description: Маягтын мэдээллийг шинэчлэх
+ */
 const updateFormModel = async (form_id: number, updateForm: any) => {
   const {
     db_id,
@@ -573,6 +627,12 @@ const updateFormModel = async (form_id: number, updateForm: any) => {
   return form;
 };
 
+/**
+ * @from:        src/app/api/form
+ * @params:      -
+ * @return:      Array
+ * @description: Маягтуудын жагсаалтыг авах (файлгүй)
+ */
 const getFormsByNameModel = async () => {
   try {
     const forms = await prisma.md_form.findMany({
@@ -616,6 +676,12 @@ const getFormsByNameModel = async () => {
   }
 };
 
+/**
+ * @from:        src/app/(site)/form/page.tsx
+ * @params:      form_name, sectorId, orgId
+ * @return:      Object
+ * @description: Маягтыг шүүлтүүрээр хайх (байгууллага болон салбараар)
+ */
 const getFormByFilter = async (
   form_name: string = "",
   sectorId: string = "",
@@ -662,6 +728,12 @@ const getFormByFilter = async (
   }
 };
 
+/**
+ * @from:        src/app/api/form/create
+ * @params:      data
+ * @return:      Object
+ * @description: Шинэ маягт үүсгэх эсвэл шинэчлэх
+ */
 const createFormModel = async (data: any) => {
   const cookieStore = cookies();
   const user_id = cookieStore.get("user_id")?.value;

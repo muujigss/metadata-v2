@@ -1,6 +1,12 @@
 import { IIndicatorClassification } from "@/interfaces/IIndicatorsClassifications";
 import prisma from "@/utils/prisma";
 
+/**
+ * @from:        src/app/api/indicator-classification
+ * @params:      data
+ * @return:      Object
+ * @description: Үзүүлэлт болон ангиллын холбоосийг үүсгэх
+ */
 export const insertIndicatorClassificationModel = async (
   data: IIndicatorClassification
 ) => {

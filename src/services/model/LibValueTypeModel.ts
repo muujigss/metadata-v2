@@ -1,6 +1,6 @@
 import prisma from "@/utils/prisma";
 
-export const getValueTypeModel = async () => {
+export const getValueTypeModel = async () => {  
   try {
     const data = await prisma.lib_value_type.findMany({
       select: { id: true, code: true, name: true },

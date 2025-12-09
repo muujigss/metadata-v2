@@ -2,6 +2,12 @@ import prisma from "@/utils/prisma";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
+/**
+ * @from:        src/app/(admin)/admin/dashboard/page.tsx
+ * @params:      -
+ * @return:      Object
+ * @description: Админ хянах самбарын үндсэн үзүүлэлтүүдийг авах
+ */
 const getMainIndicatorsModel = async () => {
   const cookieStore = cookies();
   const user_id = cookieStore.get("user_id")?.value;
@@ -149,6 +155,12 @@ const getMainIndicatorsModel = async () => {
   }
 };
 
+/**
+ * @from:        src/app/(admin)/admin/dashboard/page.tsx
+ * @params:      -
+ * @return:      Object
+ * @description: Өгөгдлийн сангийн дэлгэрэнгүй мэдээллийг авах (төрөл, байршил, зөвшөөрөл гэх мэт)
+ */
 const getDashboardDatabaseModel = async () => {
   const cookieStore = cookies();
   const user_id = cookieStore.get("user_id")?.value;
@@ -370,6 +382,12 @@ const getDashboardDatabaseModel = async () => {
   }
 };
 
+/**
+ * @from:        src/app/(admin)/admin/dashboard/page.tsx
+ * @params:      -
+ * @return:      Object
+ * @description: Бүх өгөгдлийн сангийн жагсаалтыг байгууллагаар нь авах
+ */
 const getAlldata = async () => {
   const cookieStore = cookies();
   const user_id = cookieStore.get("user_id")?.value;
@@ -415,6 +433,12 @@ const getAlldata = async () => {
     throw new Error("Failed to fetch indicator");
   }
 };
+/**
+ * @from:        -
+ * @params:      org_id
+ * @return:      Array
+ * @description: Байгууллагын өгөгдлийн санг төрлөөр нь бүлэглэж тоолох
+ */
 const getDashboardDatabaseType = async (org_id: number) => {
   try {
     const data = await prisma.md_database.groupBy({
@@ -434,6 +458,12 @@ const getDashboardDatabaseType = async (org_id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/(site)/chart/page.tsx
+ * @params:      -
+ * @return:      Object
+ * @description: Бүх байгууллага болон тэдгээрийн өгөгдлийн сангийн мэдээллийг авах
+ */
 const getAllOrgs = async () => {
   try {
     let allDataType = `SELECT o.id as org_id, o.name as org_name, a.id as db_id, a.name as db_name, 

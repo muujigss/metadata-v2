@@ -1,4 +1,10 @@
 import prisma from "@/utils/prisma";
+/**
+ * @from:        src/app/(site)/page.tsx
+ * @params:      is_active
+ * @return:      Object
+ * @description: Нүүр хуудасны үндсэн үзүүлэлтүүдийн тоог авах
+ */
 export const getMainIndicatorModel = async (is_active: boolean | undefined) => {
   try {
     const organizations = await prisma.md_organization?.count({

@@ -4,6 +4,12 @@ import prisma from "@/utils/prisma";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
+/**
+ * @from:        src/app/api/classification
+ * @params:      page, take, pageNumber, filter
+ * @return:      Object
+ * @description: Ангиллын жагсаалтыг шүүлтүүртэйгээр авах
+ */
 export const getClassificationModel = async (
   page: number,
   take: number,
@@ -140,6 +146,12 @@ export const getClassificationModel = async (
   }
 };
 
+/**
+ * @from:        src/app/api/classification/[id]
+ * @params:      id
+ * @return:      Object
+ * @description: Ангиллын мэдээллийг ID-гаар авах
+ */
 export const getClassificationIdModel = async (id: number) => {
   try {
     const cl = await prisma.md_classification.findUnique({
@@ -210,6 +222,12 @@ export const getClassificationIdModel = async (id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/(site)/classification/page.tsx
+ * @params:      name, sectorId, orgId
+ * @return:      Object
+ * @description: Ангиллыг шүүлтүүрээр хайх
+ */
 export const getClassificationByFilter = async (
   name: string = "",
   sectorId: string = "",
@@ -263,6 +281,12 @@ export const getClassificationByFilter = async (
   }
 };
 
+/**
+ * @from:        src/app/api/classification/create
+ * @params:      data
+ * @return:      Object
+ * @description: Ангилал үүсгэх болон засах
+ */
 export const createClassificationModel = async (data: IClassification) => {
   const cookieStore = cookies();
   const user_id = cookieStore.get("user_id")?.value;
@@ -390,6 +414,12 @@ export const createClassificationModel = async (data: IClassification) => {
   }
 };
 
+/**
+ * @from:        -
+ * @params:      data, id
+ * @return:      Object
+ * @description: Ангилал засах
+ */
 export const updateClassificationModel = async (
   data: IClassification,
   id: number
@@ -442,6 +472,12 @@ export const updateClassificationModel = async (
     throw new Error("Failed to updateClassificationModel");
   }
 };
+/**
+ * @from:        src/app/api/classification/code
+ * @params:      data
+ * @return:      Array
+ * @description: Ангиллын код оруулах
+ */
 export const insertClassificationCodeModel = async (
   data: IClassificationCode[]
 ) => {
@@ -494,6 +530,12 @@ export const insertClassificationCodeModel = async (
 };
 
 ////////getOrgTablesByIdModel - old - getTableListbyDbId
+/**
+ * @from:        src/app/api/classification/table/[id]
+ * @params:      tbl_id
+ * @return:      Object
+ * @description: Хүснэгтийн ID-гаар ангиллыг авах
+ */
 export const getClassificationByTblId = async (tbl_id: number) => {
   try {
     const table = await prisma.md_table.findUnique({

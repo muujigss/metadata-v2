@@ -3,6 +3,12 @@ import prisma from "@/utils/prisma";
 import { Prisma } from "@prisma/client";
 import { cookies } from "next/headers";
 
+/**
+ * @from:        src/app/api/indicator
+ * @params:      page, take, pageNumber, filter
+ * @return:      Object
+ * @description: Үзүүлэлтийн жагсаалтыг шүүлтүүртэйгээр авах
+ */
 const getIndicatorsModel = async (
   page: number,
   take: number,
@@ -155,6 +161,12 @@ const getIndicatorsModel = async (
   }
 };
 
+/**
+ * @from:        src/app/api/indicator/[id]
+ * @params:      id
+ * @return:      Object
+ * @description: Үзүүлэлтийн дэлгэрэнгүй мэдээллийг ID-гаар авах
+ */
 const getIndicatorModel = async (id: number) => {
   try {
     const indicator = await prisma.md_indicator.findUnique({
@@ -257,6 +269,12 @@ const getIndicatorModel = async (id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/(site)/indicator/page.tsx
+ * @params:      indicator_name, sectorId, orgId
+ * @return:      Object
+ * @description: Үзүүлэлтийг шүүлтүүрээр хайх (байгууллага болон салбараар)
+ */
 const getIndicatorByFilter = async (
   indicator_name: string = "",
   sectorId: string = "",
@@ -303,6 +321,12 @@ const getIndicatorByFilter = async (
   }
 };
 
+/**
+ * @from:        src/app/api/indicator/create
+ * @params:      inputIndicator
+ * @return:      Object
+ * @description: Шинэ үзүүлэлт үүсгэх эсвэл шинэчлэх
+ */
 const createIndicatorModel = async (inputIndicator: IIndicator) => {
   const cookieStore = cookies();
   const user_id = cookieStore.get("user_id")?.value;
@@ -459,6 +483,12 @@ const createIndicatorModel = async (inputIndicator: IIndicator) => {
 };
 
 ////////getOrgTablesByIdModel - old - getTableListbyDbId
+/**
+ * @from:        src/app/api/indicator/table/[id]
+ * @params:      tbl_id
+ * @return:      Object
+ * @description: Хүснэгтийн ID-гаар үзүүлэлтүүдийг авах
+ */
 const getIndicatorsByTblId = async (tbl_id: number) => {
   try {
     const table = await prisma.md_table.findUnique({
@@ -488,6 +518,12 @@ const getIndicatorsByTblId = async (tbl_id: number) => {
   }
 };
 
+/**
+ * @from:        src/app/api/indicator/table/prev/[id]
+ * @params:      tbl_id
+ * @return:      Object
+ * @description: Хүснэгтийн ID-гаар хамгийн сүүлийн үзүүлэлт авах
+ */
 const getPrevIndicatorByTblId = async (tbl_id: number) => {
   try {
     const table = await prisma.md_table.findUnique({
@@ -528,6 +564,12 @@ export {
   getDuplicateIndicatorDetailsModel,
 };
 
+/**
+ * @from:        src/app/api/indicator/duplicate
+ * @params:      -
+ * @return:      Array
+ * @description: Давхардсан үзүүлэлтүүдийг авах
+ */
 const getDuplicateIndicatorsModel = async () => {
   try {
     const duplicates = await prisma.$queryRaw`
@@ -552,6 +594,12 @@ const getDuplicateIndicatorsModel = async () => {
   }
 };
 
+/**
+ * @from:        src/app/api/indicator/duplicate/[name]
+ * @params:      name
+ * @return:      Array
+ * @description: Нэрээр давхардсан үзүүлэлтүүдийн дэлгэрэнгүйг авах
+ */
 const getDuplicateIndicatorDetailsModel = async (name: string) => {
   try {
     const indicators = await prisma.md_indicator.findMany({

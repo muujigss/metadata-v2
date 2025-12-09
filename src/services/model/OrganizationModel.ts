@@ -1,10 +1,10 @@
 import prisma from "@/utils/prisma";
 
 /**
- * @from:        sdfsdf
- * @params:      sdfsdf
+ * @from:        src/app/api/organization
+ * @params:      -
  * @return:      Array
- * @description: sdfsdf
+ * @description: Идэвхтэй болон зөвшөөрөгдсэн байгууллагуудын жагсаалт авах
  */
 export const getOrganizationModel = async () => {
   try {
@@ -46,6 +46,12 @@ export const getOrganizationModel = async () => {
   }
 };
 
+/**
+ * @from:        src/app/api/organization/[id]
+ * @params:      id
+ * @return:      Object
+ * @description: Байгууллагын мэдээллийг ID-гаар авах
+ */
 export const getOrganizationByIdModel = async (id: number) => {
   try {
     const orgList = await prisma.md_organization.findUnique({
@@ -81,6 +87,12 @@ export const getOrganizationByIdModel = async (id: number) => {
     throw new Error("Failed to fetch forms");
   }
 };
+/**
+ * @from:        src/app/api/organization/create
+ * @params:      data
+ * @return:      Object
+ * @description: Шинэ байгууллага үүсгэх
+ */
 export const createOrganizationModel = async (data: any) => {
   const {
     org_name,
@@ -118,6 +130,12 @@ export const createOrganizationModel = async (data: any) => {
     throw new Error("Failed to fetch forms");
   }
 };
+/**
+ * @from:        src/app/api/organization/role-count/[id]
+ * @params:      org_id
+ * @return:      Array
+ * @description: Байгууллагын хэрэглэгчдийн тоог үүргээр нь авах
+ */
 export const getOrgRoleCount = async (org_id: number) => {
   try {
     const result = await prisma.$queryRaw<{
