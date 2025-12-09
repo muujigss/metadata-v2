@@ -523,7 +523,9 @@ const CreateDatabase = ({
           {status == "success" ? (
             <Alert severity="success">Амжилттай хадгаллаа ... </Alert>
           ) : status == "error" ? (
-            <Alert severity="error">{ warningMessage }</Alert>
+            <Alert severity="error">
+              <span dangerouslySetInnerHTML={{ __html: warningMessage }} />
+            </Alert>
           ) : null}
         </Box>
       </Snackbar>
@@ -538,11 +540,34 @@ const CreateDatabase = ({
               <form className="w-full" method="POST" onSubmit={handleSubmit}>
                 <Input type="hidden" value={values?.id} />
 
+
+                  <div className="flex justify-end p-3">
+                    <Button
+                      className="text-primary-default bg-primary-medium bg-opacity-50 hover:bg-tertirary-background hover:text-tertirary-default"
+                      variant="contained"
+                      color="success"
+                      type="submit"
+                      size="large"
+                      disabled={loading || (step !== 2)}
+                      startIcon={<SaveIcon />}
+                    >
+                      {loading ? "Хадгалж байна..." : "Хадгалах"}
+                    </Button>
+                  </div>
                 <Tabs value={step} onChange={async (e, newStep) => {
-                  if (newStep > step) {
-                    const errors = await validateForm();
-                    console.log('-----errors------', errors)
-                    if (Object.keys(errors).length !== 0) return; // block
+                  const errors = await validateForm();
+                  console.log('-----errors------', errors, Object.keys(errors).length)
+                  if (Object.keys(errors).length > 0) {
+                    let txtErr = ''
+                    for (const key in errors) {
+                      if (errors.hasOwnProperty(key)) {
+                        txtErr += errors[key] + '<br />';
+                        console.log(`Field: ${key}, Error: ${errors[key]}`);
+                      }
+                    }
+                    setStatus('error');
+                    setWarningMessage(txtErr);
+                    return;
                   }
                   if (step === 0) {
                     if (!selectedTab0_regulation_file_id) {
@@ -1576,7 +1601,7 @@ const CreateDatabase = ({
                         />
                       </FormBox>
       
-                      <div className="flex justify-end p-3">
+                      {/* <div className="flex justify-end p-3">
                         <Button
                           className="text-primary-default bg-primary-medium bg-opacity-50 hover:bg-tertirary-background hover:text-tertirary-default"
                           variant="contained"
@@ -1588,7 +1613,7 @@ const CreateDatabase = ({
                         >
                           {loading ? "Хадгалж байна..." : "Хадгалах"}
                         </Button>
-                      </div>
+                      </div> */}
                     </>
                   )
                 }
