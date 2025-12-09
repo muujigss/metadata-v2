@@ -94,7 +94,7 @@ const MainList = () => {
       
       {userInfo?.user_level == 1 && (
         <Link href={"/admin/request"}>
-          <Tooltip title={"Өгөгдлийн хүсэлт"}>
+          <Tooltip title={"Хүсэлт (Сан)"}>
             <ListItemButton
               sx={{
                 backgroundColor:
@@ -104,14 +104,14 @@ const MainList = () => {
               <ListItemIcon>
                 <GitPullRequestFillIcon color="#518df9" />
               </ListItemIcon>   
-              <ListItemText primary={"Өгөгдлийн хүсэлт"} />
+              <ListItemText primary={"Хүсэлт (Сан)"} />
             </ListItemButton>
           </Tooltip>
         </Link>
       )}
       {(userInfo?.user_level == 1) && (
         <Link href={"/admin/org-request"}>
-          <Tooltip title={"Бүртгүүлэх хүсэлт"}>
+          <Tooltip title={"Хүсэлт (Бүртгүүлэх)"}>
             <ListItemButton
               sx={{
                 backgroundColor:
@@ -121,7 +121,7 @@ const MainList = () => {
               <ListItemIcon>
                 <GitPullRequestFillIcon color="#518df9" />
               </ListItemIcon>   
-              <ListItemText primary={"Бүртгүүлэх хүсэлт"} />
+              <ListItemText primary={"Хүсэлт (Бүртгүүлэх)"} />
             </ListItemButton>
           </Tooltip>
         </Link>

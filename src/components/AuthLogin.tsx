@@ -52,7 +52,7 @@ const AuthLogin = () => {
         setUserInfo(response.user);
 
         if (response.user?.user_level === 1) {
-          router.push("/admin/request");
+          router.push("/admin/org-request");
         } else if (response.user?.user_level === 2) {
           router.push("/admin/user");
         } else if (response.user?.user_level === 3) {
