@@ -5,6 +5,9 @@ import { getActionsModel } from "@/services/model/ActionModel";
 import { Box, Typography } from "@mui/material";
 
 import React, { Suspense } from "react";
+
+export const dynamic = "force-dynamic";
+
 const RequestActionPage = async () => {
   const columns = [
     { field: "id", headerName: "№", width: 10 },
