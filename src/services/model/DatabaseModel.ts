@@ -7,7 +7,20 @@ import moment from "moment";
 
 const getDatabaseModelList = async () => {
   try {
-    const databases = await prisma.md_database.findMany({})
+    const databases = await prisma.md_database.findMany({
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        is_active: true,
+        actions: {
+          select: {
+            id: true,
+            action_type: true,
+          },
+        }
+      },
+    })
     return databases;
   } catch (error) {
     console.error("Error in getDatabaseModelList:", error);
