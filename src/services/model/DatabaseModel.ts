@@ -5,6 +5,16 @@ import { Prisma } from "@prisma/client";
 import { stat } from "fs";
 import moment from "moment";
 
+const getDatabaseModelList = async () => {
+  try {
+    const databases = await prisma.md_database.findMany({})
+    return databases;
+  } catch (error) {
+    console.error("Error in getDatabaseModelList:", error);
+    throw new Error("Failed to fetch getDatabaseModelList");
+  }
+};
+
 const getDatabaseModel = async (
   page: number,
   take: number,
@@ -1209,4 +1219,5 @@ export {
   checkStatusMetadata,
   getOneDatabaseOther,
   getDatabaseTypeSystemModel,
+  getDatabaseModelList,
 };

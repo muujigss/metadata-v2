@@ -93,6 +93,9 @@ const DBList = ({
   const handleModal = () => {
     setOpenModal(!openModal);
   };
+  const handleDownload = () => {
+    window.location.href = "/api/export/excel/database";
+  };
 
   return (
     <Box>
@@ -155,6 +158,7 @@ const DBList = ({
           }}
           size="small"
           startIcon={<FileExcel2LineIcon size={24} />}
+          onClick={handleDownload}
         >
           татах
         </Button>

@@ -146,7 +146,7 @@ const OrgRequestListPage = () => {
         />
       </Box>
       
-      <TableContainer component={Paper} elevation={0} className="border">
+      <TableContainer sx={{ maxHeight: 550 }} component={Paper} elevation={0} className="border">
         <Table>
           <TableHead className="bg-gray-50">
             <TableRow>

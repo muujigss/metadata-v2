@@ -80,7 +80,7 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
         onChange={(e) => setSearchTerm(e.target.value)}
       />
       <Suspense fallback={<Loader />}>
-        <TableContainer sx={{ maxHeight: 700 }}>
+        <TableContainer sx={{ maxHeight: 550 }}>
           <Table stickyHeader>
             <TableHead>
               <TableRow>

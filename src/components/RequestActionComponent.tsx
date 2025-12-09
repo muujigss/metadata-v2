@@ -112,7 +112,7 @@ const RequestActionComponent = ({
   if (isLoading) return <Loader />;
   return (
     <Box>
-      <TableContainer sx={{ maxHeight: 700 }}>
+      <TableContainer sx={{ maxHeight: 550 }}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>
