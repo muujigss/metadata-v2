@@ -33,6 +33,12 @@ const OrgRequestListPage = () => {
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null);
   const [rejectReason, setRejectReason] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const filteredRequests = requests.filter((req) =>
+    req.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (req.org_short_name && req.org_short_name.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   const fetchRequests = async () => {
     try {
@@ -116,6 +122,17 @@ const OrgRequestListPage = () => {
       <Typography variant="h5" className="mb-4 text-primary-main font-semibold">
         Байгууллагын хүсэлтүүд
       </Typography>
+
+      <Box className="mb-4 flex justify-end">
+        <TextField
+          label="Байгууллага хайх"
+          variant="outlined"
+          size="small"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full md:w-1/3"
+        />
+      </Box>
       
       <TableContainer component={Paper} elevation={0} className="border">
         <Table>
@@ -130,14 +147,14 @@ const OrgRequestListPage = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {requests.length === 0 ? (
+            {filteredRequests.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={6} align="center" className="py-8 text-gray-500">
                   Хүсэлт байхгүй байна
                 </TableCell>
               </TableRow>
             ) : (
-              requests.map((req) => (
+              filteredRequests.map((req) => (
                 <TableRow key={req.id} hover>
                   <TableCell>
                     <div className="font-medium">{req.name}</div>
