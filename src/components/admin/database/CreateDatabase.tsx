@@ -897,6 +897,7 @@ const CreateDatabase = ({
                           onChange={(e: any) => {
                             setFieldValue("tab1_name", e.target.value);
                           }}
+                          errors={errors.tab1_name}
                         />
                       </FormBox>
                       <FormBox>
@@ -912,7 +913,6 @@ const CreateDatabase = ({
                           onChange={(e: any) => {
                             setFieldValue("tab1_short_name", e.target.value);
                           }}
-                          errors={errors.tab1_short_name}
                         />
                       </FormBox>
                       <FormBox>
