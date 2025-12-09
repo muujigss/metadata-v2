@@ -550,6 +550,18 @@ const CreateDatabase = ({
                       setWarningMessage("Дотооддоо мөрдөж буй дүрэм, журам, шийдвэр файлыг заавал хавсаргах шаардлагатай.");
                       return;
                     }
+                    const serviceErr = serviceItems.filter(a => !a.value)
+                    if (serviceErr.length > 0) {
+                      setStatus('error');
+                      setWarningMessage("Үзүүлэх үйлчилгээний жагсаалт хоосон байж болохгүй.");
+                      return;
+                    }
+                    const otherInfoErr = otherInfoItems.filter(a => !a.value)
+                    if (otherInfoErr.length > 0) {
+                      setStatus('error');
+                      setWarningMessage("Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл хоосон байж болохгүй.");
+                      return;
+                    }
                     setFieldValue("tab0_service_list", serviceItems.map(a => a.value))
                     if (serviceItems.length === 0) {
                       setStatus('error');
@@ -559,6 +571,12 @@ const CreateDatabase = ({
                     setFieldValue("tab0_other_info_list", otherInfoItems.map(a => a.value))
                   }
                   if (step === 1) {
+                    const fileTypeInfoErr = fileTypeInfoItems.filter(a => !a.type || !a.count || !a.size || !a.format)
+                    if (fileTypeInfoErr.length > 0) {
+                      setStatus('error');
+                      setWarningMessage("Мэдээллийн сангийн файлын сангийн мэдээлэл (төрөл, тоо, хэмжээ, формат) хоосон байж болохгүй.");
+                      return;
+                    }
                     if (!selectedTab1_diagram_file_id) {
                       setStatus('error');
                       setWarningMessage("Мэдээллийн сангийн диаграм файлыг заавал хавсаргах шаардлагатай.");
