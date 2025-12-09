@@ -8,7 +8,7 @@ import {
   useGetSectors,
   useGetSpecification,
 } from "@/utils/customHooks";
-import { Alert, Button, Input, Box, Snackbar, Tabs, Tab, Typography } from "@mui/material";
+import { Alert, Button, Input, Box, Snackbar, Tabs, Tab, Typography, FormControl, Select, MenuItem } from "@mui/material";
 import { Sidebar } from "flowbite-react";
 import { Formik } from "formik";
 import { useContext, useEffect, useState } from "react";
@@ -45,6 +45,13 @@ import { StyledInput } from "../theme/InputTheme";
 interface Item {
   id: string;
   value: string;
+}
+interface ItemFileInfo {
+  id: string;
+  type: number;
+  count: number;
+  size: number;
+  format: string;
 }
 
 const CreateDatabase = ({
@@ -85,6 +92,57 @@ const CreateDatabase = ({
   const [selectedTab1_diagram_file_id, setSelectedTab1_diagram_file_id] = useState<File | null>(null);
   const [serviceItems, setServiceItems] = useState<Item[]>([]);
   const [otherInfoItems, setOtherInfoItems] = useState<Item[]>([]);
+  const [fileTypeInfoItems, setFileTypeInfoItems] = useState<ItemFileInfo[]>([]);
+  const fileTypeOptions = [
+    { label: "Image", value: 1 },
+    { label: "Video", value: 2 },
+    { label: "Document", value: 3 },
+    { label: "Audio", value: 4 },
+    { label: "Archive", value: 5 },
+  ];
+  
+  const fileFormatOptions: Record<number, { label: string; value: string }[]> = {
+    1: [ // Image
+      { label: "PNG", value: "png" },
+      { label: "JPG", value: "jpg" },
+      { label: "JPEG", value: "jpeg" },
+      { label: "GIF", value: "gif" },
+      { label: "SVG", value: "svg" },
+      { label: "WEBP", value: "webp" },
+    ],
+    2: [ // Video
+      { label: "MP4", value: "mp4" },
+      { label: "AVI", value: "avi" },
+      { label: "MOV", value: "mov" },
+      { label: "WMV", value: "wmv" },
+      { label: "MKV", value: "mkv" },
+      { label: "WEBM", value: "webm" },
+    ],
+    3: [ // Document
+      { label: "PDF", value: "pdf" },
+      { label: "DOC", value: "doc" },
+      { label: "DOCX", value: "docx" },
+      { label: "XLS", value: "xls" },
+      { label: "XLSX", value: "xlsx" },
+      { label: "TXT", value: "txt" },
+      { label: "CSV", value: "csv" },
+      { label: "ODT", value: "odt" },
+    ],
+    4: [ // Audio
+      { label: "MP3", value: "mp3" },
+      { label: "WAV", value: "wav" },
+      { label: "AAC", value: "aac" },
+      { label: "FLAC", value: "flac" },
+      { label: "OGG", value: "ogg" },
+    ],
+    5: [ // Archive
+      { label: "ZIP", value: "zip" },
+      { label: "RAR", value: "rar" },
+      { label: "7Z", value: "7z" },
+      { label: "TAR", value: "tar" },
+      { label: "GZ", value: "gz" },
+    ],
+  };
 
   //#region /Үзүүлэх үйлчилгээний жагсаалт/
 
@@ -120,6 +178,33 @@ const CreateDatabase = ({
   };
   const handleDeleteOtherInfo = (id: string) => {
     setOtherInfoItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  //#endregion
+
+  //#region /Мэдээллийн сангийн файлын сангийн мэдээлэл (төрөл, тоо, хэмжээ, формат)/
+
+  const addFileTypeInfoItem = () => {
+    setFileTypeInfoItems(prev => [
+      ...prev,
+      { id: `item-${prev.length}-${Date.now()}`, type: 0, count: 0, size: 0, format: "" }
+    ]);
+  };
+  const handleChangeFileTypeInfo = (
+    id: string,
+    field: keyof ItemFileInfo,
+    value: any
+  ) => {
+    setFileTypeInfoItems(prev =>
+      prev.map(item =>
+        item.id === id
+          ? { ...item, [field]: value }
+          : item
+      )
+    );
+  };
+  const handleDeleteFileTypeInfo = (id: string) => {
+    setFileTypeInfoItems(prev => prev.filter(item => item.id !== id));
   };
 
   //#endregion
@@ -192,6 +277,7 @@ const CreateDatabase = ({
     tab1_db_manage_system: dbTechnologyData?.db_manage_system || "", // 5.11.2.3
     tab1_db_size: dbTechnologyData?.db_size || 0, // 5.11.2.4
     tab1_db_rows_count: dbTechnologyData?.db_rows_count || 0, // 5.11.2.5
+    tab1_database_location: dbTechnologyData?.database_location || "", //  5.11.2.6
     tab1_resource_location: dbTechnologyData?.resource_location || "", //  5.11.2.6
     tab1_diagram_file_id: dbTechnologyData?.diagram_file_id || null, //  5.11.2.7
     tab1_access_control_info: dbTechnologyData?.access_control_info || "", //  5.11.2.8
@@ -219,7 +305,7 @@ const CreateDatabase = ({
     if (dbActivityData?.copyright_file_id) {
       setSelectedTab0_copyright_file_id(dbActivityData?.copyright_file);
     }
-  }, [dbActivityData?.copyright_file_id]);
+  }, [dbActivityData?.copyright_file_id, dbActivityData?.copyright_file]);
   useEffect(() => {
     if (dbTechnologyData?.diagram_file) {
       setSelectedTab1_diagram_file_id(dbTechnologyData?.diagram_file);
@@ -237,6 +323,11 @@ const CreateDatabase = ({
       setOtherInfoItems(parsed)
     }
   }, [dbActivityData?.other_info_list]);
+  useEffect(() => {
+    if (dbTechnologyData?.file_type_info) {
+      setFileTypeInfoItems(dbTechnologyData?.file_type_info)
+    }
+  }, [dbTechnologyData?.file_type_info]);
 
   const onSubmit = async (values: IDatabase) => {
     setLoading(true);
@@ -294,6 +385,7 @@ const CreateDatabase = ({
         db_manage_system: values?.tab1_db_manage_system,
         db_size: values?.tab1_db_size,
         db_rows_count: values?.tab1_db_rows_count,
+        database_location: values?.tab1_database_location,
         resource_location: values?.tab1_resource_location,
         diagram_file_id: null,
         access_control_info: values?.tab1_access_control_info,
@@ -311,6 +403,16 @@ const CreateDatabase = ({
       let diagramFileId = dbTechnologyData?.diagram_file_id;
       let copyrightFileId = dbActivityData?.copyright_file_id;
       if (!dbActivityData || !dbTechnologyData) {
+        const check_regulation_file = await checkFileSize(selectedTab0_regulation_file_id)
+        if (!check_regulation_file.check) {
+          setStatus('error');
+          setWarningMessage(check_regulation_file?.message);
+        }
+        const check_diagram_file = await checkFileSize(selectedTab1_diagram_file_id)
+        if (!check_diagram_file.check) {
+          setStatus('error');
+          setWarningMessage(check_diagram_file?.message);
+        }
         regulationFileId = (await saveFile(selectedTab0_regulation_file_id))?.file?.id;
         diagramFileId = (await saveFile(selectedTab1_diagram_file_id))?.file?.id;
         if (selectedTab0_copyright_file_id) {
@@ -387,6 +489,13 @@ const CreateDatabase = ({
     const uploaded = await saveFile(newFile);
     return uploaded?.file?.id ?? oldFileId;
   };
+  const checkFileSize = (file: any) => {
+    const MAX_SIZE = 40 * 1024 * 1024; // 40MB
+    if (file.size > MAX_SIZE) {
+      return { check: false, message: "Файлын хэмжээ 40MB-аас хэтэрч болохгүй" };
+    }
+    return { check: true };
+  };
 
   const getValidationSchema = () => {
     switch (step) {
@@ -441,6 +550,18 @@ const CreateDatabase = ({
                       setWarningMessage("Дотооддоо мөрдөж буй дүрэм, журам, шийдвэр файлыг заавал хавсаргах шаардлагатай.");
                       return;
                     }
+                    const serviceErr = serviceItems.filter(a => !a.value)
+                    if (serviceErr.length > 0) {
+                      setStatus('error');
+                      setWarningMessage("Үзүүлэх үйлчилгээний жагсаалт хоосон байж болохгүй.");
+                      return;
+                    }
+                    const otherInfoErr = otherInfoItems.filter(a => !a.value)
+                    if (otherInfoErr.length > 0) {
+                      setStatus('error');
+                      setWarningMessage("Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл хоосон байж болохгүй.");
+                      return;
+                    }
                     setFieldValue("tab0_service_list", serviceItems.map(a => a.value))
                     if (serviceItems.length === 0) {
                       setStatus('error');
@@ -450,11 +571,18 @@ const CreateDatabase = ({
                     setFieldValue("tab0_other_info_list", otherInfoItems.map(a => a.value))
                   }
                   if (step === 1) {
+                    const fileTypeInfoErr = fileTypeInfoItems.filter(a => !a.type || !a.count || !a.size || !a.format)
+                    if (fileTypeInfoErr.length > 0) {
+                      setStatus('error');
+                      setWarningMessage("Мэдээллийн сангийн файлын сангийн мэдээлэл (төрөл, тоо, хэмжээ, формат) хоосон байж болохгүй.");
+                      return;
+                    }
                     if (!selectedTab1_diagram_file_id) {
                       setStatus('error');
                       setWarningMessage("Мэдээллийн сангийн диаграм файлыг заавал хавсаргах шаардлагатай.");
                       return;
                     }
+                    setFieldValue("tab1_file_type_info", fileTypeInfoItems);
                   }
                   setStep(newStep);
                 }}>
@@ -818,16 +946,6 @@ const CreateDatabase = ({
                           }}
                           errors={errors?.tab1_db_manage_system}
                         />
-                        {/* <InputComponent
-                          type="text"
-                          name="tab1_db_manage_system"
-                          label="Мэдээллийн сан удирдах системийн нэр"
-                          value={values?.tab1_db_manage_system}
-                          onChange={(e: any) => {
-                            setFieldValue("tab1_db_manage_system", e.target.value);
-                          }}
-                          errors={errors.tab1_db_manage_system}
-                        /> */}
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
@@ -862,6 +980,22 @@ const CreateDatabase = ({
                             setFieldValue("tab1_db_rows_count", e.target.value);
                           }}
                           errors={errors?.tab1_db_rows_count}
+                        />
+                      </FormBox>
+                      <FormBox>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          <LabelComponent label="5.11.2.6. Мэдээллийн сангийн байршил" />
+                          <TooltipComponent content="Мэдээллийн сангийн байршил" />
+                        </Box>
+                        <InputComponent
+                          type="text"
+                          name="tab1_database_location"
+                          label="Мэдээллийн сангийн байршил"
+                          value={values?.tab1_database_location}
+                          onChange={(e: any) => {
+                            setFieldValue("tab1_database_location", e.target.value);
+                          }}
+                          errors={errors.tab1_database_location}
                         />
                       </FormBox>
                       <FormBox>
@@ -919,23 +1053,84 @@ const CreateDatabase = ({
                       </FormBox>
                       <FormBox>
                         <Box sx={{ display: "flex", alignItems: "center" }}>
-                          <LabelComponent label="5.11.2.9. Мэдээллийн санд хадгалагдаж буй файлын төрлүүд" />
-                          <TooltipComponent content="Мэдээллийн санд хадгалагдаж буй файлын төрлүүд" />
+                          <LabelComponent label="5.11.2.9. Мэдээллийн сангийн файлын сангийн мэдээлэл (төрөл, тоо, хэмжээ, формат)" />
+                          <TooltipComponent content="Мэдээллийн сангийн файлын сангийн мэдээлэл (төрөл, тоо, хэмжээ, формат)" />
                         </Box>
                         <div>
-                          <ReactQuill
-                            value={values?.tab1_file_type_info}
-                            onChange={(content) => {
-                              const textContent = content.replace(/<[^>]*>/g, "");
-                              if (textContent) setFieldValue("tab1_file_type_info", content)
-                              else setFieldValue("tab1_file_type_info", null)
-                            }}
-                          />
-                          {errors.tab1_file_type_info && (
-                            <p className="text-red-600 text-text-body-small mt-2 p-1">
-                              {errors.tab1_file_type_info}
-                            </p>
-                          )}
+                          <Button onClick={addFileTypeInfoItem} variant="outlined">
+                            Нэмэх
+                          </Button>
+                          <div className="mt-3 flex gap-2 flex-col">
+                            <div className="flex gap-11 items-center">
+                              <div>Файл төрөл</div>
+                              <div>Файл тоо</div>
+                              <div>Файл хэмжээ</div>
+                              <div>Файл формат</div>
+                            </div>
+                            {fileTypeInfoItems.map((item, index) => {
+                              return (
+                                <div className="flex gap-8 items-center" key={index}>
+                                  {/* { index + 1 }. */}
+                                  <FormControl size="small" className="w-24">
+                                    <Select
+                                      value={item.type}
+                                      onChange={(e) =>
+                                        handleChangeFileTypeInfo(item.id, "type", e.target.value)
+                                      }
+                                      displayEmpty
+                                    >
+                                      <MenuItem value="" disabled>Файл төрөл</MenuItem>
+                                      {fileTypeOptions.map((opt) => (
+                                        <MenuItem key={opt.value} value={opt.value}>
+                                          {opt.label}
+                                        </MenuItem>
+                                      ))}
+                                    </Select>
+                                  </FormControl>
+                                  <StyledInput
+                                    name={`outlined-count`}
+                                    className="input w-32"
+                                    id={`outlined-count`}
+                                    type="number"
+                                    value={item.count}
+                                    onChange={(e) => handleChangeFileTypeInfo(item.id, "count", Number(e.target.value)) }
+                                    placeholder={`Тоо ${index+1}`}
+                                    fullWidth
+                                    size="small"
+                                  />
+                                  <StyledInput
+                                    name={`outlined-size`}
+                                    className="input w-32"
+                                    id={`outlined-size`}
+                                    type="number"
+                                    value={item.size}
+                                    onChange={(e) => handleChangeFileTypeInfo(item.id, "size", Number(e.target.value)) }
+                                    placeholder={`Хэмжээ ${index+1}`}
+                                    fullWidth
+                                    size="small"
+                                  />
+                                  <FormControl size="small" className="w-24">
+                                    <Select
+                                      value={item.format}
+                                      onChange={(e) =>
+                                        handleChangeFileTypeInfo(item.id, "format", e.target.value)
+                                      }
+                                      displayEmpty
+                                    >
+                                      <MenuItem value="" disabled>Файл формат</MenuItem>
+                                      {item.type && fileFormatOptions[item.type].map((opt) => (
+                                        <MenuItem key={opt.value} value={opt.value}>
+                                          {opt.label}
+                                        </MenuItem>
+                                      ))}
+                                    </Select>
+                                  </FormControl>
+                                  <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => handleDeleteFileTypeInfo(item.id)}>
+                                  </Button>
+                                </div>
+                              )
+                            })}
+                          </div>
                         </div>
                       </FormBox>
                       {/* <FormBox>

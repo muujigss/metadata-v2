@@ -86,10 +86,11 @@ model md_database_technology {
   db_manage_system     String?
   db_size              Int?
   db_rows_count        Int?
+  database_location    String?
   resource_location    String?
   diagram_file_id      Int?
   access_control_info  String?
-  file_type_info       String?
+  file_type_info       Json?
   info_supply          String?
   service_name         String?
   content_info_supply  String?
