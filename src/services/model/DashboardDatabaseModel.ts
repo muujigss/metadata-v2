@@ -178,6 +178,7 @@ const getDashboardDatabaseModel = async () => {
   let indicatoTreeData = "";
   let dbTblType = "";
   let dbStartDate = "";
+  let dbStatusType = "";
   if (userLevel?.user_level == 3 || userLevel?.user_level == 2) {
     queryDbType = `Select * From (
       SELECT b.id, b.name,  cast(count(a.id) as int)as data_count FROM (
@@ -247,6 +248,26 @@ const getDashboardDatabaseModel = async () => {
     WHERE 1 = 1 and a.is_active = true
     GROUP BY start_date
     ORDER BY start_date`;
+
+    dbStatusType = `SELECT 
+      CASE 
+        WHEN a.action_type IN (5, 6) THEN 'Өөрчлөлт хийгдсэн'
+        WHEN a.action_type = 10 OR d.is_active = false THEN 'Ашиглалтаас гарсан'
+        WHEN a.action_type = 3 THEN 'Баталгаажсан'
+        ELSE 'Бусад'
+      END as name,
+      cast(count(d.id) as int) as value
+    FROM md_database d
+    LEFT JOIN md_action a ON d.id = a.item_id
+    WHERE d.org_id = ${orgId}
+    GROUP BY 
+      CASE 
+        WHEN a.action_type IN (5, 6) THEN 'Өөрчлөлт хийгдсэн'
+        WHEN a.action_type = 10 OR d.is_active = false THEN 'Ашиглалтаас гарсан'
+        WHEN a.action_type = 3 THEN 'Баталгаажсан'
+        ELSE 'Бусад'
+      END
+    ORDER BY name`;
   } else {
     queryDbType = `Select * From (
       SELECT b.id, b.name,  cast(count(a.id) as int)as data_count FROM (
@@ -292,6 +313,26 @@ const getDashboardDatabaseModel = async () => {
     WHERE 1 = 1 and a.is_active = true and t.is_active = true and i.is_active
     GROUP BY o.id, o.name, a.id, a.name, t.id, t.name, i.id, i.name
     order by o.id, a.id, t.id, i.id `;
+
+    dbStatusType = `SELECT 
+      CASE 
+        WHEN a.action_type IN (5, 6) THEN 'Өөрчлөлт хийгдсэн'
+        WHEN a.action_type = 10 OR d.is_active = false THEN 'Ашиглалтаас гарсан'
+        WHEN a.action_type = 3 THEN 'Баталгаажсан'
+        ELSE 'Бусад'
+      END as name,
+      cast(count(d.id) as int) as value
+    FROM md_database d
+    LEFT JOIN md_action a ON d.id = a.item_id
+    WHERE d.is_active = true
+    GROUP BY 
+      CASE 
+        WHEN a.action_type IN (5, 6) THEN 'Өөрчлөлт хийгдсэн'
+        WHEN a.action_type = 10 OR d.is_active = false THEN 'Ашиглалтаас гарсан'
+        WHEN a.action_type = 3 THEN 'Баталгаажсан'
+        ELSE 'Бусад'
+      END
+    ORDER BY name`;
   }
 
   try {
@@ -308,6 +349,9 @@ const getDashboardDatabaseModel = async () => {
     const dbTable = await prisma.$queryRaw`${Prisma.raw(dbTblType)}`;
 
     const dbDate = await prisma.$queryRaw`${Prisma.raw(dbStartDate)}`;
+
+    const dbStatus = await prisma.$queryRaw`${Prisma.raw(dbStatusType)}`;
+    
     return {
       dataByDbType,
       dbLocation,
@@ -317,6 +361,7 @@ const getDashboardDatabaseModel = async () => {
       dbTable,
       orgName,
       dbDate,
+      dbStatus,
       userLevel,
     };
   } catch (error) {

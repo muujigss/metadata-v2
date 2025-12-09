@@ -27,7 +27,6 @@ import TreeViewRadial from "./TreeViewRadial";
 interface AdminDashboardProps {
   mainIndicator: any;
   databaseLocations: any;
-  databaseLocations: any;
   allOrg: any;
   duplicateIndicators?: any[];
 }
@@ -42,6 +41,7 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
   const orgName = databaseLocations?.orgName;
   const userLevel = databaseLocations?.userLevel;
   const tblData = databaseLocations?.dbTable;
+  const dbStatus = databaseLocations?.dbStatus || [];
 
   // Process Duplicate Data for Top 20 Pie Chart
   const topDuplicates = [...duplicateIndicators]
@@ -198,6 +198,43 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
     ],
   };
 
+  // 4. Database Status (Pie)
+  const dbStatusOption = {
+    title: { text: "Өгөгдлийн сангийн төлөв", left: "center" },
+    tooltip: { 
+      trigger: "item",
+      formatter: "{b}: {c} ({d}%)"
+    },
+    legend: { 
+      orient: "vertical", 
+      left: "left", 
+      top: "middle" 
+    },
+    series: [
+      {
+        name: "Төлөв",
+        type: "pie",
+        radius: ["40%", "70%"],
+        avoidLabelOverlap: false,
+        itemStyle: {
+          borderRadius: 10,
+          borderColor: "#fff",
+          borderWidth: 2,
+        },
+        label: { show: false, position: "center" },
+        emphasis: {
+          label: { show: true, fontSize: 14, fontWeight: "bold" },
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+        data: dbStatus,
+      },
+    ],
+  };
+
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h5" fontWeight="bold" gutterBottom color="primary">
@@ -244,12 +281,12 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
 
       {/* Charts Row 1 */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
             <ReactECharts option={dbTypeOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
             <ReactECharts
               option={dbLocationOption}
@@ -257,9 +294,14 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
             />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={4}>
+        <Grid item xs={12} md={3}>
           <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
             <ReactECharts option={frequencyOption} style={{ height: "100%" }} />
+          </Paper>
+        </Grid>
+        <Grid item xs={12} md={3}>
+          <Paper sx={{ p: 2, borderRadius: 3, height: 400 }}>
+            <ReactECharts option={dbStatusOption} style={{ height: "100%" }} />
           </Paper>
         </Grid>
       </Grid>
