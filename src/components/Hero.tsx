@@ -14,7 +14,7 @@ const Hero = ({ mainIndicator }: any) => {
             Төрөлжсөн бүртгэлийн нэгдсэн сан
           </h1>
           <p className="text-[16px] lg:text-[18px] font-medium text-justify text-gray-200 opacity-90 px-1 leading-relaxed max-w-2xl drop-shadow-md">
-            "Суурь болон төрөлжсөн мэдээллийн сан, мета-өгөгдлийн нэгдсэн бүртгэл."
+            &quot;Суурь болон төрөлжсөн мэдээллийн сан, мета-өгөгдлийн нэгдсэн бүртгэл.&quot;
           </p>
         <Search />
       </div>
