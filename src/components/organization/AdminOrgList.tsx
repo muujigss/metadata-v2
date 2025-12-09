@@ -28,10 +28,16 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
     queryFn: () => getOrganization(),
   });
   const [searchTerm, setSearchTerm] = useState("");
+
+  const handleDownload = () => {
+    window.location.href = "/api/export/excel/organization";
+  };
+
   if (isLoading) return <Loader />;
   const filteredData = data?.filter((org: IOrganization) =>
     org.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
   return (
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", py: 1 }}>
@@ -47,6 +53,7 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
               display: "flex",
             }}
             startIcon={<FileExcel2LineIcon size={24} />}
+            onClick={handleDownload}
           >
             татах
           </Button>
