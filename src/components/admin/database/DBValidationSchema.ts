@@ -97,7 +97,7 @@ const validationTab0Schema = Yup.object({
   tab0_status_description: Yup.string().required("Сан шинээр үүсгэх, бүтцийн өөрчлөлт оруулсан, ашиглалтаас гаргасан мэдээлэл оруулна уу."),
   tab0_change_description: Yup.string().required("Сан бүртдүүлэх ашиглах, солилцох үйл ажиллагаанд мөрдөж буй стандарт оруулна уу."),
   tab0_service_list: Yup.array().of(Yup.string()).optional(), // "Үзүүлэх үйлчилгээний жагсаалт оруулна уу."
-  tab0_other_info_list: Yup.string().required("Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл оруулна уу."),
+  tab0_other_info_list: Yup.array().of(Yup.string()).optional(), // "Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл оруулна уу."
   // tab0_full_org_info: Yup.string().required("Харуцагч байгууллагын нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
   // tab0_full_user_info: Yup.string().required("Харуцсан ажилтны нэр, хаяг, утасны дугаар, цахим шуудан оруулна уу."),
   tab0_copyright_description: Yup.string().required("Програм хангамж, мэдээллийн сангийн зохиогчийн эрхийн мэдээлэл оруулна уу."),

@@ -84,8 +84,11 @@ const CreateDatabase = ({
   const [selectedTab0_copyright_file_id, setSelectedTab0_copyright_file_id] = useState<File | null>(null);
   const [selectedTab1_diagram_file_id, setSelectedTab1_diagram_file_id] = useState<File | null>(null);
   const [serviceItems, setServiceItems] = useState<Item[]>([]);
+  const [otherInfoItems, setOtherInfoItems] = useState<Item[]>([]);
 
-  const addItem = () => {
+  //#region /Үзүүлэх үйлчилгээний жагсаалт/
+
+  const addServiceItem = () => {
     setServiceItems(prev => [
       ...prev,
       { id: `item-${prev.length}-${Date.now()}`, value: "" }
@@ -99,6 +102,27 @@ const CreateDatabase = ({
   const handleDeleteService = (id: string) => {
     setServiceItems(prev => prev.filter(item => item.id !== id));
   };
+
+  //#endregion
+
+  //#region /Бусад төрөлжсөн мэдээллийн сангаас мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл/
+
+  const addOtherInfoItem = () => {
+    setOtherInfoItems(prev => [
+      ...prev,
+      { id: `item-${prev.length}-${Date.now()}`, value: "" }
+    ]);
+  };
+  const handleChangeOtherInfo = (id: string, value: string) => {
+    setOtherInfoItems(prev =>
+      prev.map(item => (item.id === id ? { ...item, value } : item))
+    );
+  };
+  const handleDeleteOtherInfo = (id: string) => {
+    setOtherInfoItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  //#endregion
 
   const orgData = organizations?.map((org: IOrganization) => {
     return { name: org.name, id: org.id };
@@ -207,6 +231,12 @@ const CreateDatabase = ({
       setServiceItems(parsed)
     }
   }, [dbActivityData?.service_list]);
+  useEffect(() => {
+    if (dbActivityData?.other_info_list) {
+      const parsed = dbActivityData?.other_info_list.map((item: string, index: number) => { return { id: `item-${index + 1}-${Date.now()}`, value: item } })
+      setOtherInfoItems(parsed)
+    }
+  }, [dbActivityData?.other_info_list]);
 
   const onSubmit = async (values: IDatabase) => {
     setLoading(true);
@@ -412,10 +442,13 @@ const CreateDatabase = ({
                       return;
                     }
                     setFieldValue("tab0_service_list", serviceItems.map(a => a.value))
-                    if (!serviceItems.length === 0) {
+                    if (serviceItems.length === 0) {
                       setStatus('error');
                       setWarningMessage("Үзүүлэх үйлчилгээний жагсаалт шаардлагатай.");
                       return;
+                    }
+                    if (otherInfoItems.length > 0) {
+                      setFieldValue("tab0_other_info_list", otherInfoItems.map(a => a.value))
                     }
                   }
                   if (step === 1) {
@@ -593,7 +626,7 @@ const CreateDatabase = ({
                           <TooltipComponent content="Үзүүлэх үйлчилгээний жагсаалт" />
                         </Box>
                         <div>
-                          <Button onClick={addItem} variant="outlined">
+                          <Button onClick={addServiceItem} variant="outlined">
                             Үйлчилгээ нэмэх
                           </Button>
                           <div className="mt-3 flex gap-2 flex-col">
@@ -627,19 +660,32 @@ const CreateDatabase = ({
                           <TooltipComponent content="Мэдээлэл цуглуулж, боловсруулж, ашиглаж буй мэдээлэл" />
                         </Box>
                         <div>
-                          <ReactQuill
-                            value={values?.tab0_other_info_list}
-                            onChange={(content) => {
-                              const textContent = content.replace(/<[^>]*>/g, "");
-                              if (textContent) setFieldValue("tab0_other_info_list", content)
-                              else setFieldValue("tab0_other_info_list", null)
-                            }}
-                          />
-                          {errors.tab0_other_info_list && (
-                            <p className="text-red-600 text-text-body-small mt-2 p-1">
-                              {errors.tab0_other_info_list}
-                            </p>
-                          )}
+                          <Button onClick={addOtherInfoItem} variant="outlined">
+                            Нэмэх
+                          </Button>
+                          <div className="mt-3 flex gap-2 flex-col">
+                            {otherInfoItems.map((item, index) => {
+                              return (
+                                <div className="flex gap-3 items-center" key={index}>
+                                  { index + 1 }.
+                                  <StyledInput
+                                    name={`outlined-other`}
+                                    className="input w-full"
+                                    id={`outlined-other`}
+                                    type="text"
+                                    value={item.value}
+                                    onChange={(e) => handleChangeOtherInfo(item.id, e.target.value)}
+                                    placeholder={`Бусад мэдээлэл ${index+1}`}
+                                    fullWidth
+                                    size="small"
+                                  />
+                                  <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => handleDeleteOtherInfo(item.id)}>
+                                    <Typography variant="caption">Устгах</Typography>
+                                  </Button>
+                                </div>
+                              )
+                            })}
+                          </div>
                         </div>
                       </FormBox>
                       <FormBox>

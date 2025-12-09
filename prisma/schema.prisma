@@ -64,7 +64,7 @@ model md_database_activity {
   status_description     String?
   change_description     String?
   service_list           String[]
-  other_info_list        String?
+  other_info_list        String[]
   full_org_info          String?
   full_user_info         String?
   copyright_description  String?
