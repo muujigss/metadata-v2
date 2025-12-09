@@ -5,6 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import Loader from "../Loader";
 import {
   Box,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -18,6 +19,7 @@ import {  TextInput } from "flowbite-react";
 import AddOrganization from "./AddOrganization";
 import Link from "next/link";
 import ArrowRightSLineIcon from "remixicon-react/ArrowRightSLineIcon";
+import FileExcel2LineIcon from "remixicon-react/FileExcel2LineIcon";
 import { IOrganization } from "@/interfaces/IOrganization";
 import { textSubInputTheme } from "../componentTheme/SearchTheme";
 const AdminOrgList = ({ columns }: { columns: any }) => {
@@ -34,9 +36,21 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", py: 1 }}>
         <Typography variant="h5">Байгууллагын жагсаалт</Typography>
-        <Box>
-          <AddOrganization />
-        </Box>
+        <div className="flex gap-2 mr-1">
+          <Box>
+            <AddOrganization />
+          </Box>
+          <Button
+            sx={{
+              border: "1px solid #518df9",
+              color: "#518df9",
+              display: "flex",
+            }}
+            startIcon={<FileExcel2LineIcon size={24} />}
+          >
+            татах
+          </Button>
+        </div>
       </Box>
        <TextInput
         className="w-full py-1.5 truncate"

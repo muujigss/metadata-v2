@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Suspense, useEffect, useState } from "react";
 import AddLineIcon from "remixicon-react/AddLineIcon";
 import GridLineIcon from "remixicon-react/GridLineIcon";
+import FileExcel2LineIcon from "remixicon-react/FileExcel2LineIcon";
 import DataGridComponent from "../DataGridComponent";
 import ModalComponent from "../formComponents/ModalComponent";
 import DatabaseDetail from "./DatabaseDetail";
@@ -102,37 +103,27 @@ const DBList = ({
         link="/admin/database"
       />
       {/* </Box> */}
-      <Box
-        sx={{
-          display: "inline-flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          gap: 4,
-        }}
-      >
-        <span className="flex items-center justify-start gap-2">
-          <Typography variant="h6" sx={{ marginBottom: 1, p: 1 }}>
-            Өгөгдлийн сангийн жагсаалт
-          </Typography>
+      <div className="flex justify-between gap-2 h-[40px] mr-1 pb-2">
+        <Box
+          sx={{
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 4,
+          }}
+        >
+          <span className="flex items-center justify-start gap-2">
+            <Typography variant="h6" sx={{ marginBottom: 1, p: 1 }}>
+              Өгөгдлийн сангийн жагсаалт
+            </Typography>
 
-          <Badge color={"blue"}>
-            <span className="text-text-body-small">{total}</span>
-          </Badge>
-        </span>
-        {userInfo?.user_level != 1 && (
-          <Box>
-            {userInfo?.user_level == 2 ? (
-              <Button
-                className="border border-secondary-medium"
-                onClick={handleModal}
-              >
-                <AddLineIcon size={24} />
-                Өгөгдлийн сан
-              </Button>
-            ) : (
-              userInfo?.roles?.find((role: any) => {
-                return role.id == 3 || role.id == 1;
-              }) && (
+            <Badge color={"blue"}>
+              <span className="text-text-body-small">{total}</span>
+            </Badge>
+          </span>
+          {userInfo?.user_level != 1 && (
+            <Box>
+              {userInfo?.user_level == 2 ? (
                 <Button
                   className="border border-secondary-medium"
                   onClick={handleModal}
@@ -140,11 +131,34 @@ const DBList = ({
                   <AddLineIcon size={24} />
                   Өгөгдлийн сан
                 </Button>
-              )
-            )}
-          </Box>
-        )}
-      </Box>
+              ) : (
+                userInfo?.roles?.find((role: any) => {
+                  return role.id == 3 || role.id == 1;
+                }) && (
+                  <Button
+                    className="border border-secondary-medium"
+                    onClick={handleModal}
+                  >
+                    <AddLineIcon size={24} />
+                    Өгөгдлийн сан
+                  </Button>
+                )
+              )}
+            </Box>
+          )}
+        </Box>
+        <Button
+          sx={{
+            border: "1px solid #518df9",
+            color: "#518df9",
+            display: "flex",
+          }}
+          size="small"
+          startIcon={<FileExcel2LineIcon size={24} />}
+        >
+          татах
+        </Button>
+      </div>
       <Grid container spacing={4}>
         <Grid size={{ xs: open ? 6 : 6, md: open ? 5 : 12 }}>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>
