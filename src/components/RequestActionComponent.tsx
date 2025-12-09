@@ -12,6 +12,7 @@ import {
   Typography,
   Button,
   Chip,
+  TablePagination,
 } from "@mui/material";
 import moment from "moment";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -38,6 +39,17 @@ const RequestActionComponent = ({
   const [openModal, setOpenModal] = useState(false);
   const [showAlert, setShowAlert] = useState("");
   const [selected, setSelected] = useState<IAction | null>(null);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const handleViewDetail = (item: any) => {
     console.log("view detail", item);
@@ -123,10 +135,12 @@ const RequestActionComponent = ({
             </TableRow>
           </TableHead>
           <TableBody>
-            {data?.map((item: any, i: number) => {
+            {data
+              ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((item: any, i: number) => {
               return (
                 <TableRow hover role="checkbox" tabIndex={-1} key={i}>
-                  <TableCell>{i + 1}</TableCell>
+                  <TableCell>{page * rowsPerPage + i + 1}</TableCell>
                   <TableCell>
                     {item?.databases?.[0]?.organization?.img_url ? (
                       <img 
@@ -200,6 +214,16 @@ const RequestActionComponent = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[10, 25, 50]}
+        component="div"
+        count={data?.length || 0}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Хуудас дахь мөр:"
+      />
 
       { openModal && selected && 
           <ModalComponent

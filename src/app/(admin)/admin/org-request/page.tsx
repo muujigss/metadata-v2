@@ -14,6 +14,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
+  TablePagination,
   TableRow,
   TextField,
   Typography,
@@ -34,11 +35,22 @@ const OrgRequestListPage = () => {
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const filteredRequests = requests.filter((req) =>
     req.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     (req.org_short_name && req.org_short_name.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   const fetchRequests = async () => {
     try {
@@ -154,7 +166,9 @@ const OrgRequestListPage = () => {
                 </TableCell>
               </TableRow>
             ) : (
-              filteredRequests.map((req) => (
+              filteredRequests
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((req) => (
                 <TableRow key={req.id} hover>
                   <TableCell>
                     <div className="font-medium">{req.name}</div>
@@ -212,6 +226,16 @@ const OrgRequestListPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <TablePagination
+        rowsPerPageOptions={[5, 10, 25]}
+        component="div"
+        count={filteredRequests.length}
+        rowsPerPage={rowsPerPage}
+        page={page}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        labelRowsPerPage="Хуудас дахь мөр:"
+      />
 
       {/* Confirmation Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>

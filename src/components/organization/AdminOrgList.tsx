@@ -13,7 +13,7 @@ import {
   TableHead,
   TableRow,
   Typography,
-  
+  TablePagination,
 } from "@mui/material";
 import {  TextInput } from "flowbite-react";
 import AddOrganization from "./AddOrganization";
@@ -28,6 +28,17 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
     queryFn: () => getOrganization(),
   });
   const [searchTerm, setSearchTerm] = useState("");
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
   if (isLoading) return <Loader />;
   const filteredData = data?.filter((org: IOrganization) =>
     org.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -85,10 +96,12 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredData?.map((item: IOrganization, i: number) => {
+              {filteredData
+                ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((item: IOrganization, i: number) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={i}>
-                    <TableCell>{i + 1}</TableCell>
+                    <TableCell>{page * rowsPerPage + i + 1}</TableCell>
                     <TableCell>
                       {item?.img_url ? (
                         <img 
@@ -126,6 +139,16 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
             </TableBody>
           </Table>
         </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[10, 25, 50]}
+          component="div"
+          count={filteredData?.length || 0}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          labelRowsPerPage="Хуудас дахь мөр:"
+        />
       </Suspense>
     </Box>
   );
