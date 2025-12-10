@@ -25,7 +25,7 @@ const DbDetail = ({ id }: { id: number }) => {
       <div className="flex min-h-screen flex-col items-start justify-start w-full">
         <BreadCrumpSubMenu data={data} />
         <div className="container py-6 flex flex-col md:flex-row overflow-x-auto gap-6">
-          <div className="w-1/3 bg-[#3D4E6C33] rounded-lg">
+          <div className="w-1/3 bg-[#3D4E6C33] rounded-lg db-detail-sidebar">
             <DbDetailSideBar
               parent_id={data && data?.org_id}
               database_id={id}

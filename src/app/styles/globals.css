@@ -89,8 +89,12 @@
 }
 
 /* Override ListGroup hover background in sidebar */
+/* Override ListGroup hover background in sidebar */
+.db-detail-sidebar button:hover,
+.db-detail-sidebar a:hover,
 [class*="bg-[#3D4E6C26]"] button:hover {
-  background-color: transparent !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
 }
 
 /* Top glow effect */
