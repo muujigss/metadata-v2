@@ -1,5 +1,6 @@
 import { getLibActionTypeModel, getLibChangeActionTypeModel } from "@/services/model/ActionModel";
 import { getDatabaseLocationModel, getLicenceModel, getSpecificationModel } from "@/services/model/DatabaseModel";
+import { createDynamicModel } from "@/services/model/DynamicModel";
 import { getUnitModel } from "@/services/model/LibUnitModel";
 import { getUserLevelModel } from "@/services/model/LibUserLevelModel";
 import { getUserRoleModel } from "@/services/model/LibUserRoleModel";
@@ -39,4 +40,10 @@ export async function GET(request: Request, { params: { slug } }: Props) {
   }
 
   return NextResponse.json(dt);
+}
+
+export async function POST(request: Request, { params: { slug } }: Props) {
+  const body = await request.json();
+  const result = await createDynamicModel(slug, body);
+  return NextResponse.json(result);
 }

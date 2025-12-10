@@ -161,7 +161,7 @@ const MainList = () => {
       )}
       {userInfo?.user_level == 1 && (
         <Link href={"/admin/reference"}>
-          <Tooltip title={"Лавлах сан"}>
+          <Tooltip title={"Лавлах сан удирдах"}>
             <ListItemButton
               sx={{
                 backgroundColor:
@@ -171,7 +171,7 @@ const MainList = () => {
               <ListItemIcon>
                 <ListSettingsLineIcon color="#518df9" />
               </ListItemIcon>
-              <ListItemText primary={"Лавлах сан"} />
+              <ListItemText primary={"Лавлах сан удирдах"} />
             </ListItemButton>
           </Tooltip>
         </Link>
