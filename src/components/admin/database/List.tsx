@@ -19,6 +19,7 @@ import { useGetOrgInfo } from "@/utils/customHooks";
 import AdminBreadCrumpMenu from "../AdminBreadCrumpMenu";
 import useCurrentUser from "@/utils/useCurrentUser";
 import { useSearchParams } from "next/navigation";
+import ClientSearch from "@/app/(admin)/admin/database/search";
 
 const DBList = ({
   userId,
@@ -163,6 +164,9 @@ const DBList = ({
           татах
         </Button>
       </div>
+
+      <ClientSearch />
+
       <Grid container spacing={4}>
         <Grid size={{ xs: open ? 6 : 6, md: open ? 5 : 12 }}>
           <Paper sx={{ width: "100%", overflow: "hidden" }}>

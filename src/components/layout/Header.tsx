@@ -14,7 +14,6 @@ const Header = () => {
     { id: "4", menu_name: "Ангилал, код", link: "classification" },
     { id: "5", menu_name: "Маягт", link: "form" },
     { id: "6", menu_name: "Мета өгөгдлийн дүрслэл", link: "chart" },
-    // { id: "7", menu_name: "Нэвтрэх", link: "login" },
   ];
 
   const pathName = usePathname();
@@ -55,7 +54,7 @@ const Header = () => {
               <a
                 key={menu.id}
                 href={"/" + menu.link}
-                className={`font-sans opacity-90 text-sm font-normal leading-4 xl:leading-6 text-text-org-name xl:text-text-body-medium2 ${paths[1] == menu.link ? "menu-active" : "text-white"
+                className={`font-sans opacity-90 text-sm font-bold leading-4 xl:leading-6 text-text-org-name xl:text-text-body-medium2 ${paths[1] == menu.link ? "text-primary-medium" : "text-white"
                   }  hover:text-primary-medium "`}
               >
                 {menu.menu_name}

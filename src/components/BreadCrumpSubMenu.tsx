@@ -14,7 +14,7 @@ const BreadCrumpSubMenu = ({ data }: { data: any }) => {
 
   return (
     <div className="">
-      <h1 className="text-start uppercase text-text-body-medium md:text-text-title-large text-secondary-default pb-2">
+      <h1 className="text-start uppercase text-text-body-medium md:text-text-title-large text-white pb-2">
         {replace == "database" && data?.organization?.name}
         {replace == "table" && data?.database?.organization?.name}
         {replace == "indicator" && data?.table?.database?.organization?.name}
