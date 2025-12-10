@@ -68,10 +68,11 @@ const ForgotPassword = () => {
                     gap: 1,
                   }}
                 >
-                  <FormLabel className=" text-text-body-medium text-black">
+                  <FormLabel className=" text-text-body-medium !text-white">
                     И-мэйл хаяг
                   </FormLabel>
                   <InputComponent
+                    className="login-input"
                     type="text"
                     name="email"
                     label=""
@@ -91,11 +92,21 @@ const ForgotPassword = () => {
                   }}
                 >
                   <Button
-                    className=" bg-primary-medium hover:bg-opacity-100"
                     variant="contained"
                     color="info"
                     type="submit"
                     size="medium"
+                    sx={{
+                      backgroundColor: "#080812",
+                      color: "white",
+                      py: 1.5,
+                      "&:hover": {
+                        backgroundColor: "#1a1a1f",
+                      },
+                      border: 1,
+                      borderColor: "#6b7280",
+                      borderRadius: "8px",
+                    }}
                   >
                     Илгээх
                   </Button>
