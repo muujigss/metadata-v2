@@ -167,11 +167,21 @@ const AuthLogin = () => {
                   }}
                 >
                   <Button
-                    className=" bg-blue-600 hover:bg-blue-700 text-white py-2"
                     variant="contained"
                     color="info"
                     type="submit"
                     size="medium"
+                    sx={{
+                      backgroundColor: "#080812",
+                      color: "white",
+                      py: 1.5,
+                      "&:hover": {
+                        backgroundColor: "#1a1a1f",
+                      },
+                      border: 1,
+                      borderColor: "#6b7280",
+                      borderRadius: "8px",
+                    }}
                   >
                     Нэвтрэх
                   </Button>
