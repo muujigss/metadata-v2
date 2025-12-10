@@ -211,53 +211,74 @@ const ProfileDrawer = ({
       position={"absolute"}
       display={"flex"}
       flexDirection={"column"}
-      alignItems="center"
-      justifyContent={"center"}
-      gap={0.5}
-      width={"250px"}
+      width={"280px"}
       sx={{
-        boxShadow: "0px 2px 2px rgba(0, 0, 0, 0.25)",
+        boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)",
         top: 64,
         right: 0,
-        bgcolor: "primary.light",
-        p: 2,
-        gradient: "linear-gradient(180deg, #E8F7FF 0%, #FFFFFF 100%)",
-        ":hover": {
-          bgcolor: "primary.dark",
-          gradient: "linear-gradient(180deg, #E8F7FF 0%, #FFFFFF 100%)",
-        },
+        bgcolor: "#ffffff",
+        borderRadius: 2,
+        overflow: "hidden",
       }}
     >
-      <Typography variant="caption" sx={{ textAlign: "center" }}>
-        {userInfo?.organization?.name}
-      </Typography>
-      <Typography variant="caption">
-        {userLevels?.find((item: any) => item.id == userInfo?.user_level)?.name}
-      </Typography>
-      <Typography variant="caption" display={"flex"}>
-        <MailOutlined fontSize="small" /> {userInfo?.email}
-      </Typography>
-      <Typography variant="caption" display={"flex"} alignItems={"center"}>
+      {/* Header Section */}
+      <Box sx={{ bgcolor: "primary.main", p: 2.5, textAlign: "center" }}>
+        <Typography variant="subtitle1" sx={{ fontWeight: "bold", color: "white", mb: 0.5 }}>
+          {userInfo?.organization?.name}
+        </Typography>
+        <Typography variant="body2" sx={{ color: "rgba(255, 255, 255, 0.9)" }}>
+          {userLevels?.find((item: any) => item.id == userInfo?.user_level)?.name}
+        </Typography>
+      </Box>
+
+      <Divider />
+
+      {/* User Info Section */}
+      <Box sx={{ p: 2.5, display: "flex", flexDirection: "column", gap: 1.5 }}>
+        <Box display={"flex"} alignItems={"center"} gap={1}>
+          <MailOutlined fontSize="small" sx={{ color: "text.secondary" }} />
+          <Typography variant="caption" sx={{ color: "text.primary" }}>
+            {userInfo?.email}
+          </Typography>
+        </Box>
+
         {roles && roles?.length > 0 && (
-          <>
-            Хэрэглэгчийн эрх:
-            {roles.map((item: any, i: number) => (
-              <div className="m-1" key={i}>
-                <Kbd className=" font-thin text-text-table-small text-secondary-high">
+          <Box>
+            <Typography variant="caption" sx={{ color: "text.secondary", mb: 1, display: "block" }}>
+              Хэрэглэгчийн эрх:
+            </Typography>
+            <Box display={"flex"} flexWrap={"wrap"} gap={0.5}>
+              {roles.map((item: any, i: number) => (
+                <Kbd key={i} className="font-thin text-text-table-small text-secondary-high">
                   {userRoles?.find(
                     (spec: ISpecification) => spec.id == +item.id
                   )?.name || item.id}
                 </Kbd>
-              </div>
-            ))}
-          </>
+              ))}
+            </Box>
+          </Box>
         )}
-      </Typography>
+      </Box>
 
-      <Button size="small" color="inherit" onClick={handleSubmit}>
-        <Typography variant="caption">Гарах</Typography>
-        <LogoutRoundedIcon fontSize="small" />
-      </Button>
+      <Divider />
+
+      {/* Logout Button */}
+      <Box sx={{ p: 2 }}>
+        <Button 
+          fullWidth
+          variant="contained" 
+          color="error"
+          onClick={handleSubmit}
+          startIcon={<LogoutRoundedIcon />}
+          sx={{
+            textTransform: "none",
+            fontWeight: "bold",
+            py: 1,
+          }}
+        >
+          Гарах
+        </Button>
+      </Box>
     </Box>
   );
 };
