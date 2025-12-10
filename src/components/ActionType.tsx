@@ -35,22 +35,22 @@ const ActionType = ({
   const txtStatusColor =
     action_type == 1
       ? "primary"
-      : action_type == 2 || action_type == 5 || action_type == 6 || action_type == 7 || action_type == 8 || action_type == 9
+      : action_type == 2 || action_type == 5 || action_type == 6 || action_type == 7 || action_type == 8 || action_type == 9 || action_type == 10 || action_type == 11 || action_type == 12
       ? "warning"
       : action_type == 3
       ? "success"
       : "error";
 
-  const onSendActions = async (actionType: number) => {
+  const onSendActions = async (selectedActionType: number) => {
     try {
-      if (!actionType) return setAlertMessage("Төлөв заавал сонгоно уу");
+      if (!selectedActionType) return setAlertMessage("Төлөв заавал сонгоно уу");
       setLoading(true);
 
-      console.log({ dbId, user_id, actionType });
+      console.log({ dbId, user_id, selectedActionType });
       await updateActionService({
         item_id: dbId,
         user_id: user_id,
-        action_type: actionType,
+        action_type: selectedActionType,
       });
       window.location.reload();
     } catch (error) {
@@ -128,14 +128,14 @@ const ActionType = ({
                       };
                     }
                   } else if (action_type == 5) {
-                    if (item.id == 7 || item.id == 4) {
+                    if (item.id == 7 || item.id == 9) {
                       return {
                         id: item.id,
                         name: item.name,
                       };
                     }
                   } else if (action_type == 6) {
-                    if (item.id == 4 || item.id == 10) {
+                    if (item.id == 10 || item.id == 12) {
                       return {
                         id: item.id,
                         name: item.name,
