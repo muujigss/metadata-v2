@@ -139,7 +139,7 @@ const OrgRequestListPage = () => {
         Байгууллагын хүсэлтүүд
       </Typography>
 
-      <ClientSearch placeholder="Байгууллага хайх..." />
+      {/* <ClientSearch placeholder="Байгууллага хайх..." /> */}
       
       <TableContainer sx={{ maxHeight: 550 }} component={Paper} elevation={0} className="border">
         <Table>
