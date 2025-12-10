@@ -144,3 +144,8 @@
   border: 1px solid #60A5FA !important;
   background-color: rgba(17, 24, 39, 0.8);
 }
+
+
+.breadcrumb-list a, .breadcrumb-list span, .breadcrumb-list li, .breadcrumb-list svg {
+  color: rgb(55 65 81 / var(--tw-text-opacity)) !important;
+}

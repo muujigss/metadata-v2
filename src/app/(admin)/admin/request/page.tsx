@@ -47,7 +47,7 @@ const RequestActionPage = async ({
         />
       </Box> */}
       <Box sx={{ display: "flex", justifyContent: "space-between", px: 2, pb: 2 }}>
-        <Typography variant="h5"> Хүсэлтийн жагсаалт</Typography>
+        <Typography variant="h5"> Хүсэлт (Сан)</Typography>
       </Box>
       
       <ClientSearch placeholder="Хайлт..." />
