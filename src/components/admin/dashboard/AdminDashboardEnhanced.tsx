@@ -29,6 +29,10 @@ interface AdminDashboardProps {
   databaseLocations: any;
   allOrg: any;
   duplicateIndicators?: any[];
+  technologyStats?: {
+    totalSize: number;
+    totalRows: number;
+  };
 }
 
 const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
@@ -36,6 +40,7 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
   databaseLocations,
   allOrg,
   duplicateIndicators = [],
+  technologyStats,
 }) => {
   const theme = useTheme();
   const orgName = databaseLocations?.orgName;
@@ -121,6 +126,24 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
       value: mainIndicator?.classifications || 0,
       icon: <Category fontSize="large" />,
       color: "linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%)",
+    },
+    {
+      title: "Нийт хэмжээ (MB)",
+      value: technologyStats?.totalSize || 0,
+      icon: <Storage fontSize="large" />,
+      color: "linear-gradient(120deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)",
+    },
+    {
+      title: "Нийт бичлэгийн тоо",
+      value: technologyStats?.totalRows || 0,
+      icon: <TableChart fontSize="large" />,
+      color: "linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%)",
+    },
+    {
+      title: "Нийт хэрэглэгч",
+      value: mainIndicator?.users || 0,
+      icon: <Business fontSize="large" />,
+      color: "linear-gradient(120deg, #f093fb 0%, #f5576c 100%)",
     },
   ];
 
@@ -244,7 +267,7 @@ const AdminDashboardEnhanced: React.FC<AdminDashboardProps> = ({
       {/* Stats Row */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         {statCards.map((card, index) => (
-          <Grid item xs={12} sm={6} md={2.4} key={index}>
+          <Grid item xs={12} sm={6} md={3} key={index}>
             <Card
               sx={{
                 borderRadius: 3,

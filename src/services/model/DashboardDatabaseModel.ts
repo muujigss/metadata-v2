@@ -69,12 +69,20 @@ const getMainIndicatorsModel = async () => {
           },
         },
       });
+      const users = await prisma.md_users.count({
+        where: {
+          org_id: Number(orgId),
+          is_active: true,
+        },
+      });
+
       return {
         databases,
         forms,
         tables,
         indicators,
         classifications,
+        users,
       };
     } else {
       const databases = await prisma.md_database.count({
@@ -141,12 +149,19 @@ const getMainIndicatorsModel = async () => {
           },
         },
       });
+      const users = await prisma.md_users.count({
+        where: {
+          is_active: true,
+        },
+      });
+
       return {
         databases,
         forms,
         tables,
         indicators,
         classifications,
+        users,
       };
     }
   } catch (error) {
@@ -489,10 +504,60 @@ const getAllOrgs = async () => {
     throw new Error(`Failed to fetch forms: ${error.message}`);
   }
 };
+
+/**
+ * @from:        src/app/(admin)/admin/dashboard/page.tsx
+ * @params:      -
+ * @return:      Object
+ * @description: Өгөгдлийн сангийн технологийн мэдээллээс нийт хэмжээ болон бичлэгийн тоог авах
+ */
+const getDatabaseTechnologyStats = async () => {
+  const cookieStore = cookies();
+  const user_id = cookieStore.get("user_id")?.value;
+  const orgId = cookieStore.get("org_id")?.value;
+
+  try {
+    const userLevel = await prisma.md_users.findUnique({
+      where: {
+        id: Number(user_id),
+      },
+      select: {
+        user_level: true,
+      },
+    });
+
+    let whereClause = {};
+    if (userLevel?.user_level == 3 || userLevel?.user_level == 2) {
+      whereClause = {
+        org_id: Number(orgId),
+      };
+    }
+
+    const stats = await prisma.md_database_technology.aggregate({
+      where: whereClause,
+      _sum: {
+        db_size: true,
+        db_rows_count: true,
+      },
+    });
+
+    return {
+      totalSize: stats._sum.db_size || 0,
+      totalRows: stats._sum.db_rows_count || 0,
+    };
+  } catch (error) {
+    console.error("Error in getDatabaseTechnologyStats:", error);
+    return {
+      totalSize: 0,
+      totalRows: 0,
+    };
+  }
+};
 export {
   getDashboardDatabaseModel,
   getDashboardDatabaseType,
   getMainIndicatorsModel,
   getAlldata,
   getAllOrgs,
+  getDatabaseTechnologyStats,
 };

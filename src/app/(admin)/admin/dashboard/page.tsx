@@ -3,6 +3,7 @@ import {
   getAlldata,
   getDashboardDatabaseModel,
   getMainIndicatorsModel,
+  getDatabaseTechnologyStats,
 } from "@/services/model/DashboardDatabaseModel";
 import { getDuplicateIndicators } from "@/services/IndicatorService";
 import Box from "@mui/material/Box";
@@ -13,6 +14,7 @@ export default async function Dashboard() {
   const orgList = await getAlldata();
   const allOrg = orgList.allOrg;
   const duplicateIndicators = await getDuplicateIndicators();
+  const technologyStats = await getDatabaseTechnologyStats();
 
   return (
     <Box>
@@ -21,6 +23,7 @@ export default async function Dashboard() {
         databaseLocations={databaseLocations}
         allOrg={allOrg}
         duplicateIndicators={duplicateIndicators}
+        technologyStats={technologyStats}
       />
     </Box>
   );
