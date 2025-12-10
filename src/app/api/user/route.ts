@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       },
       JWT_SECRET,
       {
-        expiresIn: "30m",
+        expiresIn: "1d",
       }
     );
 
