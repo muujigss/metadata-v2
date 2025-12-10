@@ -101,11 +101,11 @@ const DBList = ({
   return (
     <Box>
       {/* <Box sx={{ p: 1 }}> */}
-      <AdminBreadCrumpMenu
+      {/* <AdminBreadCrumpMenu
         type="database"
         menu_name="Өгөгдлийн сан"
         link="/admin/database"
-      />
+      /> */}
       {/* </Box> */}
       <div className="flex justify-between gap-2 h-[40px] mr-1 pb-2">
         <Box

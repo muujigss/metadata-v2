@@ -20,13 +20,13 @@ const OrganizationPage = async () => {
 
   return (
     <Box>
-      <Box sx={{ p: 2 }}>
+      {/* <Box sx={{ p: 2 }}>
         <AdminBreadCrumpMenu
           type="org"
           menu_name=" Байгууллагын жагсаалт"
           link="/*"
         />
-      </Box>
+      </Box> */}
       <AdminOrgList columns={columns} />
     </Box>
   );

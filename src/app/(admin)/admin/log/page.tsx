@@ -6,13 +6,13 @@ const LogPage = async () => {
 
   return (
     <Box>
-      <Box sx={{ p: 2 }}>
+      {/* <Box sx={{ p: 2 }}>
         <AdminBreadCrumpMenu
           type="org"
           menu_name=" Лог жагсаалт"
           link="/*"
         />
-      </Box>
+      </Box> */}
       <AdminLogList />
     </Box>
   );

@@ -11,7 +11,6 @@ import { useGetUserLevel, useGetUserRole } from "@/utils/customHooks";
 import { useState } from "react";
 import {
   Box,
-  Button,
   Table,
   TableBody,
   TableCell,
@@ -23,12 +22,13 @@ import {
   Typography,
 } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { Badge } from "flowbite-react";
 import Link from "next/link";
 import React, { useContext } from "react";
 import UserAddLineIcon from "remixicon-react/UserAddLineIcon";
 import { textSubInputTheme } from "@/components/componentTheme/SearchTheme";
-import {  TextInput } from "flowbite-react";
+import { Badge, TextInput, Button } from "flowbite-react";
+import CloseLineIcon from "remixicon-react/CloseLineIcon";
+import SearchLineIcon from "remixicon-react/SearchLineIcon";
 const UserList = () => {
   const { userInfo, setUserInfo } = useContext(
     CurrentUserContext
@@ -105,26 +105,10 @@ const UserList = () => {
     <Box>
       <Box sx={{ display: "flex", justifyContent: "space-between", py: 1 }}>
         <Typography variant="h6">Хэрэглэгчийн жагсаалт</Typography>
-        <Box sx={{ width: "70%", mb: 2 }}>
-        <TextInput
-          className="w-full py-1.5 truncate"
-          theme={textSubInputTheme}
-          id="search"
-          type="text"
-          placeholder="Хэрэглэгч хайх..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </Box>
-
-
         <Box>
           <Button
-            sx={{
-              border: "1px solid #518df9",
-              color: "#518df9",
-              display: "flex",
-            }}
+            className="text-[#518df9] border border-[#518df9] mr-3"
+            size="xs"
             onClick={handleOpenModal}
           >
             <UserAddLineIcon size={24} />
@@ -139,6 +123,28 @@ const UserList = () => {
           )}
         </Box>
       </Box>
+
+
+      <div className="w-full md:w-1/3 pb-4">
+        <div className="relative w-full">
+          <TextInput
+            className="w-full py-1.5"
+            theme={textSubInputTheme}
+            placeholder="Хэрэглэгч хайх..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+  
+          <Button
+            color="grey"
+            size="xs"
+            onClick={() => setSearchTerm("")}
+            className="absolute top-0 right-0 p-2 my-1"
+          >
+            {searchTerm ? <CloseLineIcon size={16} /> : <SearchLineIcon size={16} />}
+          </Button>
+        </div>
+      </div>
 
       <TableContainer sx={{ maxHeight: 700 }}>
         <Table stickyHeader>

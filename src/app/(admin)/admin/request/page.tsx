@@ -33,14 +33,14 @@ const RequestActionPage = async () => {
 
   return (
     <Box>
-      <Box sx={{ p: 2 }}>
+      {/* <Box sx={{ p: 2 }}>
         <AdminBreadCrumpMenu
           type="request"
           menu_name="Хүсэлтийн жагсаалт"
           link="/*"
         />
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "space-between", px: 2 }}>
+      </Box> */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", px: 2, pb: 2 }}>
         <Typography variant="h5"> Хүсэлтийн жагсаалт</Typography>
       </Box>
 

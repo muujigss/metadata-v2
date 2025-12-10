@@ -15,13 +15,15 @@ import {
   Typography,
   TablePagination,
 } from "@mui/material";
-import {  TextInput } from "flowbite-react";
+import { TextInput, Button as FlowButton } from "flowbite-react";
 import AddOrganization from "./AddOrganization";
 import Link from "next/link";
 import ArrowRightSLineIcon from "remixicon-react/ArrowRightSLineIcon";
 import FileExcel2LineIcon from "remixicon-react/FileExcel2LineIcon";
 import { IOrganization } from "@/interfaces/IOrganization";
 import { textSubInputTheme } from "../componentTheme/SearchTheme";
+import CloseLineIcon from "remixicon-react/CloseLineIcon";
+import SearchLineIcon from "remixicon-react/SearchLineIcon";
 const AdminOrgList = ({ columns }: { columns: any }) => {
   const { data, isLoading } = useQuery({
     queryKey: ["orgs for admin"],
@@ -70,15 +72,28 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
           </Button>
         </div>
       </Box>
-       <TextInput
-        className="w-full py-1.5 truncate"
-        theme={textSubInputTheme}
-        id="search"
-        type="text"
-        placeholder="Байгууллагын нэрээр хайх..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
+
+      <div className="w-full md:w-1/3 pb-4">
+        <div className="relative w-full">
+          <TextInput
+            className="w-full py-1.5"
+            theme={textSubInputTheme}
+            placeholder="Байгууллагын нэрээр хайх..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+  
+          <FlowButton
+            color="grey"
+            size="xs"
+            onClick={() => setSearchTerm("")}
+            className="absolute top-0 right-0 p-2 my-1"
+          >
+            {searchTerm ? <CloseLineIcon size={16} /> : <SearchLineIcon size={16} />}
+          </FlowButton>
+        </div>
+      </div>
+
       <Suspense fallback={<Loader />}>
         <TableContainer sx={{ maxHeight: 550 }}>
           <Table stickyHeader>
