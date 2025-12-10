@@ -30,7 +30,7 @@ const DbList = async ({
 
 
   if (!data) return <Loader />;
-  if (data?.data?.length == 0) return <p>Өгөгдлийн сан байхгүй байна ...</p>;
+  if (data?.data?.length == 0) return <p className="text-white">Өгөгдлийн сан байхгүй байна ...</p>;
 
   return (
     <div className={"w-full h-full"}>

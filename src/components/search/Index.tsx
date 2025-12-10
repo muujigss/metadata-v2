@@ -102,7 +102,7 @@ export default function Index() {
         <div className="absolute z-50 w-full mt-2 transition-all duration-200 ease-in-out transform origin-top">
           <Card
             theme={cardTheme}
-            className="max-h-[600px] overflow-y-auto border-t-2 border-t-primary-default shadow-2xl"
+            className="max-h-[600px] overflow-y-auto border-t-2 border-t-primary-default shadow-2xl bg-[#111827] border-gray-700"
           >
             {loading ? (
               <div className="w-full text-center py-10 flex flex-col items-center justify-center text-gray-500">

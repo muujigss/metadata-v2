@@ -65,21 +65,21 @@ export default function Result({ data, query }: ResultProps) {
     return (
       <div className="mb-6 last:mb-0">
         <div className="flex items-center justify-between mb-2 px-2">
-          <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider flex items-center gap-2">
-            <Icon size={16} className="text-primary-default" />
+          <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-2">
+            <Icon size={16} className="text-blue-400" />
             {title}
           </h3>
         </div>
-        <div className="bg-white rounded-lg border border-gray-100 divide-y divide-gray-100 overflow-hidden">
+        <div className="bg-[#1f2937] rounded-lg border border-gray-700 divide-y divide-gray-700 overflow-hidden">
           {items.map((item: any) => (
             <Link
               key={item.id}
               href={`${linkPrefix}/${item.id}`}
-              className="block p-3 hover:bg-gray-50 transition-colors group"
+              className="block p-3 hover:bg-gray-700 transition-colors group"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="text-sm font-medium text-gray-900 group-hover:text-primary-default transition-colors">
+                  <div className="text-sm font-medium text-gray-200 group-hover:text-white transition-colors">
                     <HighlightText text={item.name} highlight={query} />
                   </div>
                   {item.code && (

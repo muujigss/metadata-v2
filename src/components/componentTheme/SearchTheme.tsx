@@ -166,7 +166,7 @@ export const textInputHomeSearchTheme: CustomFlowbiteTheme["textInput"] = {
         lg: "",
       },
       colors: {
-        gray: "text-gray-300 border-gray-600 bg-[#111827]/50 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 rounded-lg",
+        gray: "text-white border-primary-default bg-[#3D4E6C26] focus:ring-1 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 rounded-lg",
         info: "",
         failure: "",
         warning: "",
@@ -183,6 +183,54 @@ export const textInputHomeSearchTheme: CustomFlowbiteTheme["textInput"] = {
       withAddon: {
         on: "rounded-r-lg",
         off: "",
+      },
+      withShadow: {
+        on: "shadow-sm dark:shadow-sm-light",
+        off: "",
+      },
+    },
+  },
+};
+
+export const textInputOrgTheme: CustomFlowbiteTheme["textInput"] = {
+  base: "flex",
+  addon:
+    "inline-flex items-center px-3 text-text-body-small text-secondary-default",
+  field: {
+    base: "relative w-full",
+    icon: {
+      base: "pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3",
+      svg: "h-5 w-5 text-gray-500 dark:text-gray-400",
+    },
+    rightIcon: {
+      base: "pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3",
+      svg: "h-5 w-5 focus:text-secondary-default",
+    },
+    input: {
+      base: "block w-full h-10 text-text-body-meduim text-secondary-default border disabled:cursor-not-allowed disabled:opacity-50",
+      sizes: {
+        sm: "p-2 sm:text-xs",
+        md: "p-2.5 text-sm",
+        lg: "p-4 sm:text-base",
+      },
+      colors: {
+        gray: "text-white border-primary-default bg-[#3D4E6C26] focus:ring-1 focus:ring-blue-500 focus:border-blue-500 placeholder-gray-400 rounded-lg",
+        info: "",
+        failure: "",
+        warning: "",
+        success: "",
+      },
+      withRightIcon: {
+        on: "pr-10",
+        off: "",
+      },
+      withIcon: {
+        on: "pl-10",
+        off: "",
+      },
+      withAddon: {
+        on: "rounded-r-lg",
+        off: "rounded-lg",
       },
       withShadow: {
         on: "shadow-sm dark:shadow-sm-light",

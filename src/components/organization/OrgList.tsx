@@ -9,7 +9,7 @@ import ArrowRightSLineIcon from "remixicon-react/ArrowRightSLineIcon";
 import Database2FillIcon from "remixicon-react/Database2FillIcon";
 import GlobalLineIcon from "remixicon-react/GlobalLineIcon";
 import SearchLineIcon from "remixicon-react/SearchLineIcon";
-import { textInputTheme } from "../componentTheme/SearchTheme";
+import { textInputOrgTheme } from "../componentTheme/SearchTheme";
 
 const OrgList = () => {
   const [searchText, setSearchText] = useState("");
@@ -34,7 +34,7 @@ const OrgList = () => {
         <div className="w-1/3 h-full">
           <div className="w-full pb-4 text-text-body-meduim text-secondary-default">
             <TextInput
-              theme={textInputTheme}
+              theme={textInputOrgTheme}
               id="search"
               type="text"
               rightIcon={searchIcon}
@@ -45,7 +45,7 @@ const OrgList = () => {
           </div>
         </div>
         <div className="w-full h-full">
-          {filteredData?.length == 0 && <p>Хайлтын үр дүнд олдсонгүй ...</p>}
+          {filteredData?.length == 0 && <p className="text-white">Хайлтын үр дүнд олдсонгүй ...</p>}
           <div className="flex flex-col gap-4 self-stretch">
             {filteredData
               ?.filter(
@@ -53,9 +53,18 @@ const OrgList = () => {
               )
               ?.map((list: IOrganization, i: number) => {
                 return (
-                  <Card className="flex self-stretch justify-between" key={i}>
+                  <Card 
+                    className="flex self-stretch justify-between bg-[#3D4E6C26] border-transparent text-white" 
+                    key={i}
+                    theme={{
+                        root: {
+                            base: "flex rounded-lg border border-transparent bg-[#3D4E6C26] shadow-md",
+                            children: "flex h-full flex-col justify-center gap-4 p-4"
+                        }
+                    }}
+                  >
                     <div className="flex items-center space-x-4">
-                      <div className="shrink-0">
+                      <div className="shrink-0 bg-white/10 p-2 rounded-lg">
                         <Image
                           alt=""
                           height={50}
@@ -71,29 +80,29 @@ const OrgList = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <Link href={`/database?org=${list?.id}`}>
-                          <p className="text-text-title-medium text-secondary-default leading-6">
+                          <p className="text-lg font-bold text-white leading-6 hover:text-blue-400 transition-colors">
                             {list?.name}
                           </p>
-                          <p className="text-text-body-small text-secondary-default leading-4 list-desc">
+                          <p className="text-sm text-gray-300 leading-4 list-desc mt-1">
                             {list?.address}
                           </p>
                         </Link>
-                        <div className="flex items-center text-text-body-medium2 text-secondary-default opacity-70 gap-4 py-1">
+                        <div className="flex items-center text-sm text-gray-400 gap-4 py-2">
                           {list?.website && (
                             <Link
                               href={`${list?.website}`}
                               target="_blank"
-                              className="opacity-50"
+                              className="hover:text-blue-400 transition-colors"
                             >
                               <span className=" inline-flex items-center ">
-                                <GlobalLineIcon size={14} color="#333a3f" />
-                                <p className="px-1">{list?.website}</p>
+                                <GlobalLineIcon size={14} className="mr-1" />
+                                <p>{list?.website}</p>
                               </span>
                             </Link>
                           )}
                           <span className="inline-flex items-center gap-1">
-                            <Database2FillIcon size={14} color="#333a3f" />
-                            <Badge color="success">
+                            <Database2FillIcon size={14} />
+                            <Badge color="success" className="ml-1">
                               {list?.databases?.filter(
                                 (db: any) => db.is_active == true && db.is_form == true
                               )?.length}
@@ -102,7 +111,7 @@ const OrgList = () => {
                         </div>
                       </div>
 
-                      <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                      <div className="inline-flex items-center text-base font-semibold text-gray-400">
                         <ArrowRightSLineIcon size={26} />
                       </div>
                     </div>
