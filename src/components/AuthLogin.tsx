@@ -92,10 +92,10 @@ const AuthLogin = () => {
                   Хэрэглэгчийн нэр эсвэл нууц үг буруу байна ...
                 </Alert>
               )}
-              <div className="flex flex-col w-full gap-2 py-2">
+              <div className="flex flex-col w-full gap-1 py-1">
                 <Box
                   sx={{
-                    padding: 1,
+                    padding: { xs: 0.5, sm: 1 },
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
@@ -118,7 +118,7 @@ const AuthLogin = () => {
                 </Box>
                 <Box
                   sx={{
-                    padding: 1,
+                    padding: { xs: 0.5, sm: 1 },
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
@@ -160,7 +160,7 @@ const AuthLogin = () => {
                 </Box>
                 <Box
                   sx={{
-                    padding: 1,
+                    padding: { xs: 0.5, sm: 1 },
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
@@ -188,12 +188,12 @@ const AuthLogin = () => {
                 </Box>
               </div>
               <Link href="/login/forgot-password">
-                <Typography className=" text-text-body-medium text-gray-400 hover:text-white transition-colors">
+                <Typography className="text-text-body-medium text-gray-400 hover:text-white transition-colors">
                   Нууц үг мартсан?
                 </Typography>
               </Link>
-              <Link href="/request-access" className="mt-4">
-                <Typography className=" text-text-body-medium text-blue-400 hover:text-blue-300 font-semibold transition-colors">
+              <Link href="/request-access" className="mt-2 sm:mt-4">
+                <Typography className="text-text-body-medium text-blue-400 hover:text-blue-300 font-semibold transition-colors">
                   Байгууллагаар бүртгүүлэх хүсэлт
                 </Typography>
               </Link>

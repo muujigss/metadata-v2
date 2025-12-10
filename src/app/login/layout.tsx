@@ -23,8 +23,8 @@ const LoginLayout = ({
               <LogoPics />
             </div>
             <div className="flex flex-wrap items-center container mx-auto justify-center self-stretch">
-              <div className="flex flex-col items-start justify-between gap-4 w-auto">
-                <h1 className="uppercase text-text-title-large text-white">
+              <div className="flex flex-col items-start justify-between gap-4 w-auto px-4">
+                <h1 className="uppercase text-lg sm:text-2xl md:text-3xl text-white text-center sm:text-left">
                   Төрөлжсөн бүртгэлийн нэгдсэн сан
                 </h1>
               </div>
