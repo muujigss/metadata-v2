@@ -13,8 +13,8 @@ const Hero = ({ mainIndicator }: any) => {
           <h1 className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-200 text-[32px] lg:text-[48px] xl:text-[56px] font-bold font-sans italic w-full lg:w-auto whitespace-nowrap leading-tight drop-shadow-lg">
             Төрөлжсөн бүртгэлийн нэгдсэн сан
           </h1>
-          <p className="text-[16px] lg:text-[18px] font-medium text-justify text-gray-200 opacity-90 px-1 leading-relaxed max-w-2xl drop-shadow-md">
-            &quot;Суурь болон төрөлжсөн мэдээллийн сан, мета-өгөгдлийн нэгдсэн бүртгэл.&quot;
+          <p className="text-[18px] lg:text-[20px] font-medium text-justify lg:text-left text-transparent bg-clip-text bg-gradient-to-r from-blue-100 via-indigo-100 to-purple-100 opacity-90 leading-relaxed drop-shadow-sm tracking-wide mt-2 whitespace-nowrap">
+            Суурь болон төрөлжсөн мэдээллийн сан, мета-өгөгдлийн нэгдсэн бүртгэл.
           </p>
         <Search />
       </div>
