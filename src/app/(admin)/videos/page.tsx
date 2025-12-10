@@ -21,8 +21,8 @@ const post = {
 
 const videoData = [
   {
-    name: "Өгөгдлийн сан",
-    link: "https://player.cloudinary.com/embed/?public_id=Guide%20files%2Fjai4lldghdae9kczuvro&cloud_name=djv1wgfyh&player[showLogo]=false",
+    name: "Төрөлжсөн мэдээлэл бүртгүүлэх заавар",
+    link: "/uploads/burtguuleh.mp4",
   },
   {
     name: "Хүснэгт",
@@ -79,6 +79,7 @@ const VideosPage = () => {
           </Typography>
           <Grid2 container spacing={2}>
             {videoData.map((item, index) => {
+              const isLocal = item.link.startsWith("/");
               return (
                 <Grid2
                   key={index}
@@ -93,12 +94,22 @@ const VideosPage = () => {
                     <Typography variant="body1">
                       {index + 1}. {item.name}
                     </Typography>
-                    <iframe
-                      src={item.link}
-                      width="100%"
-                      height="360"
-                      allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                    />
+                    {isLocal ? (
+                      <video
+                        src={item.link}
+                        controls
+                        width="100%"
+                        height="360"
+                        style={{ objectFit: "cover", backgroundColor: "#000" }}
+                      />
+                    ) : (
+                      <iframe
+                        src={item.link}
+                        width="100%"
+                        height="360"
+                        allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                      />
+                    )}
                   </Box>
                 </Grid2>
               );
