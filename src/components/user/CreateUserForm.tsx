@@ -220,9 +220,9 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
                   hidden
                   onChange={(e) => setSelectedFile(e.target.files?.[0] ?? null) }
                 />
-              </Button> */}
+              </Button>
 
-              {selectedFile && <Typography variant="body2">Selected file: {selectedFile.name}</Typography>}
+              {selectedFile && <Typography variant="body2">Selected file: {selectedFile.name}</Typography>} */}
               <FormBox>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <LabelComponent label="Хэрэглэгчийн түвшин" />
@@ -392,7 +392,7 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
               <FormBox>
                 <Box sx={{ display: "flex", alignItems: "center" }}>
                   <LabelComponent label="Идэвхитэй эсэх" />
-                  <TooltipComponent content="Хэрэглэгчийн идэвхитэй төлөвийг сонгох" />
+                  <TooltipComponent content="Хэрэглэгчийн идэвхитэй төлөв чек хийгдээгүй нэвтэрж болохгүйг анхаарна уу!" />
                 </Box>
                 <SwitchComponent
                   name="is_active"

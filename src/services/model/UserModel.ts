@@ -74,6 +74,7 @@ const loginUserModel = async (email: string, password: string) => {
     const user = await prisma.md_users.findFirst({
       where: {
         email,
+        is_active: true,
       },
       select: {
         id: true,
