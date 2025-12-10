@@ -76,7 +76,7 @@ const ActionTypeRequest = ({
         name="action_type"
         defaultValue={selectedType}
         onChange={(e: any, value: any) => {
-          console.log("handleModal called", value);
+          console.log("handleModal called", value, dbId);
           setSelectedType(value);
         }}
       />

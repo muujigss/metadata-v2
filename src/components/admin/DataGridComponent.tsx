@@ -81,6 +81,20 @@ const DataGridComponent = ({
                   </TableCell>
                   {!!item?.actions && (
                     <TableCell>
+                      {item?.actions === 1 && (
+                        <span className="flex justify-center gap-2 items-center text-center text-text-body-medium">
+                          <Badge
+                            key={i}
+                            size="sm"
+                            color={"warning"}
+                          >
+                            <span className="text-text-body-small">
+                              Шинээр үүссэн
+                            </span>
+                          </Badge>
+                        </span>
+                      )
+                      }
                       {item?.actions > 1 && (
                         <span className="flex justify-center gap-2 items-center text-center text-text-body-medium">
                           <Badge
@@ -89,7 +103,7 @@ const DataGridComponent = ({
                             color={
                               item?.actions == 1
                                 ? "primary"
-                                : item?.actions == 2 || item?.actions == 4 || item?.actions == 5 || item?.actions == 6 || item?.actions == 7 || item?.actions == 8 || item?.actions == 10
+                                : item?.actions == 2 || item?.actions == 4 || item?.actions == 5 || item?.actions == 6 || item?.actions == 7 || item?.actions == 8 || item?.actions == 9 || item?.actions == 10 || item?.actions == 11 || item?.actions == 12
                                 ? "warning"
                                 : item?.actions == 3
                                 ? "success"

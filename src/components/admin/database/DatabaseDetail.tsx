@@ -45,6 +45,8 @@ const DatabaseDetail = ({
   });
   console.log('-----dataOther-----', dataOther)
 
+  const allowCodes = [3, 9, 12]
+
   if (isLoading) return <Loader />;
   if (loading) return <Loader />;
 
@@ -122,7 +124,7 @@ const DatabaseDetail = ({
             action_type={data?.actions?.action_type}
           />
         )}
-        { userInfo?.user_level != 1 && data?.actions?.action_type === 3 && (
+        { userInfo?.user_level != 1 && allowCodes.includes(data?.actions?.action_type) && (
           <ActionTypeRequest
             orgId={Number(id)}
             user_level={userInfo?.user_level || 0}
