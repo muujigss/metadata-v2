@@ -20,18 +20,13 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Loader from "@/components/Loader";
 import { Chip } from "@mui/material";
-// import ClientSearch from "../database/search";
 
 const OrgRequestListPage = () => {
-  const searchParams = useSearchParams();
-  const searchTerm = searchParams.get("query") ?? "";
-  
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
@@ -39,6 +34,7 @@ const OrgRequestListPage = () => {
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null);
   const [rejectReason, setRejectReason] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -139,7 +135,16 @@ const OrgRequestListPage = () => {
         Байгууллагын хүсэлтүүд
       </Typography>
 
-      {/* <ClientSearch placeholder="Байгууллага хайх..." /> */}
+      <Box className="mb-4 flex justify-end">
+        <TextField
+          label="Байгууллага хайх"
+          variant="outlined"
+          size="small"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="w-full md:w-1/3"
+        />
+      </Box>
       
       <TableContainer sx={{ maxHeight: 550 }} component={Paper} elevation={0} className="border">
         <Table>
