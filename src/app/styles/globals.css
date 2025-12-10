@@ -23,6 +23,17 @@
   font-size: 12px;
   font-weight: 200;
   line-height: 12px;
+  color: white !important;
+}
+
+.breadcrumb-list a,
+.breadcrumb-list span,
+.breadcrumb-list li {
+  color: white !important;
+}
+
+.breadcrumb-list svg {
+  color: white !important;
 }
 
 .site-table table > tbody > tr > td:nth-child(2) {
