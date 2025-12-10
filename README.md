@@ -1,6 +1,6 @@
 # meta-data /Төрөлжсөн бүртгэлийн нэгдсэн сан/
 
-## Node version 18
+## Node version v20
 
 
 ## Install Postgresql in Rocky linux

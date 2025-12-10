@@ -7,11 +7,17 @@ import { cookies } from "next/headers";
 import { sendMail } from "../MailService";
 import { mailTemplateNewUser } from "@/utils/helper-mail";
 
+/**
+ * @from:        /api/user/route
+ * @params:      - [user_level, org_id]
+ * @return:      Array
+ * @description: Системийн хэрэглэгчийн жагсаалт буцаана.
+ *               Super admin бол бүгд буцаана.
+ *               Байгууллага бол тухайн байгууллагын хэрэглэгчийн жагсаалтыг буцаана.
+ */
 const getUserModel = async (user_level: number, org_id: number) => {
   try {
     let whereObj = {};
-    // console.log("whereobj", whereObj);
-    
     if (user_level == 1) {
       whereObj = {};
     } else {
@@ -57,6 +63,12 @@ const getUserModel = async (user_level: number, org_id: number) => {
     throw new Error("Failed to getUserModel");
   }
 };
+/**
+ * @from:        /api/user/route
+ * @params:      - [email, password]
+ * @return:      Object - [md_users]
+ * @description: Системд нэврэх API.
+ */
 const loginUserModel = async (email: string, password: string) => {
   try {
     const user = await prisma.md_users.findFirst({
@@ -106,7 +118,6 @@ const loginUserModel = async (email: string, password: string) => {
     throw new Error("Failed to loginUserModel");
   }
 };
-/* Function to generate combination of password */
 function generatePassword() {
   let pass = "";
   let str =
@@ -121,6 +132,12 @@ function generatePassword() {
   return pass;
 }
 
+/**
+ * @from:        /api/user/change-password, /api/user/create, /api/user/forgot-password
+ * @params:      - [IUser]
+ * @return:      Array
+ * @description: Системийн хэрэглэгч үүсгэх, засварлах API.
+ */
 const createUserModel = async (data: IUser) => {
   const {
     id,
@@ -271,6 +288,12 @@ const createUserModel = async (data: IUser) => {
   }
 };
 
+/**
+ * @from:        /api/user/[id], /src/services/ActionService
+ * @params:      - [user_id]
+ * @return:      Object - [md_users]
+ * @description: [user_id] - Тухайн хэрэглэгчийн мэдээллийг буцаана.
+ */
 const getUserInfoModel = async (user_id: number) => {
   try {
     const data = await prisma.md_users.findFirst({
@@ -323,6 +346,12 @@ const getUserInfoModel = async (user_id: number) => {
     throw new Error("Failed to fetch getUserInfoModel");
   }
 };
+/**
+ * @from:        /src/services/ActionService
+ * @params:      - [user_level]
+ * @return:      Object - [md_users]
+ * @description: [user_level] - Тухайн level-тэй хэрэглэгчийн мэдээллийг буцаана.
+ */
 const getUserInfoByLevelModel = async (user_level: number) => {
   try {
     const data = await prisma.md_users.findFirst({
@@ -348,6 +377,12 @@ const getUserInfoByLevelModel = async (user_level: number) => {
   }
 };
 
+/**
+ * @from:        /api/user/change-password, /api/user/forgot-password
+ * @params:      - [Object]
+ * @return:      Object - [md_users]
+ * @description: Хэрэглэгчийн нууц үгийг засвар хийнэ.
+ */
 const updatePasswordModel = async (data: any) => {
   const { id, oldPassword, newPassword } = data;
 
@@ -421,6 +456,12 @@ const updatePasswordModel = async (data: any) => {
     throw new Error("Failed to updatePasswordModel");
   }
 };
+/**
+ * @from:        /api/user/forgot-password
+ * @params:      - [email]
+ * @return:      Object -
+ * @description: Хэрэглэгч нууц үгээ мартсан үед нууц үгийг сэргээнэ.
+ */
 const forgotPasswordModel = async (email: any) => {
   let user = {};
   try {
@@ -476,6 +517,12 @@ const forgotPasswordModel = async (email: any) => {
   }
 };
 
+/**
+ * @from:        /api/user/[id]
+ * @params:      - [user_id]
+ * @return:      Object -
+ * @description: Хэрэглэгч устгах.
+ */
 const deleteUserInfoModel = async (user_id: number) => {
   try {
     const data = await prisma.md_users.delete({
