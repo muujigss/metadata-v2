@@ -92,9 +92,10 @@ const IndicatorListByUser = ({
                   actions?.action_type == 4 ||
                   actions?.action_type == 7 ||
                   actions == null) &&
-                userInfo?.roles?.find((role: any) => {
-                  return role.id == 3;
-                }) && (
+                  userInfo?.roles?.find((role: any) => {
+                    return role.id == 3;
+                  }) && 
+                (
                   <>
                     {item?.is_classification && (
                       <Tooltip title="Ангилал, код нэмэх">

@@ -58,7 +58,6 @@ const AuthLogin = () => {
         } else if (response.user?.user_level === 3) {
           router.push("/admin/database");
         }
-
       } else {
         setStatus("error");
       }

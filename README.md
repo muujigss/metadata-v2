@@ -3,6 +3,15 @@
 ## Node version 18
 
 
+## Install Postgresql in Rocky linux
+
+```sh
+    sudo apt install -y postgresql16
+    sudo systemctl enable postgresql
+    sudo systemctl start postgresql
+    sudo systemctl status postgresql
+```
+
  ## DEV
  - npm install
  - npm run dev
