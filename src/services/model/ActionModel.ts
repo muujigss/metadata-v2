@@ -1,14 +1,32 @@
 import prisma from "@/utils/prisma";
 import moment from "moment";
 
+/**
+ * @from:        /api/dynamic/[slug]/route, /api/library/[slug]/route
+ * @params:      -
+ * @return:      Array
+ * @description: Өгөгдлийн сангийн төлвийн үйлдлийн бүх жагсаалтыг буцаана.
+ */
 const getLibActionTypeModel = async () => {
   const lib_action = await prisma.lib_action_type.findMany();
   return lib_action;
 };
+/**
+ * @from:        /api/dynamic/[slug]/route, /api/library/[slug]/route
+ * @params:      -
+ * @return:      Array
+ * @description: Өгөгдлийн сангийн [5 - Өөрчлөлт хийх хүсэлт, 6 - Ашиглалтаас гарах хүсэлт] 2 төлвийн үйлдлийн жагсаалт буцаана.
+ */
 const getLibChangeActionTypeModel = async () => {
   const lib_action = await prisma.lib_action_type.findMany({ where: { id: { in: [5, 6] } } });
   return lib_action;
 };
+/**
+ * @from:        /app/admin/admin/request, /api/action/route
+ * @params:      -
+ * @return:      Array
+ * @description: Өгөгдлийн сангийн [2, 5, 6, 8] төлвийн үйлдлийн жагсаалт буцаана.
+ */
 const getActionsModel = async () => {
   try {
     const md_action = await prisma.md_action.findMany({
@@ -59,6 +77,12 @@ const getActionsModel = async () => {
   }
 };
 
+/**
+ * @from:        /api/action/route
+ * @params:      -
+ * @return:      Array
+ * @description: Өгөгдлийн сангийн төлвийн үйлдэл засвар хийнэ.
+ */
 const updateActionsModel = async (
   db_id: number,
   action_type: number,
@@ -159,6 +183,12 @@ const updateActionsModel = async (
     throw new Error("Failed to updateActions Model");
   }
 };
+/**
+ * @from:        /api/action/[id]/route
+ * @params:      - [id]
+ * @return:      Object - [md_action]
+ * @description: [id] -аар Өгөгдлийн сангийн төлвийн үйлдэл буцаана.
+ */
 const getActionByIdModel = async (id: number) => {
   try {
     const data = await prisma.md_action.findUnique({
