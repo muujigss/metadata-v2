@@ -45,7 +45,7 @@ const videoData = [
 const GuidePage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   return (
-    <Box sx={{ width: "100%", backgroundColor: "#fff" }}>
+    <Box className="w-full bg-gray-50 rounded-lg border">
       {isLoading && (
         <>
           <Skeleton

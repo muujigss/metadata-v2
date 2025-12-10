@@ -1,12 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import Link from "next/link";
+import FileDownloadLineIcon from "remixicon-react/FileDownloadLineIcon";
 
 const JuramPage = () => {
   return (
     <Box
-      sx={{
-        display: "flex",
-      }}
+      className="w-full h-full p-3 bg-gray-50 rounded-lg border flex"
     >
       <Box
         sx={{
@@ -34,6 +33,7 @@ const JuramPage = () => {
             gap: 2,
           }}
         >
+          <FileDownloadLineIcon color="green" />
           <Typography
             variant="body1"
             sx={{
