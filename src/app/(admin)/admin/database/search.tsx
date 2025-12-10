@@ -7,7 +7,11 @@ import SearchLineIcon from "remixicon-react/SearchLineIcon";
 import CloseLineIcon from "remixicon-react/CloseLineIcon";
 import { textSubInputTheme } from "@/components/componentTheme/SearchTheme";
 
-export default function ClientSearch() {
+export default function ClientSearch({
+  placeholder = "Өгөгдлийн сангийн нэрээр хайх...",
+}: {
+  placeholder?: string,
+}) {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -35,7 +39,7 @@ export default function ClientSearch() {
         <TextInput
           className="w-full py-1.5"
           theme={textSubInputTheme}
-          placeholder="Өгөгдлийн сангийн нэрээр хайх..."
+          placeholder={placeholder}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />

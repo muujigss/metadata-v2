@@ -5,10 +5,15 @@ import { getActionsModel } from "@/services/model/ActionModel";
 import { Box, Typography } from "@mui/material";
 
 import React, { Suspense } from "react";
+import ClientSearch from "../database/search";
 
 export const dynamic = "force-dynamic";
 
-const RequestActionPage = async () => {
+const RequestActionPage = async ({
+  searchParams,
+}: {
+  searchParams?: any;
+}) => {
   const columns = [
     { field: "id", headerName: "№", width: 10 },
     { field: "img_url", headerName: "Зураг", width: 10 },
@@ -27,7 +32,8 @@ const RequestActionPage = async () => {
     { field: "action", headerName: "", width: 10 },
   ];
 
-  const data = await getActionsModel();
+  const queryText = searchParams?.query ?? "";
+  const data = await getActionsModel(queryText);
 
   if (!data) return <Loader />;
 
@@ -43,6 +49,8 @@ const RequestActionPage = async () => {
       <Box sx={{ display: "flex", justifyContent: "space-between", px: 2, pb: 2 }}>
         <Typography variant="h5"> Хүсэлтийн жагсаалт</Typography>
       </Box>
+      
+      <ClientSearch placeholder="Хайлт..." />
 
       <Suspense fallback={<Loader />}>
         <RequestActionComponent columns={columns} data={data} />
@@ -50,5 +58,5 @@ const RequestActionPage = async () => {
     </Box>
   );
 };
-/a/
+
 export default RequestActionPage;

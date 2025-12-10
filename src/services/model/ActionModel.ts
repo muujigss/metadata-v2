@@ -27,13 +27,54 @@ const getLibChangeActionTypeModel = async () => {
  * @return:      Array
  * @description: Өгөгдлийн сангийн [2, 5, 6, 8] төлвийн үйлдлийн жагсаалт буцаана.
  */
-const getActionsModel = async () => {
+const getActionsModel = async (searchText?: string) => {
   try {
     const md_action = await prisma.md_action.findMany({
       where: {
         action_type: {
           in: [2, 5, 6, 8],
         },
+
+        ...(searchText && {
+          OR: [
+            // Search user first/last name
+            {
+              user: {
+                OR: [
+                  { firstname: { contains: searchText, mode: "insensitive" } },
+                  { lastname: { contains: searchText, mode: "insensitive" } },
+                ],
+              },
+            },
+
+            // Search database name
+            {
+              databases: {
+                some: {
+                  name: {
+                    contains: searchText,
+                    mode: "insensitive",
+                  },
+                },
+              },
+            },
+
+            // Search organization name inside databases
+            {
+              databases: {
+                some: {
+                  organization: {
+                    name: {
+                      contains: searchText,
+                      mode: "insensitive",
+                    },
+                  },
+                },
+              },
+            },
+          ],
+        }),
+
       },
       select: {
         id: true,
