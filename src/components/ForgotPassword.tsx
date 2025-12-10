@@ -59,10 +59,10 @@ const ForgotPassword = () => {
               className="w-full flex flex-col items-center"
               onSubmit={handleSubmit}
             >
-              <div className="flex flex-col w-full gap-2 py-2">
+              <div className="flex flex-col w-full gap-1 py-1">
                 <Box
                   sx={{
-                    padding: 1,
+                    padding: { xs: 0.5, sm: 1 },
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
@@ -85,7 +85,7 @@ const ForgotPassword = () => {
                 </Box>
                 <Box
                   sx={{
-                    padding: 1,
+                    padding: { xs: 0.5, sm: 1 },
                     display: "flex",
                     flexDirection: "column",
                     gap: 1,
