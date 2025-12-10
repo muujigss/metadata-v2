@@ -98,6 +98,10 @@ const DuplicatePage = () => {
       return;
     }
     setModalStatus('create')
+    setInitData({
+      code: '',
+      name: '',
+    })
     setOpenModal(!openModal);
   };
   const handleView = (data: any) => {
