@@ -65,8 +65,10 @@ const Header = () => {
   };
   const toggleProfileDrawer = () => {
     setOpenProfile(!openProfile);
+    setOpenNotif(false);
   };
   const toggleNotifDrawer = () => {
+    setOpenProfile(false);
     setOpenNotif(!openNotif);
   };
 
@@ -100,7 +102,19 @@ const Header = () => {
     <>
       <AppBar
         position="absolute"
-        sx={{ zIndex: 10, left: 0, top: 0, boxShadow: "none" }}
+        sx={{
+          zIndex: 10,
+          left: {
+            xs: 0,
+          },
+          width: {
+            xs: "100%",
+            md: open ? "calc(100% - 240px)" : "100%",
+          },
+          top: 0,
+          transition: "all 0.3s ease",
+          boxShadow: "none",
+        }}
         open={open}
       >
         <Toolbar
@@ -112,32 +126,73 @@ const Header = () => {
             position: "relative",
           }}
         >
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: { xs: 1, md: 2 },
+              width: "100%",
+              maxWidth: { xs: "60%", sm: "70%", md: "auto" },
+              overflow: "hidden",
+            }}
+          >
             <IconButton
               edge="start"
               color="inherit"
               aria-label="open drawer"
               onClick={toggleDrawer}
               sx={{
-                marginRight: "36px",
-                ...(open && { display: "none" }),
+                mr: 2,
+                display: { xs: "flex", md: open ? "none" : "flex" },
               }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className=" uppercase">
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: { xs: "12px", sm: "16px", md: "18px" },
+                whiteSpace: "nowrap",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                pl: { xs: 1 },
+              }}
+              className="uppercase"
+            >
               Төрөлжсөн бүртгэлийн нэгдсэн сан
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", alignItems: "center" }} className="gap-10">
-            <div className="flex relative p-3 cursor-pointer hover:bg-[#42a5f5] hover:rounded-xl" onClick={toggleNotifDrawer}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: { xs: 1, sm: 2, md: 3 } }}>
+            <Box
+              sx={{
+                position: "relative",
+                p: 0,
+                cursor: "pointer",
+                borderRadius: 2,
+                "&:hover": { backgroundColor: "#42a5f5" },
+              }}
+              onClick={toggleNotifDrawer}
+            >
               <NotificationsNoneIcon className="" />
-              <div
-                className="absolute -top-0 -right-1 bg-pink-500 text-white font-bold w-7 h-7 flex items-center justify-center rounded-full text-[12px]"
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: -2,
+                  right: -2,
+                  backgroundColor: "red",
+                  color: "#fff",
+                  fontSize: "10px",
+                  width: 18,
+                  height: 18,
+                  borderRadius: "50%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
               >
                 {notifCount}
-              </div>
-            </div>
+              </Box>
+            </Box>
             <Button
               color="secondary"
               variant="text"
@@ -145,17 +200,31 @@ const Header = () => {
                 backgroundColor: "#f2e5b7",
                 color: "#000",
                 display: "flex",
-                gap: 1,
-                ":hover": {
+                alignItems: "center",
+                gap: { xs: 0.5, md: 1 },
+                px: { xs: 1, sm: 2 },
+                py: { xs: 0.5, sm: 1 },
+                fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                "&:hover": {
                   backgroundColor: "primary.light",
                   color: "#fff",
                 },
               }}
               onClick={toggleProfileDrawer}
             >
-              <Person2RoundedIcon />
-              <Typography variant="body1">{firstname}</Typography>
-              <Typography variant="body1">{lastname}</Typography>
+              <Person2RoundedIcon sx={{ fontSize: { xs: "16px", sm: "20px" } }} />
+              <Typography
+                variant="body1"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                {firstname}
+              </Typography>
+              <Typography
+                variant="body1"
+                sx={{ display: { xs: "none", sm: "block" } }}
+              >
+                {lastname}
+              </Typography>
             </Button>
           </Box>
         </Toolbar>
@@ -214,8 +283,8 @@ const ProfileDrawer = ({
       width={"280px"}
       sx={{
         boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)",
-        top: 64,
-        right: 0,
+        top: 66,
+        right: 20,
         bgcolor: "#ffffff",
         borderRadius: 2,
         overflow: "hidden",
@@ -320,8 +389,22 @@ const NotificationDrawer = ({
     );
   }
 
+  const handleViewAll = async () => {
+  }
+
   return (
-    <div className="w-[280px] absolute right-[250px] top-[64px] bg-[#42a5f5]">
+    <Box
+      position={"absolute"}
+      width={"280px"}
+      sx={{
+        boxShadow: "0px 8px 16px rgba(0, 0, 0, 0.15)",
+        top: 66,
+        right: 20,
+        bgcolor: "#42a5f5",
+        borderRadius: 2,
+        overflow: "hidden",
+      }}
+    >
       {
         isLoading
           ? (
@@ -338,6 +421,10 @@ const NotificationDrawer = ({
           )
           : (
               <>
+                <div className="border-b py-2 px-3 cursor-pointer hover:bg-[#1976d2] flex justify-between">
+                  <div className="text-[14px]">Бүгдийг үзсэн</div>
+                  <RadioButtonUncheckedIcon fontSize="small" />
+                </div>
                 <div className="flex flex-col overflow-y-auto h-[300px]">
                   { notifList.length === 0 && (
                     <span className="py-2 px-3">Өгөгдөл хоосон.</span>
@@ -374,7 +461,7 @@ const NotificationDrawer = ({
               </>
           )
       }
-    </div>
+    </Box>
   );
 };
 export default Header;

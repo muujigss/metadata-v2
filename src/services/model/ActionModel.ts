@@ -185,7 +185,8 @@ const updateActionsModel = async (
         id: md_action.action_type,
       },
     })
-    if (libActionType && mdUser) {
+    const allowedActionTypes = [2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ,12]
+    if (libActionType && allowedActionTypes.includes(libActionType?.id) && mdUser) {
       await prisma.md_notif.create({
         data: {
           database: { connect: { id: md_action.item_id } },

@@ -112,7 +112,19 @@ const RequestActionComponent = ({
   if (isLoading) return <Loader />;
   return (
     <Box>
-      <TableContainer sx={{ maxHeight: 550 }}>
+      <TableContainer
+        sx={{
+          maxHeight: 550,
+          overflowX: "auto",
+          // width: {
+          //   xs: 360,   // mobile
+          //   sm: "50%",    // small screens
+          //   md: "80%",    // medium screens
+          //   lg: "100%",    // large screens
+          // },
+          maxWidth: { xs: 330, sm: 500, md: 600, lg: "100%" }
+        }}
+      >
         <Table stickyHeader>
           <TableHead>
             <TableRow>

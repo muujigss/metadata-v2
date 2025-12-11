@@ -28,14 +28,17 @@ const updateActionService = async (data: IAction) => {
       body: JSON.stringify(data),
     });
 
-    //Хүсэлт илгээх //Яам руу явуулах
-    //Баталгаажуулах //тухайн хэрэглэгч рүү явуулах
-    //Буцаагдсан //тухайн хэрэглэгч рүү явуулах
+    /**
+     * Хүсэлт илгээх - Яам Админ руу илгээх
+     * Баталгаажуулах - Байгууллагын хэрэглэгч рүү явуулах
+     * Буцаагдсан - Байгууллагын хэрэглэгч рүү явуулах
+     * Өөрчлөлт хийх хүсэлт - Яам Админ руу илгээх
+     * Ашиглалтаас гарах хүсэлт - Яам Админ руу илгээх
+     */
 
     const info = await getUserInfoModel(parseInt(data.user_id));
     const userInfoAdmin = await getUserInfoByLevelModel(1);
 
-    // let mailObj = {};
     let subject = ''
     let text = ''
     let toMail = ''
@@ -44,32 +47,23 @@ const updateActionService = async (data: IAction) => {
         subject = 'Баталгаажуулах хүсэлт'
         text = `Таньд дараах байгууллагаас хүсэлт ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b>`
         toMail = userInfoAdmin?.email ?? ''
-        // mailObj = {
-        //   to: userInfoAdmin?.email,
-        //   subject: "Баталгаажуулах хүсэлт",
-        //   html: `Сайн байна уу, <br/><br/> Таньд дараах байгууллагаас хүсэлт ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b> <br/><br/> Та Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
-        // };
       } else if (data.action_type == 3) {
         subject = 'Баталгаажуулах хүсэлт'
         text = `Таны илгээсэн хүсэлт баталгаажсан байна.`
         toMail = info?.email ?? ''
-        // mailObj = {
-        //   to: info?.email,
-        //   subject: "Баталгаажсан хүсэлт",
-        //   html: `Сайн байна уу, <br/><br/> Таны илгээсэн хүсэлт баталгаажсан байна. Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/><br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
-        // };
       } else if (data.action_type == 4) {
         subject = 'Буцаагдсан хүсэлт'
         text = `Таны илгээсэн хүсэлт буцаагдсан байна.`
         toMail = info?.email ?? ''
-        // mailObj = {
-        //   to: info?.email,
-        //   subject: "Буцаагдсан хүсэлт",
-        //   html: `Сайн байна уу, <br/><br/> Таны илгээсэн хүсэлт буцаагдсан байна. Төрөлжсөн бүртгэлийн нэгдсэн санд хандан хүсэлтийг шалгах боломжтой. <br/><br/> <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/> Баярлалаа`,
-        // };
+      } else if (data.action_type == 5) {
+        subject = 'Өөрчлөлт хийх хүсэлт'
+        text = `Таньд дараах байгууллагаас [Өөрчлөлт хийх хүсэлт] ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b> Өгөгдлийн сангийн нэр: <b> ${info?.md_user_database?.database?.name}</b>`
+        toMail = userInfoAdmin?.email ?? ''
+      } else if (data.action_type == 6) {
+        subject = 'Ашиглалтаас гарах хүсэлт'
+        text = `Таньд дараах байгууллагаас [Ашиглалтаас гарах хүсэлт] ирсэн байна. <br/> Байгууллагын нэр: <b> ${info?.organization.name}</b> Өгөгдлийн сангийн нэр: <b> ${info?.md_user_database?.database?.name}</b>`
+        toMail = userInfoAdmin?.email ?? ''
       }
-
-      // sendMail(mailObj);
 
       const template = await mailTemplateDbStatusChangeUser(toMail, subject, text, process.env.HOST_BASE_URL)
       await sendMail(template)
