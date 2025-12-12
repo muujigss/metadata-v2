@@ -1,10 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { isMobile } from "react-device-detect";
 
 const LogoPics = () => {
   return (
     <div className="flex lg:flex-row items-center gap-2">
-      <a
+      <Link
         href="/"
         className="-m-1.5 p-1.5 inline-flex flex-col md:flex-row gap-2"
       >
@@ -36,7 +37,7 @@ const LogoPics = () => {
             Үндэсний Статистикийн Хороо
           </span>
         </span>
-      </a>
+      </Link>
     </div>
   );
 };

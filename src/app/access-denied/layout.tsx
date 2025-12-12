@@ -8,7 +8,7 @@ const LoginLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html lang="mn">
       <head>
         <title>Төрөлжсөн бүртгэлийн нэгдсэн сан</title>
       </head>

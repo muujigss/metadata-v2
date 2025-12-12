@@ -20,7 +20,7 @@ export default function RootLayout({
   });
 
   return (
-    <html lang="en">
+    <html lang="mn">
       <head>
         <title>Төрөлжсөн бүртгэлийн нэгдсэн сан</title>
       </head>

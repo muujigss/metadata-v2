@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import CurrentUserContext, { ICurrentUserContext } from "./context";
 
 const useCurrentUser = () => {
@@ -6,8 +6,10 @@ const useCurrentUser = () => {
     CurrentUserContext
   ) as ICurrentUserContext;
 
-  if (typeof window !== "undefined") {
-    let userObj: any = {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const userObj: any = {
       firstname: localStorage.getItem("firstname"),
       lastname: localStorage.getItem("lastname"),
       user_level: localStorage.getItem("user_level"),
@@ -18,19 +20,19 @@ const useCurrentUser = () => {
         name: localStorage.getItem("org_name"),
       },
       roles:
-        localStorage.getItem("roles") != "null" &&
-        localStorage.getItem("roles") != undefined
-          ? JSON.parse(localStorage.getItem("roles"))
+        localStorage.getItem("roles") !== "null" &&
+        localStorage.getItem("roles") !== undefined
+          ? JSON.parse(localStorage.getItem("roles")!)
           : null,
     };
 
+    // Only update once
     if (!userInfo) {
       setUserInfo(userObj);
     }
+  }, [userInfo, setUserInfo]); // runs after render
 
-    return { userInfo, setUserInfo };
-  } else {
-    return { userInfo, setUserInfo };
-  }
+  return { userInfo, setUserInfo };
 };
+
 export default useCurrentUser;

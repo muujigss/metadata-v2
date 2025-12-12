@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, Suspense } from "react";
+import Image from "next/image";
 import { useQuery } from "@tanstack/react-query";
 import {
   Box,
@@ -115,7 +116,7 @@ const AdminLogList = () => {
                       {
                       type === 1
                         ? (item?.md_organization.img_url ? (
-                          <img 
+                          <Image 
                             src={item?.md_organization.img_url} 
                             alt="Logo" 
                             className="w-12 h-12 object-contain rounded border"
@@ -126,7 +127,7 @@ const AdminLogList = () => {
                           </div>
                         ))
                         : (item?.lud_created_user?.organization.img_url ? (
-                          <img 
+                          <Image 
                             src={item?.lud_created_user?.organization.img_url} 
                             alt="Logo" 
                             className="w-12 h-12 object-contain rounded border"

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, Suspense } from "react";
+import Image from "next/image";
 import { getOrganization } from "@/services/OrganizationService";
 import { useQuery } from "@tanstack/react-query";
 import Loader from "../Loader";
@@ -126,7 +127,7 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
                     <TableCell>{page * rowsPerPage + i + 1}</TableCell>
                     <TableCell>
                       {item?.img_url ? (
-                        <img 
+                        <Image 
                           src={item?.img_url} 
                           alt="Logo" 
                           className="w-12 h-12 object-contain rounded border"

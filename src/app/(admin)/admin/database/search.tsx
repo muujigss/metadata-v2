@@ -27,10 +27,12 @@ export default function ClientSearch({
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      updateQuery(searchText);
-    }, 500);
-    return () => clearTimeout(timeout);
+    if (searchText) {
+      const timeout = setTimeout(() => {
+        updateQuery(searchText);
+      }, 500);
+      return () => clearTimeout(timeout);
+    }
   }, [searchText]);
 
   return (

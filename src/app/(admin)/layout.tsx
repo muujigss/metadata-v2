@@ -24,43 +24,38 @@ const AdminLayout = ({
   });
 
   return (
-    <html lang="en">
-      <head>
-        <title>Төрөлжсөн бүртгэлийн нэгдсэн сан</title>
-      </head>
-      <body>
-        <AppRouterCacheProvider>
-          <StyledRoot>
-            <QueryClientProvider client={queryClient}>
-              <UserProvider>
+    <>
+      <AppRouterCacheProvider>
+        <StyledRoot>
+          <QueryClientProvider client={queryClient}>
+            <UserProvider>
+              <Box
+                width={"100%"}
+                height={"screen"}
+                sx={{ display: "flex", position: "relative", left: 0, top: 0 }}
+              >
+                <CssBaseline />
+                <Header />
                 <Box
-                  width={"100%"}
-                  height={"screen"}
-                  sx={{ display: "flex", position: "relative", left: 0, top: 0 }}
+                  component={"main"}
+                  sx={{
+                    position: "relative",
+                    top: "64px",
+                    padding: "15px",
+                    flexGrow: 1,
+                    // height: "100vh",
+                    // overflow: "auto",
+                  }}
                 >
-                  <CssBaseline />
-                  <Header />
-                  <Box
-                    component={"main"}
-                    sx={{
-                      position: "relative",
-                      top: "64px",
-                      padding: "15px",
-                      flexGrow: 1,
-                      // height: "100vh",
-                      // overflow: "auto",
-                    }}
-                  >
-                    {children}
-                  </Box>
+                  {children}
                 </Box>
-              </UserProvider>
-            </QueryClientProvider>
-            {/* <Footer /> */}
-          </StyledRoot>
-        </AppRouterCacheProvider>
-      </body>
-    </html>
+              </Box>
+            </UserProvider>
+          </QueryClientProvider>
+          {/* <Footer /> */}
+        </StyledRoot>
+      </AppRouterCacheProvider>
+    </>
   );
 };
 
