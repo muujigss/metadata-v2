@@ -2,6 +2,8 @@
 
 ## Node version v20
 
+## Next upgrade v14 -> v15
+
 
 ## Install Postgresql in Rocky linux
 
