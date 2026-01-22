@@ -97,21 +97,21 @@ const loginUserModel = async (email: string, password: string) => {
       },
     });
 
-    // if (user?.id) {
-    //   const psResult = await bcrypt.compare(password, user?.password || "");
+    if (user?.id) {
+      const psResult = await bcrypt.compare(password, user?.password || "");
 
-    //   if (!psResult) {
-    //     return null;
-    //   }
-    // }
-    // const userLogin = await prisma.md_users.update({
-    //   where: {
-    //     id: user?.id,
-    //   },
-    //   data: {
-    //     last_login_date: moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
-    //   },
-    // });
+      if (!psResult) {
+        return null;
+      }
+    }
+    const userLogin = await prisma.md_users.update({
+      where: {
+        id: user?.id,
+      },
+      data: {
+        last_login_date: moment().format("YYYY-MM-DDTHH:mm:ss.SSSZ"),
+      },
+    });
 
     return user;
   } catch (error) {
