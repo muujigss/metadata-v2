@@ -3,7 +3,7 @@ import { getDatabaseModel } from "@/services/model/site/DatabaseModel";
 import Loader from "../Loader";
 import PaginationComp from "../PaginationComp";
 import DatabaseItem from "./DatabaseItem";
-import { log } from "console";
+import ExcelDownloadButton from "./ExcelDownloadButton";
 
 const DbList = async ({
   currentPage,
@@ -44,9 +44,12 @@ const DbList = async ({
         </div>
 
         {/* Баруун талд "Эксел татах" товч */}
-        <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700">
-          Эксел татах
-        </button>
+        <ExcelDownloadButton
+          searchText={searchText}
+          orgId={orgId}
+          sectorId={sectorId}
+          dbType={dbType}
+        />
       </div>
       <div className="flex flex-col gap-4 self-stretch">
         {data?.data?.map((list: any, i: number) => {

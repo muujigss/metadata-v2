@@ -134,7 +134,7 @@ const FormDetail = ({ id }: { id: number }) => {
                     6
                   </th>
                   <td className="px-6 py-2">Салбар</td>
-                  <td className="px-6 py-2">{data?.sector.name}</td>
+                  <td className="px-6 py-2">{data?.sector?.name}</td>
                 </tr>
                 <tr className="bg-[#080812] text-white border-b dark:border-table-border">
                   <th

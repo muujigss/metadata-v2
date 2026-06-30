@@ -325,7 +325,7 @@ const getTableByFilter = async (
 };
 
 const createTableModel = async (inputTable: ITable) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
   const now = new Date();
   const created_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();

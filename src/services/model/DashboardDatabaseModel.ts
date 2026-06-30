@@ -9,7 +9,7 @@ import { cookies } from "next/headers";
  * @description: Админ хянах самбарын үндсэн үзүүлэлтүүдийг авах
  */
 const getMainIndicatorsModel = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
   const orgId = cookieStore.get("org_id")?.value;
   try {
@@ -177,7 +177,7 @@ const getMainIndicatorsModel = async () => {
  * @description: Өгөгдлийн сангийн дэлгэрэнгүй мэдээллийг авах (төрөл, байршил, зөвшөөрөл гэх мэт)
  */
 const getDashboardDatabaseModel = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
   const orgId = cookieStore.get("org_id")?.value;
 
@@ -404,7 +404,7 @@ const getDashboardDatabaseModel = async () => {
  * @description: Бүх өгөгдлийн сангийн жагсаалтыг байгууллагаар нь авах
  */
 const getAlldata = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
   const orgId = cookieStore.get("org_id")?.value;
   const userLevel = await prisma.md_users.findUnique({
@@ -512,7 +512,7 @@ const getAllOrgs = async () => {
  * @description: Өгөгдлийн сангийн технологийн мэдээллээс нийт хэмжээ болон бичлэгийн тоог авах
  */
 const getDatabaseTechnologyStats = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
   const orgId = cookieStore.get("org_id")?.value;
 

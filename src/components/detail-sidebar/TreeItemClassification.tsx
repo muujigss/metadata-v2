@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { IClassification } from "@/interfaces/IClassification";
 import { TreeItem2 } from "@mui/x-tree-view/TreeItem2";
 import { ListGroup } from "flowbite-react";
@@ -54,7 +55,7 @@ const TreeItemClassification = ({
         />
         {classifcationFilterList?.map(({ name, id: classificationId }, i) => {
           return (
-            <>
+            <Fragment key={classificationId ?? i}>
               {i < 10 && (
                 <ListGroupItem
                   key={tbl_id}
@@ -75,7 +76,7 @@ const TreeItemClassification = ({
                   total={0}
                 />
               )}
-            </>
+            </Fragment>
           );
         })}
         {classifcationFilterList.length > 9 && (

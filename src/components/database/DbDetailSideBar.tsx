@@ -76,15 +76,14 @@ const DbDetailSideBar = ({
               {data &&
                 data?.map(({ id, name }: IDatabase, i: number) => {
                   return (
-                    <>
-                      <ListGroupItem
-                        id={id}
-                        name={name}
-                        activeId={database_id}
-                        pathName="database"
-                        total={0}
-                      />
-                    </>
+                    <ListGroupItem
+                      key={id ?? i}
+                      id={id}
+                      name={name}
+                      activeId={database_id}
+                      pathName="database"
+                      total={0}
+                    />
                   );
                 })}
             </ListGroup>

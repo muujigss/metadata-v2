@@ -22,7 +22,7 @@ const DatabaseAdminPage = async ({
   const skip = (currentPage - 1) * take;
   const orgText = searchParams?.org || "";
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   let userId = cookieStore.get("user_id")?.value;
   let user_level = cookieStore.get("user_level")?.value;
   let orgId = user_level == "1" ? orgText : cookieStore.get("org_id")?.value;

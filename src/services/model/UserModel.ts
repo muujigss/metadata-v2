@@ -97,12 +97,12 @@ const loginUserModel = async (email: string, password: string) => {
       },
     });
 
-    if (user?.id) {
-      const psResult = await bcrypt.compare(password, user?.password || "");
-
-      if (!psResult) {
-        return null;
-      }
+    if (!user?.id) {
+      return null;
+    }
+    const psResult = await bcrypt.compare(password, user?.password || "");
+    if (!psResult) {
+      return null;
     }
     const userLogin = await prisma.md_users.update({
       where: {
@@ -160,7 +160,7 @@ const createUserModel = async (data: IUser) => {
   } = data;
   let user = {};
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const create_user_id = cookieStore.get("user_id")?.value;
     const now = new Date();
     const created_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();
@@ -389,7 +389,7 @@ const updatePasswordModel = async (data: any) => {
 
   let user = {};
   try {
-    const cookieStore = cookies();
+    const cookieStore = await cookies();
     const create_user_id = cookieStore.get("user_id")?.value;
     const now = new Date();
 

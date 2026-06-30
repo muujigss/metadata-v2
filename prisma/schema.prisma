@@ -636,7 +636,7 @@ model lib_source {
 model md_users {
   id               Int                @id @default(autoincrement())
   user_level       Int
-  org_id           Int
+  org_id           Int?
   firstname        String?
   lastname         String?
   department       String?
@@ -647,14 +647,14 @@ model md_users {
   mobile           String?
   profile_img_url  String?
   roles            Json?
-  last_login_date  DateTime
+  last_login_date  DateTime?
   login_attempts   Int?
   is_active        Boolean?
   created_date     DateTime           @default(now())
   created_user     Int?
   updated_date     DateTime           @default(now())
   updated_user     Int?
-  organization     md_organization    @relation(fields: [org_id], references: [id])
+  organization     md_organization?   @relation(fields: [org_id], references: [id])
   md_user_database md_user_database[]
   userLevel        lib_user_level     @relation(fields: [user_level], references: [id])
   md_action        md_action[]

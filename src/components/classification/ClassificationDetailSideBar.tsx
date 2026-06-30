@@ -81,15 +81,14 @@ const ClassificationDetailSideBar = ({
                   classifications?.map(
                     ({ id, name }: IClassification, i: number) => {
                       return (
-                        <>
-                          <ListGroupItem
-                            id={id}
-                            name={name}
-                            activeId={ind_id}
-                            pathName="classification"
-                            total={0}
-                          />
-                        </>
+                        <ListGroupItem
+                          key={id ?? i}
+                          id={id}
+                          name={name}
+                          activeId={ind_id}
+                          pathName="classification"
+                          total={0}
+                        />
                       );
                     }
                   )}

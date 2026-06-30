@@ -22,7 +22,7 @@ const loginWithUser = async (username: string, password: string) => {
     if (!success) {
       throw new Error("Error in login test: " + message);
     } else {
-      const cookieStore = cookies();
+      const cookieStore = await cookies();
 
       cookieStore.set("access-token", token);
       cookieStore.set("firstname", user.firstname);
@@ -41,7 +41,7 @@ const loginWithUser = async (username: string, password: string) => {
 };
 
 const logOutUser = async () => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   cookieStore.delete("access-token");
   cookieStore.delete("firstname");
   cookieStore.delete("org_id");

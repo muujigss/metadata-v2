@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { IIndicator } from "@/interfaces/IIndicators";
 import { TreeItem2 } from "@mui/x-tree-view/TreeItem2";
 import { ListGroup } from "flowbite-react";
@@ -55,7 +56,7 @@ const TreeItemIndicator = ({
         {indicatorFilterList?.map(
           ({ id, name, indicators_classifications }, i) => {
             return (
-              <>
+              <Fragment key={id ?? i}>
                 {i < 10 && (
                   <ListGroupItem
                     key={tbl_id}
@@ -76,7 +77,7 @@ const TreeItemIndicator = ({
                     total={0}
                   />
                 )}
-              </>
+              </Fragment>
             );
           }
         )}

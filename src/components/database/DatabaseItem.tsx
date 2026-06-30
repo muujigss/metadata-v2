@@ -1,3 +1,4 @@
+"use client";
 import { IDatabase } from "@/interfaces/IDatabase";
 import { Badge, Card } from "flowbite-react";
 import moment from "moment";
@@ -47,16 +48,22 @@ const DatabaseItem = ({ list }: { list: IDatabase }) => {
                 </Badge>
               </span>
               {list?.is_integrated && (
-                <a href={`https://data.nso.mn/new-datamart`} target="_blank">
-                  <span className="inline-flex items-center">
-                    <Database2LineIcon size={14} color="blue" className="mr-1" />
-                    <Badge color="blue" className="px-1">
-                      <span className="text-text-body-small">
-                        {list?.is_integrated && "Төрийн нэгдсэн өгөгдлийн сан"}
-                      </span>
-                    </Badge>
-                  </span>
-                </a>
+                <span
+                  role="link"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.open("https://data.nso.mn/new-datamart", "_blank");
+                  }}
+                  className="inline-flex items-center cursor-pointer"
+                >
+                  <Database2LineIcon size={14} color="blue" className="mr-1" />
+                  <Badge color="blue" className="px-1">
+                    <span className="text-text-body-small">
+                      Төрийн нэгдсэн өгөгдлийн сан
+                    </span>
+                  </Badge>
+                </span>
               )}
             </div>
           </div>

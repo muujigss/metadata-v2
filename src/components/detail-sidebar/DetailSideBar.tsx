@@ -87,16 +87,14 @@ const DetailSideBar = ({
                 {data &&
                   forms?.map(({ id, name }: IForm, i: number) => {
                     return (
-                      <>
-                        <ListGroupItem
-                          key={i}
-                          id={id}
-                          name={name}
-                          activeId={form_id}
-                          pathName="form"
-                          total={0}
-                        />
-                      </>
+                      <ListGroupItem
+                        key={id ?? i}
+                        id={id}
+                        name={name}
+                        activeId={form_id}
+                        pathName="form"
+                        total={0}
+                      />
                     );
                   })}
               </ListGroup>

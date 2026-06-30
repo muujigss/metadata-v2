@@ -735,7 +735,7 @@ const getFormByFilter = async (
  * @description: Шинэ маягт үүсгэх эсвэл шинэчлэх
  */
 const createFormModel = async (data: any) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
 
   const {

@@ -328,7 +328,7 @@ const getIndicatorByFilter = async (
  * @description: Шинэ үзүүлэлт үүсгэх эсвэл шинэчлэх
  */
 const createIndicatorModel = async (inputIndicator: IIndicator) => {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const user_id = cookieStore.get("user_id")?.value;
   const now = new Date();
   const created_date = now.toISOString();
