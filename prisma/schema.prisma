@@ -140,7 +140,7 @@ model log_database {
 
 model md_form {
   id                      Int                      @id @default(autoincrement())
-  db_id                   Int
+  db_id                   Int?
   code                    String
   name                    String
   decree_num              String?
@@ -179,7 +179,7 @@ model md_form {
   created_user            Int?
   updated_date            DateTime                 @default(now())
   updated_user            Int?
-  database                md_database              @relation(fields: [db_id], references: [id])
+  database                md_database?             @relation(fields: [db_id], references: [id])
   sector                  lib_sector?              @relation(fields: [sector_id], references: [id])
   dissimenation_level     lib_dissimenation_level? @relation(fields: [dissimenation_level_id], references: [id])
   security_level          lib_security_level?      @relation(fields: [security_level_id], references: [id])
@@ -686,7 +686,7 @@ model lib_action_type {
 
 model md_action {
   id           Int             @id @default(autoincrement())
-  user_id      Int
+  user_id      Int?
   action_type  Int
   item_id      Int             @unique
   item_type    String
@@ -698,21 +698,21 @@ model md_action {
   updated_user Int?
   actionType   lib_action_type @relation(fields: [action_type], references: [id])
   databases    md_database[]
-  user         md_users        @relation(fields: [user_id], references: [id])
+  user         md_users?       @relation(fields: [user_id], references: [id])
   file         md_file?        @relation(fields: [file_id], references: [id])
   notif        md_notif[]
 }
 
 model md_user_database {
   id           Int         @id @default(autoincrement())
-  user_id      Int
-  database_id  Int
+  user_id      Int?
+  database_id  Int?
   created_date DateTime    @default(now())
   created_user Int?
   updated_date DateTime    @default(now())
   updated_user Int?
-  database     md_database @relation(fields: [database_id], references: [id])
-  user         md_users    @relation(fields: [user_id], references: [id])
+  database     md_database? @relation(fields: [database_id], references: [id])
+  user         md_users?    @relation(fields: [user_id], references: [id])
   user_database log_user_database[]
 }
 
