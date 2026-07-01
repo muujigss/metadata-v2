@@ -5,9 +5,10 @@ import ClassificationTabList from "@/components/classification/ClassificationTab
 import Loader from "@/components/Loader";
 import { getClassificationId } from "@/services/ClassificationService";
 import { useQuery } from "@tanstack/react-query";
+import { use } from "react";
 
-const ClassificationDetailPage = ({ params }: { params: { id: number } }) => {
-  const id = { params }.params.id;
+const ClassificationDetailPage = ({ params }: { params: Promise<{ id: number }> }) => {
+  const { id } = use(params);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["getClassificationId.id", id],

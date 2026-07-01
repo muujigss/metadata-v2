@@ -10,11 +10,11 @@ import { getTable } from "@/services/TableService";
 import { useQuery } from "@tanstack/react-query";
 import { Card } from "flowbite-react";
 import moment from "moment";
-import { Suspense } from "react";
+import { Suspense, use } from "react";
 import Calendar2LineIcon from "remixicon-react/Calendar2LineIcon";
 
-const TablePage = ({ params }: { params: { id: number } }) => {
-  const id = { params }.params.id;
+const TablePage = ({ params }: { params: Promise<{ id: number }> }) => {
+  const { id } = use(params);
   const { data, isLoading, error } = useQuery<ITable | undefined>({
     queryKey: ["table details id", id],
     queryFn: () => getTable(id),

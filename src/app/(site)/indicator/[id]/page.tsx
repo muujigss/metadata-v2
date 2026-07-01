@@ -8,9 +8,10 @@ import { useQuery } from "@tanstack/react-query";
 import { Card } from "flowbite-react";
 import moment from "moment";
 import Calendar2LineIcon from "remixicon-react/Calendar2LineIcon";
+import { use } from "react";
 
-const IndicatorDetailPage = ({ params }: { params: { id: number } }) => {
-  const id = { params }.params.id;
+const IndicatorDetailPage = ({ params }: { params: Promise<{ id: number }> }) => {
+  const { id } = use(params);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["getIndicator by id", id],

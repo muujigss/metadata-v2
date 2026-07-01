@@ -19,10 +19,10 @@ const SectorIdPage = async ({
   params,
   searchParams,
 }: {
-  params: { id: number };
+  params: Promise<{ id: number }>;
   searchParams?: searchParamsProps;
 }) => {
-  const id = { params }.params.id;
+  const { id } = await params;
 
   const data = await getSectorId(id);
 

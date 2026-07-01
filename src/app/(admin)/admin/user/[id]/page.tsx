@@ -23,11 +23,10 @@ const UserDetailPage = async ({
   params,
   searchParams,
 }: {
-  params: { id: number };
+  params: Promise<{ id: number }>;
   searchParams?: searchParamsProps;
 }) => {
-  // console.log({ params });
-  const id = { params }.params.id;
+  const { id } = await params;
 
   const userId = id;
   const userDetail: IUser = await getUserDetailService(Number(userId));
