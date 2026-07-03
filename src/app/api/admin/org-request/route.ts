@@ -4,22 +4,17 @@ import bcrypt from "bcrypt";
 import { sendMail } from "@/services/MailService";
 import { mailTemplateOrgConfirm } from "@/utils/helper-mail";
 
-// GET: List all pending requests (new or rejected)
+// GET: List only pending (unresolved) registration requests
 export async function GET() {
   try {
     const requests = await prisma.md_organization.findMany({
       where: {
-        OR: [
-            { is_active: false },
-            { type: { in: ["new", "rejected", "approved"] } }
-        ]
+        // Зөвхөн шийдэгдээгүй хүсэлт (approved/rejected харагдахгүй)
+        type: "new",
+        is_active: false,
       },
       include: {
-        users: {
-          where: {
-            is_active: false,
-          },
-        },
+        users: true,
         file: true,
       },
       orderBy: {
@@ -74,10 +69,14 @@ export async function PUT(request: Request) {
       },
     });
 
-    // Send Approval Email
+    // Send Approval Email (мэйл унасан ч approve-ийг блоклохгүй)
     if (user.email) {
-      const template = await mailTemplateOrgConfirm(user.email, org.name, user.firstname, user.lastname, newPassword, process.env.HOST_BASE_URL)
-      await sendMail(template)
+      try {
+        const template = await mailTemplateOrgConfirm(user.email, org.name, user.firstname, user.lastname, newPassword, process.env.HOST_BASE_URL)
+        await sendMail(template)
+      } catch (mailErr) {
+        console.error("Approval mail failed (approve continued):", mailErr)
+      }
     }
 
     return NextResponse.json({ success: true, message: "Approved" });
@@ -110,18 +109,22 @@ export async function DELETE(request: Request) {
       if (user) userEmail = user.email || "";
     }
 
-    // Send Rejection Email
+    // Send Rejection Email (мэйл унасан ч татгалзахыг блоклохгүй)
     if (userEmail) {
-      await sendMail({
-        to: userEmail,
-        subject: "Төрөлжсөн бүртгэлийн нэгдсэн сан - Бүртгэл татгалзлаа",
-        html: `
-          <p>Сайн байна уу,</p>
-          <p>Таны байгууллагын бүртгэлийн хүсэлтээс татгалзсан байна.</p>
-          <p>Шалтгаан: ${status || "Тодорхойгүй"}</p>
-          <p>Дэлгэрэнгүй мэдээллийг админтай холбогдож авна уу.</p>
-        `
-      });
+      try {
+        await sendMail({
+          to: userEmail,
+          subject: "Төрөлжсөн бүртгэлийн нэгдсэн сан - Бүртгэл татгалзлаа",
+          html: `
+            <p>Сайн байна уу,</p>
+            <p>Таны байгууллагын бүртгэлийн хүсэлтээс татгалзсан байна.</p>
+            <p>Шалтгаан: ${status || "Тодорхойгүй"}</p>
+            <p>Дэлгэрэнгүй мэдээллийг админтай холбогдож авна уу.</p>
+          `
+        });
+      } catch (mailErr) {
+        console.error("Rejection mail failed (reject continued):", mailErr)
+      }
     }
 
     /* 

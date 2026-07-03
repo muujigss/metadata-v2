@@ -153,25 +153,42 @@ const RequestAccessPage = () => {
         body: formData,
       });
 
-      const data = await response.json();
+      // 413/504 зэрэгт nginx JSON биш HTML буцаадаг тул аюулгүй парс
+      let data: any = {};
+      try {
+        data = await response.json();
+      } catch {
+        data = {};
+      }
 
       if (response.ok) {
-        const template = await mailTemplateOrgNew(values.user_email, values.org_name, values.firstname, values.lastname)
-        await sendMail(template);
+        // Бүртгэл амжилттай — мэйл унасан ч энэ урсгалыг блоклохгүй
+        try {
+          const template = await mailTemplateOrgNew(values.user_email, values.org_name, values.firstname, values.lastname)
+          await sendMail(template);
+        } catch (mailErr) {
+          console.error("Хүсэлтийн мэдэгдэл мэйл илгээгдсэнгүй:", mailErr);
+        }
         setStatus("success");
         setMessage("Таны хүсэлтийг хүлээн авлаа. Бид шалгаад хариу мэдэгдэх болно.");
-        // Optional: redirect after some time
         setTimeout(() => {
-            router.push("/login");
+          router.push("/login");
         }, 3000);
       } else {
         setStatus("error");
-        setMessage(data.message || "Алдаа гарлаа. Дахин оролдоно уу.");
+        // Статус кодоор тодорхой мессеж
+        if (response.status === 413) {
+          setMessage("Файлын хэмжээ хэт том байна. Тушаал 20MB, лого 40MB-аас бага байх ёстой.");
+        } else if (response.status === 504) {
+          setMessage("Сервер удаан хариулж байна. Хэсэг хүлээгээд дахин оролдоно уу.");
+        } else {
+          setMessage(data.message || `Алдаа гарлаа (код ${response.status}). Дахин оролдоно уу.`);
+        }
       }
     } catch (error) {
       console.error(error);
       setStatus("error");
-      setMessage("Сүлжээний алдаа гарлаа.");
+      setMessage("Сүлжээний алдаа гарлаа. Интернэт холболтоо шалгана уу.");
     } finally {
       setLoading(false);
     }

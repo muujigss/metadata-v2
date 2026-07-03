@@ -33,6 +33,10 @@ export async function POST(req: Request) {
         user: user,
         pass: pass,
       },
+      // SMTP гацахаас сэргийлэх timeout-ууд
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 15000,
     });
 
     // Send the email

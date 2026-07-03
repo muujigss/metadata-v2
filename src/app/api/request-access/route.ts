@@ -72,23 +72,19 @@ export async function POST(request: Request) {
     const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
     const dt: any = await createFileModel(file, null);
     if (!dt) {
-      return NextResponse.json({
-        data: dt,
-        error: "Файл хадгалахад алдаа гарлаа",
-        message: "error",
-        status: "error",
-      });
+      return NextResponse.json(
+        { message: "Лого зураг хадгалахад алдаа гарлаа. Дахин оролдоно уу." },
+        { status: 500 }
+      );
     }
 
     let saved_file_id = null
     const dt2: any = await createFileModel(_file_id, null);
     if (!dt2) {
-      return NextResponse.json({
-        data: dt2,
-        error: "Тушаал файл хадгалахад алдаа гарлаа",
-        message: "error",
-        status: "error",
-      });
+      return NextResponse.json(
+        { message: "Тушаал файл хадгалахад алдаа гарлаа. Дахин оролдоно уу." },
+        { status: 500 }
+      );
     } else {
       saved_file_id = dt2?.file?.id
     }
