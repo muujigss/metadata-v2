@@ -7,8 +7,9 @@ export async function POST(req: Request) {
   try {
     const host = process.env.EMAIL_HOST;
     const port = Number(process.env.EMAIL_PORT) || 587;
-    const user = process.env.METADATA_INFO_EMAIL;
-    const pass = process.env.METADATA_INFO_PASSWORD;
+    // Хоёр нэрийн аль нэгийг дэмжинэ (METADATA_INFO_* эсвэл Django маягийн EMAIL_HOST_*)
+    const user = process.env.METADATA_INFO_EMAIL || process.env.EMAIL_HOST_USER;
+    const pass = process.env.METADATA_INFO_PASSWORD || process.env.EMAIL_HOST_PASSWORD;
 
     // Mock sending if credentials are missing
     if (!host || !user || !pass) {
