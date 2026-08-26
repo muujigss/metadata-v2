@@ -33,10 +33,10 @@ import FileComponent from "../formComponents/FIle";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SaveIcon from '@mui/icons-material/Save';
 
-const ReactQuill = dynamic(() => import("react-quill"), {
+const ReactQuill = dynamic(() => import("react-quill-new"), {
   ssr: false,
 });
-import "react-quill/dist/quill.snow.css";
+import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import CurrentUserContext, { ICurrentUserContext } from "@/utils/context";
 import { createFileService } from "@/services/FileService";
@@ -213,7 +213,7 @@ const CreateDatabase = ({
     return { name: org.name, id: org.id };
   });
 
-  const selectedOrg = organizations?.find((org: IOrganization) => org.id = orgId)
+  const selectedOrg = organizations?.find((org: IOrganization) => org.id === orgId)
 
   const sectorOptions = sector?.map((sector: any) => {
     return { name: sector.name, id: sector.id };
@@ -793,8 +793,6 @@ const CreateDatabase = ({
                                     value={item.value}
                                     onChange={(e) => handleChangeService(item.id, e.target.value)}
                                     placeholder={`Үйлчилгээ ${index+1}`}
-                                    fullWidth
-                                    size="small"
                                   />
                                   <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => handleDeleteService(item.id)}>
                                     <Typography variant="caption">Устгах</Typography>
@@ -827,8 +825,6 @@ const CreateDatabase = ({
                                     value={item.value}
                                     onChange={(e) => handleChangeOtherInfo(item.id, e.target.value)}
                                     placeholder={`Бусад мэдээлэл ${index+1}`}
-                                    fullWidth
-                                    size="small"
                                   />
                                   <Button variant="outlined" color="error" startIcon={<DeleteIcon />} onClick={(e) => handleDeleteOtherInfo(item.id)}>
                                     <Typography variant="caption">Устгах</Typography>
@@ -1120,8 +1116,6 @@ const CreateDatabase = ({
                                     value={item.count}
                                     onChange={(e) => handleChangeFileTypeInfo(item.id, "count", Number(e.target.value)) }
                                     placeholder={`Тоо ${index+1}`}
-                                    fullWidth
-                                    size="small"
                                   />
                                   <StyledInput
                                     name={`outlined-size`}
@@ -1131,8 +1125,6 @@ const CreateDatabase = ({
                                     value={item.size}
                                     onChange={(e) => handleChangeFileTypeInfo(item.id, "size", Number(e.target.value)) }
                                     placeholder={`Хэмжээ ${index+1}`}
-                                    fullWidth
-                                    size="small"
                                   />
                                   <FormControl size="small" className="w-24">
                                     <Select
