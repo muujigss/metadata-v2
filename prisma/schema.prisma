@@ -310,6 +310,17 @@ model lib_db_type_system {
   updated_user Int?
 }
 
+// 5.11.2.2 Мэдээллийн сангийн төрөл — Relational, NoSQL
+model lib_db_category {
+  id           Int      @id @default(autoincrement())
+  code         String?
+  name         String
+  created_date DateTime @default(now())
+  created_user Int?
+  updated_date DateTime @default(now())
+  updated_user Int?
+}
+
 model lib_sector {
   id           Int           @id @default(autoincrement())
   code         String        @unique

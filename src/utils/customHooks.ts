@@ -13,6 +13,7 @@ import {
   getDatabaseLocation,
   getDatabaseType,
   getDatabaseTypeSystem,
+  getDatabaseCategory,
   getLicence,
   getSpecification,
 } from "@/services/DatabaseService";
@@ -72,6 +73,14 @@ export const useGetDbTypeSystem = () => {
   return useQuery({
     queryKey: ["fetch db type system"],
     queryFn: () => getDatabaseTypeSystem(),
+    refetchOnWindowFocus: true,
+  });
+};
+
+export const useGetDbCategory = () => {
+  return useQuery({
+    queryKey: ["fetch db category"],
+    queryFn: () => getDatabaseCategory(),
     refetchOnWindowFocus: true,
   });
 };

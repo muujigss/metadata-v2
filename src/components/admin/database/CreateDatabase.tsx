@@ -3,6 +3,7 @@ import {
   useGetDbLocation,
   useGetDbType,
   useGetDbTypeSystem,
+  useGetDbCategory,
   useGetLicence,
   useGetOrgs,
   useGetSectors,
@@ -77,6 +78,7 @@ const CreateDatabase = ({
 }) => {
   const { data: dbTypes } = useGetDbType();
   const { data: dbTypeSystems } = useGetDbTypeSystem();
+  const { data: dbCategories } = useGetDbCategory();
   const { data: specifications } = useGetSpecification();
   const { data: organizations } = useGetOrgs();
   const { data: sector } = useGetSectors();
@@ -942,7 +944,7 @@ const CreateDatabase = ({
                           <TooltipComponent content="Мэдээллийн сангийн төрөл" />
                         </Box>
                         <SelectComponent
-                          options={dbTypes}
+                          options={dbCategories}
                           label="Мэдээллийн сангийн төрөл"
                           name="tab1_db_type"
                           defaultValue={Number(values?.tab1_db_type)}

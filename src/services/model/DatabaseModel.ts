@@ -544,6 +544,16 @@ const getDatabaseTypeSystemModel = async () => {
   }
 };
 
+const getDatabaseCategoryModel = async () => {
+  try {
+    const database_category = await prisma.lib_db_category.findMany();
+    return database_category;
+  } catch (error) {
+    console.error("Error in getDatabaseCategoryModel:", error);
+    throw new Error("Failed to fetch forms");
+  }
+};
+
 const getDatabaseLocationModel = async () => {
   try {
     const database_location = await prisma.lib_db_location.findMany();
@@ -1274,5 +1284,6 @@ export {
   checkStatusMetadata,
   getOneDatabaseOther,
   getDatabaseTypeSystemModel,
+  getDatabaseCategoryModel,
   getDatabaseModelList,
 };

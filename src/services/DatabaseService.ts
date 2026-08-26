@@ -79,6 +79,18 @@ const getDatabaseTypeSystem = async () => {
   return res.json();
 };
 
+const getDatabaseCategory = async () => {
+  const res = await fetch(`${process.env.BASE_URL}/api/database-category`, {
+    cache: "no-cache",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+};
+
 const getDatabaseLocation = async () => {
   const res = await fetch(`${process.env.BASE_URL}/api/database-location`, {
     cache: "no-cache",
@@ -137,6 +149,7 @@ export {
   getSpecification,
   getDatabaseType,
   getDatabaseTypeSystem,
+  getDatabaseCategory,
   getDatabaseLocation,
   getLicence,
   createDatabase,
