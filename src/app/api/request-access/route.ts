@@ -2,6 +2,10 @@ import { NextResponse } from "next/server";
 import prisma from "@/utils/prisma";
 import bcrypt from "bcrypt";
 import { createFileModel } from "@/services/model/FileModel";
+import { InvalidUploadError, validateUpload } from "@/utils/files";
+import { randomBytes } from "node:crypto";
+import { sendMail } from "@/utils/sendMail";
+import { mailTemplateOrgNew } from "@/utils/helper-mail";
 
 export async function POST(request: Request) {
   try {
@@ -38,6 +42,8 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+    validateUpload(file);
+    validateUpload(_file_id);
 
     // Check if user email already exists
     const existingUser = await prisma.md_users.findFirst({
@@ -69,7 +75,6 @@ export async function POST(request: Request) {
     }
 
     // Save file
-    const filename = Date.now() + "_" + file.name.replaceAll(" ", "_");
     const dt: any = await createFileModel(file, null);
     if (!dt) {
       return NextResponse.json(
@@ -89,8 +94,7 @@ export async function POST(request: Request) {
       saved_file_id = dt2?.file?.id
     }
 
-    const uploadDir = process.env.UPLOAD_DIR!;
-    const fileUrl = `${uploadDir}/${filename}`;
+    const fileUrl = `/api/download/${encodeURIComponent(dt.file.filename)}`;
 
     
 
@@ -114,7 +118,7 @@ export async function POST(request: Request) {
 
     // Create User (Inactive) linked to Organization
     // Generate a random password for now, though they can't login yet.
-    const password = Math.random().toString(36).slice(-8);
+    const password = randomBytes(18).toString("base64url");
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const created_user = await prisma.md_users.create({
@@ -154,12 +158,20 @@ export async function POST(request: Request) {
       },
     });
 
+    try {
+      await sendMail(mailTemplateOrgNew(user_email, org_name, firstname, lastname));
+    } catch {
+      console.error("Registration notification failed");
+    }
     return NextResponse.json({ success: true, message: "Request received" });
 
   } catch (error) {
+    if (error instanceof InvalidUploadError) {
+      return NextResponse.json({ message: error.message }, { status: 400 });
+    }
     console.error("Request access error:", error);
     return NextResponse.json(
-      { message: "Internal server error", error: String(error) },
+      { message: "Internal server error" },
       { status: 500 }
     );
   }

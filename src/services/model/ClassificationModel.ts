@@ -233,18 +233,18 @@ export const getClassificationByFilter = async (
   sectorId: string = "",
   orgId: string = ""
 ) => {
-  let whereStr = "";
-  let whereStr1 = "";
+  let whereStr = Prisma.empty;
+  let whereStr1 = Prisma.empty;
   if (name) {
-    whereStr += ` AND a.name like '%${name}%'`;
-    whereStr1 += ` AND a.name like '%${name}%'`;
+    whereStr = Prisma.sql`${whereStr} AND a.name like ${"%" + name + "%"}`;
+    whereStr1 = Prisma.sql`${whereStr1} AND a.name like ${"%" + name + "%"}`;
   } else if (sectorId) {
-    whereStr += ` AND sector = '${sectorId}'`;
+    whereStr = Prisma.sql`${whereStr} AND sector = ${Number(sectorId)}`;
   } else if (orgId) {
-    whereStr1 += ` AND org_id = '${orgId}'`;
+    whereStr1 = Prisma.sql`${whereStr1} AND org_id = ${Number(orgId)}`;
   }
 
-  let queryOrg = `SELECT d.id, d.name, cast(count(a.id) as int) as data_count FROM (
+  let queryOrg = Prisma.sql`SELECT d.id, d.name, cast(count(a.id) as int) as data_count FROM (
     SELECT a.id, a.name, sector, e.org_id organization_id FROM public.md_classification a 
        INNER JOIN public.md_indicator_classification b on a.id = b.classification_id
         INNER JOIN public.md_indicator c on c.id = b.indicator_id
@@ -257,7 +257,7 @@ export const getClassificationByFilter = async (
       GROUP BY d.id, d.name
       ORDER BY d.name `;
 
-  let querySector = `SELECT  f.id, code, f.name, cast(count(classifiaction_id) as int) as data_count FROM (
+  let querySector = Prisma.sql`SELECT  f.id, code, f.name, cast(count(classifiaction_id) as int) as data_count FROM (
           SELECT a.id classifiaction_id, a.name, sector, e.org_id FROM public.md_classification a 
               INNER JOIN public.md_indicator_classification b on a.id = b.classification_id
               INNER JOIN public.md_indicator c on c.id = b.indicator_id
@@ -270,9 +270,9 @@ export const getClassificationByFilter = async (
       GROUP BY  f.id, code, f.name
       ORDER BY f.name `;
   try {
-    const dataByOrg = await prisma.$queryRaw`${Prisma.raw(queryOrg)}`;
+    const dataByOrg = await prisma.$queryRaw`${queryOrg}`;
 
-    const dataBySector = await prisma.$queryRaw`${Prisma.raw(querySector)}`;
+    const dataBySector = await prisma.$queryRaw`${querySector}`;
 
     return { dataByOrg, dataBySector };
   } catch (error) {

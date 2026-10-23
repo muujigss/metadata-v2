@@ -112,25 +112,25 @@ const getDatabasesByFilter = async (
   orgId: string = "",
   dbType: string = ""
 ) => {
-  let whereStr = "";
-  let whereStr1 = "";
-  let whereStr2 = "";
+  let whereStr = Prisma.empty;
+  let whereStr1 = Prisma.empty;
+  let whereStr2 = Prisma.empty;
   if (name) {
-    whereStr += ` AND a.name like '%${name}%'`;
-    whereStr1 += ` AND a.name like '%${name}%'`;
+    whereStr = Prisma.sql`${whereStr} AND a.name like ${"%" + name + "%"}`;
+    whereStr1 = Prisma.sql`${whereStr1} AND a.name like ${"%" + name + "%"}`;
   } else if (sectorId) {
-    whereStr += ` AND sector = '${sectorId}'`;
-    whereStr2 += ` AND sector = '${sectorId}'`;
+    whereStr = Prisma.sql`${whereStr} AND sector = ${Number(sectorId)}`;
+    whereStr2 = Prisma.sql`${whereStr2} AND sector = ${Number(sectorId)}`;
   } else if (orgId) {
-    whereStr1 += ` AND org_id = '${orgId}'`;
-    whereStr2 += ` AND org_id = '${orgId}'`;
+    whereStr1 = Prisma.sql`${whereStr1} AND org_id = ${Number(orgId)}`;
+    whereStr2 = Prisma.sql`${whereStr2} AND org_id = ${Number(orgId)}`;
   } else if (dbType) {
-    whereStr += ` AND db_type = ${dbType}`;
-    whereStr1 += ` AND db_type = ${dbType}`;
-    whereStr2 += ` AND db_type = ${dbType}`;
+    whereStr = Prisma.sql`${whereStr} AND db_type = ${Number(dbType)}`;
+    whereStr1 = Prisma.sql`${whereStr1} AND db_type = ${Number(dbType)}`;
+    whereStr2 = Prisma.sql`${whereStr2} AND db_type = ${Number(dbType)}`;
   }
 
-  let queryOrg = `SELECT org_id as id, org_name as name, cast(count(id) as int)as data_count FROM (
+  let queryOrg = Prisma.sql`SELECT org_id as id, org_name as name, cast(count(id) as int)as data_count FROM (
    SELECT a.id, a.org_id, a.name, sector, b.name as org_name 
 	from public.md_database a
 	inner join md_action as c on a.id = c.item_id
@@ -140,7 +140,7 @@ const getDatabasesByFilter = async (
   GROUP BY org_id, org_name
   ORDER BY org_name `;
 
-  let querySector = `SELECT f.id, code, f.name,  cast(count(a.id) as int)as data_count FROM (
+  let querySector = Prisma.sql`SELECT f.id, code, f.name,  cast(count(a.id) as int)as data_count FROM (
         SELECT a.id, org_id, name, sector from public.md_database a
 		    inner join md_action as c on a.id = c.item_id
         WHERE 1 = 1 and a.is_active = true and c.action_type = 3 ${whereStr1}
@@ -148,19 +148,19 @@ const getDatabasesByFilter = async (
       GROUP BY  f.id, code, f.name
       ORDER BY f.name`;
 
-  let queryDbType = `SELECT b.id, b.name,  cast(count(a.id) as int)as data_count FROM (
+  let queryDbType = Prisma.sql`SELECT b.id, b.name,  cast(count(a.id) as int)as data_count FROM (
         SELECT a.id, org_id, name, sector, db_type from public.md_database a
 		    inner join md_action as c on a.id = c.item_id
-        WHERE 1 = 1 and a.is_active = true and c.action_type = 3 AND a.name like '%${name}%' ${whereStr2}
+        WHERE 1 = 1 and a.is_active = true and c.action_type = 3 AND a.name like ${"%" + name + "%"} ${whereStr2}
       ) A  RIGHT JOIN lib_db_type b on b.id = a.db_type
        GROUP BY  b.id, b.name
       ORDER BY b.name`;
   try {
-    const dataByOrg = await prisma.$queryRaw`${Prisma.raw(queryOrg)}`;
+    const dataByOrg = await prisma.$queryRaw`${queryOrg}`;
 
-    const dataBySector = await prisma.$queryRaw`${Prisma.raw(querySector)}`;
+    const dataBySector = await prisma.$queryRaw`${querySector}`;
 
-    const dataByDbType = await prisma.$queryRaw`${Prisma.raw(queryDbType)}`;
+    const dataByDbType = await prisma.$queryRaw`${queryDbType}`;
 
     return { dataByOrg, dataBySector, dataByDbType };
   } catch (error) {

@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+.env
+.env-*
+.env.*
+.dockerconfigjson
+*.log
+*.tsbuildinfo
+public/uploads
+Tables.txt
+meta.txt

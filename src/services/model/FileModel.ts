@@ -2,15 +2,17 @@
 import prisma from "@/utils/prisma";
 import fs from "fs/promises";
 import { access, mkdir } from "fs/promises";
-import path from "path";
+import { randomUUID } from "node:crypto";
+import { InvalidUploadError, resolveUploadPath, validateUpload } from "@/utils/files";
 
 const createFileModel = async (file: any, created_user: any) => {
   try {
-    if (!file) throw new Error("File is required");
+    validateUpload(file);
     // if (!created_user) throw new Error("created_user is required");
   
     const bytes = Buffer.from(await file.arrayBuffer());
-    const filename = file.name;
+    if (bytes.length !== file.size) throw new InvalidUploadError("Invalid file size");
+    const filename = `${randomUUID()}_${file.name}`;
   
     const uploadDir = process.env.UPLOAD_DIR || "public/uploads";
     
@@ -21,9 +23,9 @@ const createFileModel = async (file: any, created_user: any) => {
       await mkdir(uploadDir, { recursive: true });
     }
 
-    const fullPath = path.join(uploadDir, filename);
+    const fullPath = resolveUploadPath(uploadDir, filename);
   
-    await fs.writeFile(fullPath, bytes);
+    await fs.writeFile(fullPath, bytes, { flag: "wx" });
   
     const fileData = {
       filename: filename,
@@ -34,12 +36,16 @@ const createFileModel = async (file: any, created_user: any) => {
     }
 
     // Create md_file record
-    const fileRecord = await prisma.md_file.create({
-      data: fileData
-    });
-    console.log("fileRecord:", fileRecord);
+    let fileRecord;
+    try {
+      fileRecord = await prisma.md_file.create({ data: fileData });
+    } catch (error) {
+      await fs.unlink(fullPath).catch(() => undefined);
+      throw error;
+    }
     return { file: fileRecord, status: true, message: "File created successfully" };
   } catch (error) {
+    if (error instanceof InvalidUploadError) throw error;
     console.error("Error in createFileModel:", error);
     throw new Error("Failed to createFileModel");
   }

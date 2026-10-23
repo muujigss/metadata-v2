@@ -1,11 +1,16 @@
 import { NextResponse } from "next/server";
 import prisma from "@/utils/prisma";
 import bcrypt from "bcrypt";
-import { sendMail } from "@/services/MailService";
+import { sendMail } from "@/utils/sendMail";
+import { getAuthenticatedUser } from "@/utils/session";
+import { randomBytes } from "node:crypto";
 import { mailTemplateOrgConfirm } from "@/utils/helper-mail";
 
 // GET: List only pending (unresolved) registration requests
 export async function GET() {
+  const actor = await getAuthenticatedUser();
+  if (!actor) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (actor.user_level !== 1) return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   try {
     const requests = await prisma.md_organization.findMany({
       where: {
@@ -14,7 +19,7 @@ export async function GET() {
         is_active: false,
       },
       include: {
-        users: true,
+        users: { select: { id: true, email: true, firstname: true, lastname: true, phone_number: true, department: true, position: true, is_active: true } },
         file: true,
       },
       orderBy: {
@@ -34,6 +39,9 @@ export async function GET() {
 
 // PUT: Approve request
 export async function PUT(request: Request) {
+  const actor = await getAuthenticatedUser();
+  if (!actor) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (actor.user_level !== 1) return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   try {
     const body = await request.json();
     const { org_id, user_id } = body;
@@ -46,7 +54,9 @@ export async function PUT(request: Request) {
     }
 
     // Generate new password
-    const newPassword = Math.random().toString(36).slice(-8);
+    const targetUser = await prisma.md_users.findFirst({ where: { id: user_id, org_id } });
+    if (!targetUser) return NextResponse.json({ message: "User does not belong to organization" }, { status: 400 });
+    const newPassword = randomBytes(18).toString("base64url");
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
     // Activate Organization
@@ -72,7 +82,7 @@ export async function PUT(request: Request) {
     // Send Approval Email (мэйл унасан ч approve-ийг блоклохгүй)
     if (user.email) {
       try {
-        const template = await mailTemplateOrgConfirm(user.email, org.name, user.firstname, user.lastname, newPassword, process.env.HOST_BASE_URL)
+        const template = await mailTemplateOrgConfirm(user.email, org.name || "", user.firstname || "", user.lastname || "", newPassword, process.env.HOST_BASE_URL || process.env.BASE_URL || "")
         await sendMail(template)
       } catch (mailErr) {
         console.error("Approval mail failed (approve continued):", mailErr)
@@ -91,6 +101,9 @@ export async function PUT(request: Request) {
 
 // DELETE: Reject request (Soft Delete / Update Status)
 export async function DELETE(request: Request) {
+  const actor = await getAuthenticatedUser();
+  if (!actor) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (actor.user_level !== 1) return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   try {
     const body = await request.json();
     const { org_id, user_id, status } = body;

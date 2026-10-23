@@ -31,8 +31,8 @@ import RotateRightIcon from '@mui/icons-material/RotateRight';
 import { styled } from "@mui/material/styles";
 import LogoPics from "@/components/layout/LogoPics";
 import FileComponent from "@/components/admin/formComponents/FIle";
-import { mailTemplateOrgNew } from "@/utils/helper-mail";
-import { sendMail } from "@/services/MailService";
+import { MAX_UPLOAD_SIZE, MAX_UPLOAD_SIZE_MB, UPLOAD_SIZE_MESSAGE } from "@/utils/uploadLimits";
+import { createRegistrationFormData } from "@/utils/registrationForm";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -122,12 +122,13 @@ const RequestAccessPage = () => {
       .matches(/^[0-9+\-\s()]*$/, "Зөвхөн дугаар оруулна уу."),
     
     // File
-    file: Yup.mixed().required("Байгууллагын лого оруулна уу."),
+    file: Yup.mixed().required("Байгууллагын лого оруулна уу.")
+      .test('fileSize', UPLOAD_SIZE_MESSAGE, (value: any) => !value || value.size <= MAX_UPLOAD_SIZE),
     file_id: Yup.mixed()
       .required("Тушаал оруулна уу.")
-      .test('fileSize', 'Файлын хэмжээ 20MB-аас бага байх ёстой.', (value: any) => {
+      .test('fileSize', UPLOAD_SIZE_MESSAGE, (value: any) => {
         if (!value) return true;
-        return value.size <= 20 * 1024 * 1024;
+        return value.size <= MAX_UPLOAD_SIZE;
       }),
   });
 
@@ -137,16 +138,7 @@ const RequestAccessPage = () => {
       setStatus("");
       setMessage("");
 
-      const formData = new FormData();
-      // Append all text fields
-      Object.keys(values).forEach((key) => {
-        if (key !== "file") {
-          formData.append(key, values[key]);
-        }
-      });
-      // Append file
-      formData.append("file", values.file);
-      formData.append("file_id", values.file_id);
+      const formData = createRegistrationFormData(values);
 
       const response = await fetch("/api/request-access", {
         method: "POST",
@@ -162,13 +154,6 @@ const RequestAccessPage = () => {
       }
 
       if (response.ok) {
-        // Бүртгэл амжилттай — мэйл унасан ч энэ урсгалыг блоклохгүй
-        try {
-          const template = await mailTemplateOrgNew(values.user_email, values.org_name, values.firstname, values.lastname)
-          await sendMail(template);
-        } catch (mailErr) {
-          console.error("Хүсэлтийн мэдэгдэл мэйл илгээгдсэнгүй:", mailErr);
-        }
         setStatus("success");
         setMessage("Таны хүсэлтийг хүлээн авлаа. Бид шалгаад хариу мэдэгдэх болно.");
         setTimeout(() => {
@@ -178,7 +163,7 @@ const RequestAccessPage = () => {
         setStatus("error");
         // Статус кодоор тодорхой мессеж
         if (response.status === 413) {
-          setMessage("Файлын хэмжээ хэт том байна. Тушаал 20MB, лого 40MB-аас бага байх ёстой.");
+          setMessage(`Сервер хүсэлтийг хэмжээнээс нь шалтгаалан хүлээж авсангүй. Файл тус бүр ${MAX_UPLOAD_SIZE_MB} MB хүртэл байна. Админд мэдэгдэж серверийн upload хязгаарыг шалгуулна уу.`);
         } else if (response.status === 504) {
           setMessage("Сервер удаан хариулж байна. Хэсэг хүлээгээд дахин оролдоно уу.");
         } else {
@@ -477,6 +462,9 @@ const RequestAccessPage = () => {
                           Сонгогдсон файл: {fileName}
                         </Typography>
                       )}
+                      <Typography variant="caption" className="text-gray-400">
+                        {MAX_UPLOAD_SIZE_MB} MB хүртэл.
+                      </Typography>
                       {touched.file && errors.file && (
                         <Typography variant="caption" color="error">
                           {errors.file as string}
@@ -500,6 +488,9 @@ const RequestAccessPage = () => {
                         value={values?.file_id}
                         desabled={false}
                       />
+                      <Typography variant="caption" className="text-gray-400">
+                        {MAX_UPLOAD_SIZE_MB} MB хүртэл.
+                      </Typography>
                       {touched.file_id && errors.file_id && (
                         <Typography variant="caption" color="error">
                           {errors.file_id as string}

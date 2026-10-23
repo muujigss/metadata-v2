@@ -1,7 +1,7 @@
 "use client";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import "../styles/globals.css";
 
 import { StyledRoot } from "@/components/admin/theme/StyledRoot";
@@ -15,13 +15,13 @@ const AdminLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  const queryClient = new QueryClient({
+  const [queryClient] = useState(() => new QueryClient({
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
       },
     },
-  });
+  }));
 
   return (
     <>
@@ -38,11 +38,14 @@ const AdminLayout = ({
                 <Header />
                 <Box
                   component={"main"}
+                  className="admin-content"
                   sx={{
                     position: "relative",
                     top: "64px",
                     padding: "15px",
                     flexGrow: 1,
+                    minWidth: 0,
+                    minHeight: "calc(100vh - 64px)",
                     // height: "100vh",
                     // overflow: "auto",
                   }}

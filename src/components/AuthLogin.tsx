@@ -1,8 +1,6 @@
 "use client";
 import { InputComponent } from "@/components/admin/form";
 import { loginWithUser } from "@/services/UserService";
-import { ICurrentUserContext } from "@/utils/context";
-import useCurrentUser from "@/utils/useCurrentUser";
 import {
   Alert,
   Box,
@@ -14,29 +12,32 @@ import {
 import EyeFillIcon from "remixicon-react/EyeLineIcon";
 import EyeOffFillIcon from "remixicon-react/EyeOffLineIcon";
 import { Form, Formik } from "formik";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import * as Yup from "yup";
-import Loader from "./Loader";
 import Link from "next/link";
 
 const AuthLogin = () => {
-  const { setUserInfo } = useCurrentUser() as ICurrentUserContext;
-  const router = useRouter();
   const [status, setStatus] = useState<string>();
   const [show, setShow] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
 
   const validationSchema = Yup.object({
     email: Yup.string().email().required("И-мэйл оруулна уу."),
-    password: Yup.string().min(3).max(8).required("Нууц үг оруулна уу."),
+    password: Yup.string().required("Нууц үг оруулна уу."),
   });
 
   const onSubmit = async (values: any) => {
     try {
       setLoading(true);
+      setStatus(undefined);
       const response = await loginWithUser(values?.email, values?.password);
-      if (response.status) {
+      if (response.status && response.user) {
+        const destination = ({
+          1: "/admin/org-request",
+          2: "/admin/user",
+          3: "/admin/database",
+        } as Record<number, string>)[Number(response.user.user_level)];
+        if (!destination) throw new Error("Unsupported user level");
         localStorage.setItem("lastname", response.user?.lastname);
         localStorage.setItem("firstname", response.user?.firstname);
         localStorage.setItem("user_level", response.user?.user_level);
@@ -49,29 +50,19 @@ const AuthLogin = () => {
         localStorage.setItem("user_id", response.user?.id);
         localStorage.setItem("org_name", response.user?.organization?.name);
 
-        setUserInfo(response.user);
-
-        if (response.user?.user_level === 1) {
-          router.push("/admin/org-request");
-        } else if (response.user?.user_level === 2) {
-          router.push("/admin/user");
-        } else if (response.user?.user_level === 3) {
-          router.push("/admin/database");
-        }
+        // Load the protected document with the newly saved session cookies.
+        // Keep the pending state until navigation replaces this page.
+        window.location.replace(destination);
       } else {
         setStatus("error");
+        setLoading(false);
       }
     } catch (error) {
       console.log({ error });
       setStatus("error");
-    } finally {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   return (
     <>
@@ -170,6 +161,7 @@ const AuthLogin = () => {
                     variant="contained"
                     color="info"
                     type="submit"
+                    disabled={loading}
                     size="medium"
                     sx={{
                       backgroundColor: "#080812",
@@ -183,7 +175,7 @@ const AuthLogin = () => {
                       borderRadius: "8px",
                     }}
                   >
-                    Нэвтрэх
+                    {loading ? "Нэвтэрч байна..." : "Нэвтрэх"}
                   </Button>
                 </Box>
               </div>

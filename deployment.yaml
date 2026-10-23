@@ -52,6 +52,8 @@ metadata:
   name: metadata-ingress
   namespace: metadata
   annotations:
+    # Two 50 MB attachments plus multipart fields and headers.
+    nginx.ingress.kubernetes.io/proxy-body-size: "110m"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx

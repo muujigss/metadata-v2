@@ -1,15 +1,18 @@
 import { NextResponse } from "next/server";
 import { Client } from "@elastic/elasticsearch";
 import { prisma } from "@/utils/prisma";
+import { getAuthenticatedUser } from "@/utils/session";
 
 export async function POST() {
+  const actor = await getAuthenticatedUser();
+  if (!actor) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (actor.user_level !== 1) return NextResponse.json({ message: "Forbidden" }, { status: 403 });
   const client = new Client({
     node: `${process.env.ELASTIC_URL}`,
     auth: {
       username: `${process.env.ELASTIC_USER}`,
       password: `${process.env.ELASTIC_PASSWORD}`,
     },
-    tls: { rejectUnauthorized: false },
   });
 
   try {

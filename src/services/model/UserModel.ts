@@ -3,9 +3,11 @@ import { IUser } from "@/interfaces/IUser";
 import prisma from "@/utils/prisma";
 import bcrypt from "bcrypt";
 import moment from "moment";
-import { cookies } from "next/headers";
-import { sendMail } from "../MailService";
+import { sendMail } from "@/utils/sendMail";
 import { mailTemplateNewUser } from "@/utils/helper-mail";
+import { randomBytes } from "node:crypto";
+import { getAuthenticatedUser } from "@/utils/session";
+import type { md_users } from "@prisma/client";
 
 /**
  * @from:        /api/user/route
@@ -17,6 +19,11 @@ import { mailTemplateNewUser } from "@/utils/helper-mail";
  */
 const getUserModel = async (user_level: number, org_id: number) => {
   try {
+    const actor = await getAuthenticatedUser();
+    if (!actor || ![1, 2].includes(actor.user_level ?? 0)) throw new Error("Forbidden");
+    if (actor.user_level !== 1 && !actor.org_id) throw new Error("Forbidden");
+    user_level = actor.user_level!;
+    org_id = actor.org_id!;
     let whereObj = {};
     if (user_level == 1) {
       whereObj = {};
@@ -74,7 +81,7 @@ const loginUserModel = async (email: string, password: string) => {
     const user = await prisma.md_users.findFirst({
       where: {
         email,
-        // is_active: true,
+        is_active: true,
       },
       select: {
         id: true,
@@ -120,17 +127,7 @@ const loginUserModel = async (email: string, password: string) => {
   }
 };
 function generatePassword() {
-  let pass = "";
-  let str =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "abcdefghijklmnopqrstuvwxyz0123456789@#$";
-
-  for (let i = 1; i <= 8; i++) {
-    let char = Math.floor(Math.random() * str.length + 1);
-
-    pass += str.charAt(char);
-  }
-
-  return pass;
+  return randomBytes(18).toString("base64url");
 }
 
 /**
@@ -140,6 +137,18 @@ function generatePassword() {
  * @description: Системийн хэрэглэгч үүсгэх, засварлах API.
  */
 const createUserModel = async (data: IUser) => {
+  if (!data || typeof data.email !== "string" || !data.email.trim()) throw new Error("Email is required");
+  const actor = await getAuthenticatedUser();
+  if (!actor || ![1, 2].includes(actor.user_level ?? 0)) throw new Error("Forbidden");
+  if (actor.user_level !== 1) {
+    if (!actor.org_id) throw new Error("Forbidden");
+    if (![2, 3].includes(data.user_level ?? 0)) throw new Error("Forbidden");
+    if (data.user_id) {
+      const target = await prisma.md_users.findUnique({ where: { id: data.user_id }, select: { org_id: true, user_level: true } });
+      if (!target || target.org_id !== actor.org_id || target.user_level === 1) throw new Error("Forbidden");
+    }
+    data = { ...data, org_id: actor.org_id! };
+  }
   const {
     id,
     user_id,
@@ -158,10 +167,9 @@ const createUserModel = async (data: IUser) => {
     is_active,
     md_user_database,
   } = data;
-  let user = {};
+  let user: md_users;
   try {
-    const cookieStore = await cookies();
-    const create_user_id = cookieStore.get("user_id")?.value;
+    const create_user_id = actor.id;
     const now = new Date();
     const created_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();
     const updated_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();
@@ -233,7 +241,7 @@ const createUserModel = async (data: IUser) => {
       // const subject = "Тавтай морил";
       // const html = `Сайн байна уу, <br/><br/> Төрөлжсөн бүртгэлийн нэгдсэн санд хандах эрхийг илгээж байна. <br/><br/> Таны нэвтрэх нэр: <b>${email}</b> <br/><br/> Таны нууц үг:<b>${password}</b> <br/><br/> Хандах холбоос:  <a href="${process.env.BASE_URL}/login">Нэвтрэх</a> <br/><br/> Баярлалаа`;
       // await sendMail({ to, subject, html });
-      const template = await mailTemplateNewUser(email, password, process.env.HOST_BASE_URL)
+      const template = await mailTemplateNewUser(email!, password, process.env.HOST_BASE_URL || process.env.BASE_URL || "")
       await sendMail(template)
     } else {
       user = await prisma.md_users.update({
@@ -282,7 +290,8 @@ const createUserModel = async (data: IUser) => {
       }
     }
 
-    return { user, status: true, message: "User created successfully" };
+    const { password: passwordHash, ...safeUser } = user;
+    return { user: safeUser, status: true, message: "User created successfully" };
   } catch (error) {
     console.error("Error in createUserModel:", error);
     throw new Error("Failed to createUserModel");
@@ -297,6 +306,12 @@ const createUserModel = async (data: IUser) => {
  */
 const getUserInfoModel = async (user_id: number) => {
   try {
+    const actor = await getAuthenticatedUser();
+    if (!actor) throw new Error("Unauthorized");
+    if (actor.user_level !== 1 && actor.id !== user_id) {
+      const target = await prisma.md_users.findUnique({ where: { id: user_id }, select: { org_id: true, user_level: true } });
+      if (actor.user_level !== 2 || !actor.org_id || !target || target.org_id !== actor.org_id || target.user_level === 1) throw new Error("Forbidden");
+    }
     const data = await prisma.md_users.findFirst({
       where: {
         id: user_id,
@@ -355,6 +370,7 @@ const getUserInfoModel = async (user_id: number) => {
  */
 const getUserInfoByLevelModel = async (user_level: number) => {
   try {
+    if (!(await getAuthenticatedUser())) throw new Error("Unauthorized");
     const data = await prisma.md_users.findFirst({
       where: {
         user_level: user_level,
@@ -385,77 +401,31 @@ const getUserInfoByLevelModel = async (user_level: number) => {
  * @description: Хэрэглэгчийн нууц үгийг засвар хийнэ.
  */
 const updatePasswordModel = async (data: any) => {
-  const { id, oldPassword, newPassword } = data;
-
-  let user = {};
-  try {
-    const cookieStore = await cookies();
-    const create_user_id = cookieStore.get("user_id")?.value;
-    const now = new Date();
-
-    const updated_date = moment(now).format("YYYY-MM-DDTHH:mm:ssZ"); //now.toISOString();
-
-    if (id) {
-      const userCheck = await prisma.md_users.findFirst({
-        where: {
-          id,
-        },
-        select: {
-          id: true,
-          password: true,
-        },
-      });
-
-      if (userCheck?.id) {
-        if (userCheck?.id > 44) {
-          const ps = await bcrypt.hash(newPassword, 10);
-          user = await prisma.md_users.update({
-            where: {
-              id,
-            },
-            data: {
-              password: ps,
-              updated_user: Number(create_user_id),
-              updated_date,
-            },
-          });
-        } else {
-          const ps = await bcrypt.compare(
-            oldPassword,
-            userCheck?.password || ""
-          );
-
-          if (ps) {
-            const ps = await bcrypt.hash(newPassword, 10);
-            user = await prisma.md_users.update({
-              where: {
-                id,
-              },
-              data: {
-                password: ps,
-                updated_user: Number(create_user_id),
-                updated_date,
-              },
-            });
-            return {
-              status: true,
-              user,
-            };
-          }
-        }
-      } else {
-        return {
-          status: false,
-          message: `Хуучин нууц үг буруу байна.`,
-        };
-      }
-    }
-
-    //return { user, status: true, message: "User created successfully" };
-  } catch (error) {
-    console.error("Error in updatePasswordModel:", error);
-    throw new Error("Failed to updatePasswordModel");
+  const actor = await getAuthenticatedUser();
+  if (!actor || Number(data?.id) !== actor.id) {
+    return { status: false, message: "Нэвтрэх эрхгүй байна." };
   }
+  const { oldPassword, newPassword } = data;
+  if (typeof oldPassword !== "string" || typeof newPassword !== "string" ||
+      newPassword.length < 12 || Buffer.byteLength(newPassword, "utf8") > 72) {
+    return { status: false, message: "Шинэ нууц үг 12-оос доошгүй тэмдэгт, 72 байтаас ихгүй байна." };
+  }
+  const user = await prisma.md_users.findUnique({
+    where: { id: actor.id },
+    select: { password: true },
+  });
+  if (!user?.password || !(await bcrypt.compare(oldPassword, user.password))) {
+    return { status: false, message: "Хуучин нууц үг буруу байна." };
+  }
+  await prisma.md_users.update({
+    where: { id: actor.id },
+    data: {
+      password: await bcrypt.hash(newPassword, 10),
+      updated_user: actor.id,
+      updated_date: new Date(),
+    },
+  });
+  return { status: true };
 };
 /**
  * @from:        /api/user/forgot-password
@@ -502,7 +472,6 @@ const forgotPasswordModel = async (email: any) => {
 
           return {
             status: true,
-            user,
           };
         }
       } else {
@@ -526,10 +495,17 @@ const forgotPasswordModel = async (email: any) => {
  */
 const deleteUserInfoModel = async (user_id: number) => {
   try {
+    const actor = await getAuthenticatedUser();
+    if (!actor || ![1, 2].includes(actor.user_level)) throw new Error("Forbidden");
+    if (actor.user_level !== 1) {
+      const target = await prisma.md_users.findUnique({ where: { id: user_id }, select: { org_id: true, user_level: true } });
+      if (!actor.org_id || !target || target.org_id !== actor.org_id || target.user_level === 1) throw new Error("Forbidden");
+    }
     const data = await prisma.md_users.delete({
       where: {
         id: user_id,
       },
+      select: { id: true },
     });
 
     return data;

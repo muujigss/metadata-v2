@@ -29,16 +29,13 @@ const ChangePassword = () => {
 
   const validationSchema = Yup.object({
     oldPassword: Yup.string()
-      .min(3)
-      .max(10)
       .required("Хуучин Нууц үг оруулна уу."),
     newPassword: Yup.string()
-      .min(3)
-      .max(10)
+      .min(12, "Нууц үг хамгийн багадаа 12 тэмдэгт байна.")
+      .max(72)
       .required("Шинэ Нууц үг оруулна уу."),
     confirmPassword: Yup.string()
-      .min(3)
-      .max(10)
+      .oneOf([Yup.ref("newPassword")], "Нууц үг таарахгүй байна.")
       .required("Шинэ нууц үгээ давтан оруулна уу."),
   });
 
@@ -113,7 +110,7 @@ const ChangePassword = () => {
                     Хуучин нууц үг
                   </FormLabel>
                   <InputComponent
-                    type="text"
+                    type="password"
                     name="oldPassword"
                     label=""
                     value={values.oldPassword}

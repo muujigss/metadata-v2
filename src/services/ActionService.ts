@@ -1,7 +1,8 @@
 "use server";
 
 import { IAction } from "@/interfaces/IAction";
-import { sendMail } from "./MailService";
+import { sendMail } from "@/utils/sendMail";
+import { getAuthenticatedUser } from "@/utils/session";
 import { checkStatusMetadata } from "./model/DatabaseModel";
 import { getUserInfoByLevelModel, getUserInfoModel } from "./model/UserModel";
 import { mailTemplateDbStatusChangeUser } from "@/utils/helper-mail";
@@ -14,6 +15,7 @@ const checkValidationStatus = async (db_id: number) => {
 };
 
 const updateActionService = async (data: IAction) => {
+  if (!(await getAuthenticatedUser())) throw new Error("Unauthorized");
   // try {
     // await checkValidationStatus(data?.item_id);
     const checkStatus = await checkStatusMetadata(data?.item_id);

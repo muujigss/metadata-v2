@@ -25,6 +25,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import Loader from "@/components/Loader";
 import { Chip } from "@mui/material";
+import { organizationLogoUrl } from "@/utils/organizationLogo";
 
 const OrgRequestListPage = () => {
   const [requests, setRequests] = useState<any[]>([]);
@@ -32,6 +33,7 @@ const OrgRequestListPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
   const [selectedRequest, setSelectedRequest] = useState<any>(null);
+  const [logoFailed, setLogoFailed] = useState(false);
   const [actionType, setActionType] = useState<"approve" | "reject" | null>(null);
   const [rejectReason, setRejectReason] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,6 +79,7 @@ const OrgRequestListPage = () => {
   };
 
   const handleViewDetail = (request: any) => {
+    setLogoFailed(false);
     setSelectedRequest(request);
     setDetailOpen(true);
   };
@@ -303,10 +306,11 @@ const OrgRequestListPage = () => {
                 </h3>
                 <div className="space-y-4">
                   <div className="flex justify-center mb-6">
-                    {selectedRequest.img_url ? (
+                    {selectedRequest.img_url && !logoFailed ? (
                       <div className="relative w-full h-40 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center p-4">
                         <img 
-                          src={selectedRequest.img_url.startsWith("http") || selectedRequest.img_url.startsWith("/") ? selectedRequest.img_url : `/${selectedRequest.img_url}`} 
+                          src={organizationLogoUrl(selectedRequest.img_url)}
+                          onError={() => setLogoFailed(true)}
                           alt="Logo" 
                           className="max-w-full max-h-full object-contain"
                         />
@@ -314,7 +318,7 @@ const OrgRequestListPage = () => {
                     ) : (
                       <div className="w-full h-40 bg-gray-50 border border-gray-200 rounded-lg flex items-center justify-center text-gray-400 flex-col gap-2">
                         <div className="text-4xl">🏢</div>
-                        <span className="text-sm">Лого байхгүй</span>
+                        <span className="text-sm">{logoFailed ? "Логоны файлыг ачаалж чадсангүй" : "Лого байхгүй"}</span>
                       </div>
                     )}
                   </div>

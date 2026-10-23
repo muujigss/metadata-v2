@@ -8,14 +8,16 @@ import { getValueTypeModel } from "@/services/model/LibValueTypeModel";
 import { getSectorModel } from "@/services/model/SectorModel";
 
 import { NextResponse } from "next/server";
+import { getAuthenticatedUser } from "@/utils/session";
 
 type Props = {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 };
 
-export async function GET(request: Request, { params: { slug } }: Props) {
+export async function GET(request: Request, { params }: Props) {
+  const { slug } = await params;
   let dt;
   if (slug == "unit") {
     dt = await getUnitModel();
@@ -42,7 +44,11 @@ export async function GET(request: Request, { params: { slug } }: Props) {
   return NextResponse.json(dt);
 }
 
-export async function POST(request: Request, { params: { slug } }: Props) {
+export async function POST(request: Request, { params }: Props) {
+  const actor = await getAuthenticatedUser();
+  if (!actor) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  if (actor.user_level !== 1) return NextResponse.json({ message: "Forbidden" }, { status: 403 });
+  const { slug } = await params;
   const body = await request.json();
   const result = await createDynamicModel(slug, body);
   return NextResponse.json(result);

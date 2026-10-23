@@ -1,17 +1,9 @@
 "use server";
-const sendMail = async (data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/send-mail`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+import { sendMail as sendSmtpMail, type MailMessage } from "@/utils/sendMail";
+import { getAuthenticatedUser } from "@/utils/session";
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch user data");
-  }
-  return res.json();
-};
-
-export { sendMail };
+export async function sendMail(data: MailMessage) {
+  const actor = await getAuthenticatedUser();
+  if (!actor || actor.user_level !== 1) throw new Error("Forbidden");
+  return sendSmtpMail(data);
+}

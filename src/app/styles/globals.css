@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Keep Tailwind form resets from drawing a second border inside MUI fields. */
+.admin-content .MuiOutlinedInput-input {
+  border: 0;
+  background: transparent;
+}
+.admin-content .MuiOutlinedInput-notchedOutline > legend {
+  width: auto;
+}
+.admin-content .MuiOutlinedInput-notchedOutline > legend > span {
+  display: inline-block;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.admin-content .MuiInputBase-input:focus {
+  box-shadow: none;
+}
+.admin-content .MuiInputLabel-outlined.MuiInputLabel-shrink {
+  background-color: white;
+  padding-right: 4px;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;

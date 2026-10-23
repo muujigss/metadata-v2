@@ -1,4 +1,5 @@
 import { createDatabaseAll } from "@/services/DatabaseService";
+import { MAX_UPLOAD_SIZE, UPLOAD_SIZE_MESSAGE } from "@/utils/uploadLimits";
 import {
   useGetDbLocation,
   useGetDbType,
@@ -492,9 +493,8 @@ const CreateDatabase = ({
     return uploaded?.file?.id ?? oldFileId;
   };
   const checkFileSize = (file: any) => {
-    const MAX_SIZE = 40 * 1024 * 1024; // 40MB
-    if (file.size > MAX_SIZE) {
-      return { check: false, message: "Файлын хэмжээ 40MB-аас хэтэрч болохгүй" };
+    if (file.size > MAX_UPLOAD_SIZE) {
+      return { check: false, message: UPLOAD_SIZE_MESSAGE };
     }
     return { check: true };
   };

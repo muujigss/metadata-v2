@@ -1,64 +1,15 @@
-import nodemailer from "nodemailer";
 import { NextResponse } from "next/server";
+import { getAuthenticatedUser } from "@/utils/session";
+import { sendMail } from "@/utils/sendMail";
 
 export async function POST(req: Request) {
-  const { to, subject, html } = await req.json();
-
+  const actor = await getAuthenticatedUser();
+  if (!actor) return NextResponse.json({ status: false, message: "Unauthorized" }, { status: 401 });
+  if (actor.user_level !== 1) return NextResponse.json({ status: false, message: "Forbidden" }, { status: 403 });
   try {
-    const host = process.env.EMAIL_HOST;
-    const port = Number(process.env.EMAIL_PORT) || 587;
-    // Хоёр нэрийн аль нэгийг дэмжинэ (METADATA_INFO_* эсвэл Django маягийн EMAIL_HOST_*)
-    const user = process.env.METADATA_INFO_EMAIL || process.env.EMAIL_HOST_USER;
-    const pass = process.env.METADATA_INFO_PASSWORD || process.env.EMAIL_HOST_PASSWORD;
-
-    // Mock sending if credentials are missing
-    if (!host || !user || !pass) {
-      console.log("---------------------------------------------------");
-      console.log("MOCK EMAIL SENDING (Missing Config)");
-      console.log(`To: ${to}`);
-      console.log(`Subject: ${subject}`);
-      console.log("Body:", html);
-      console.log("---------------------------------------------------");
-      return NextResponse.json({
-        status: true,
-        message: "Mock email sent successfully!",
-      });
-    }
-
-    // Configure the transporter
-    const transporter = nodemailer.createTransport({
-      host: host,
-      port: port,
-      secure: port === 465, // Use true for port 465, false for others
-      auth: {
-        user: user,
-        pass: pass,
-      },
-      // SMTP гацахаас сэргийлэх timeout-ууд
-      connectionTimeout: 10000,
-      greetingTimeout: 10000,
-      socketTimeout: 15000,
-    });
-
-    // Send the email
-    const info = await transporter.sendMail({
-      from: `"Төрөлжсөн бүртгэлийн нэгдсэн сан" <${user}>`, // Sender address
-      to, // Recipient address
-      subject, // Subject line
-      html, // HTML body
-    });
-
-    return NextResponse.json({
-      status: true,
-      message: "Email sent successfully!",
-      info,
-    });
-  } catch (error) {
-    console.error(error);
-    return NextResponse.json({
-      status: false,
-      message: "Email failed to send.",
-      error,
-    });
+    return NextResponse.json(await sendMail(await req.json()));
+  } catch {
+    console.error("Email delivery failed");
+    return NextResponse.json({ status: false, message: "Unable to send email" }, { status: 500 });
   }
 }

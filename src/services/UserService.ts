@@ -1,6 +1,7 @@
 "use server";
 import { IUser } from "@/interfaces/IUser";
 import { cookies } from "next/headers";
+import { ACCESS_TOKEN_MAX_AGE } from "@/utils/auth";
 
 const loginWithUser = async (username: string, password: string) => {
   try {
@@ -24,13 +25,20 @@ const loginWithUser = async (username: string, password: string) => {
     } else {
       const cookieStore = await cookies();
 
-      cookieStore.set("access-token", token);
-      cookieStore.set("firstname", user.firstname);
-      cookieStore.set("org_id", user.org_id);
-      cookieStore.set("org_name", user.org_name);
-      cookieStore.set("user_id", user.id);
-      cookieStore.set("roles", user.roles);
-      cookieStore.set("user_level", user.user_level);
+      const options = {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "lax" as const,
+        path: "/",
+        maxAge: ACCESS_TOKEN_MAX_AGE,
+      };
+      cookieStore.set("access-token", token, options);
+      cookieStore.set("firstname", user.firstname || "", options);
+      cookieStore.set("org_id", String(user.org_id), options);
+      cookieStore.set("org_name", user.organization?.name || "", options);
+      cookieStore.set("user_id", String(user.id), options);
+      cookieStore.set("roles", JSON.stringify(user.roles || []), options);
+      cookieStore.set("user_level", String(user.user_level), options);
 
       return { user, status: success };
     }
@@ -58,6 +66,7 @@ const createUserService = async (data: IUser) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify(data),
   });
@@ -74,6 +83,7 @@ const changePasswordService = async (data: any) => {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Cookie: (await cookies()).toString(),
     },
     body: JSON.stringify(data),
   });
@@ -107,6 +117,7 @@ const getUserService = async (user_level: number, org_id: number) => {
     {
       headers: {
         "Content-Type": "application/json",
+        Cookie: (await cookies()).toString(),
       },
     }
   );
@@ -123,6 +134,7 @@ const getUserDetailService = async (id: number) => {
   const res = await fetch(`${process.env.BASE_URL}/api/user/${id}`, {
     headers: {
       "Content-Type": "application/json",
+      Cookie: (await cookies()).toString(),
     },
   });
 
@@ -135,9 +147,10 @@ const getUserDetailService = async (id: number) => {
 
 const deleteUserDetailService = async (id: number) => {
   const res = await fetch(`${process.env.BASE_URL}/api/user/${id}`, {
+    method: "DELETE",
     headers: {
-      method: "DELETE",
       "Content-Type": "application/json",
+      Cookie: (await cookies()).toString(),
     },
   });
 

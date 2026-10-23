@@ -1,25 +1,16 @@
-"use client";
-import CurrentUserContext from "@/utils/context";
-import React, { useState } from "react";
-
+import type { Metadata } from "next";
+import UserProvider from "@/components/providers/UserProvider";
 import "@/app/styles/globals.css";
 
-const Layout = ({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) => {
-  const [userInfo, setUserInfo] = useState(null);
-
-  return (
-    <html lang="mn">
-      <body>
-        <CurrentUserContext.Provider value={{ userInfo, setUserInfo }}>
-          {children}
-        </CurrentUserContext.Provider>
-      </body>
-    </html>
-  );
+export const metadata: Metadata = {
+  title: "Төрөлжсөн бүртгэлийн нэгдсэн сан",
+  description: "Байгууллагын өгөгдлийн сан, хүснэгт, үзүүлэлт, ангилал болон маягтын мэдээлэл",
 };
 
-export default Layout;
+export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html lang="mn">
+      <body><UserProvider>{children}</UserProvider></body>
+    </html>
+  );
+}

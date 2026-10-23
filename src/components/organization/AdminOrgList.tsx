@@ -130,6 +130,8 @@ const AdminOrgList = ({ columns }: { columns: any }) => {
                         <Image 
                           src={item?.img_url} 
                           alt="Logo" 
+                          width={48}
+                          height={48}
                           className="w-12 h-12 object-contain rounded border"
                         />
                       ) : (

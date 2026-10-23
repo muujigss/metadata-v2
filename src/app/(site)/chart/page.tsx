@@ -4,6 +4,8 @@ import CitizenDashboard from "@/components/admin/charts/CitizenDashboard";
 import { getAllOrgs } from "@/services/model/DashboardDatabaseModel";
 import { Typography } from "@mui/material";
 
+export const dynamic = "force-dynamic";
+
 const ChartPage = async () => {
   const allData = await getAllOrgs();
   const dataList: any = allData.allOrgDatabase;

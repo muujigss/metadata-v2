@@ -1,6 +1,6 @@
 "use client";
 import LogoPics from "@/components/layout/LogoPics";
-import React from "react";
+import React, { useState } from "react";
 import "../styles/globals.css";
 import UserProvider from "@/components/providers/UserProvider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -10,6 +10,7 @@ const LoginLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const [queryClient] = useState(() => new QueryClient());
   return (
     <div className="relative w-full h-full bg-[#080812] top-glow overflow-hidden">
       <div className="absolute inset-0 -top-[220px] bg-[url('/v2/bg-pattern.png')] bg-cover bg-no-repeat z-0"></div>
@@ -25,7 +26,7 @@ const LoginLayout = ({
           </div>
         </div>
         <div>
-          <QueryClientProvider client={new QueryClient()}>
+          <QueryClientProvider client={queryClient}>
             <UserProvider>{children}</UserProvider>
           </QueryClientProvider>
         </div>

@@ -93,6 +93,6 @@ export const getMainIndicatorModel = async (is_active: boolean | undefined) => {
     return data;
   } catch (error) {
     console.error(`Error in getMainIndicatorModel:${error}`);
-    throw new Error("Failed to fetch forms");
+    throw new Error("Failed to load homepage statistics");
   }
 };

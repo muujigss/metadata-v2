@@ -1,33 +1,27 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   getConvertDataHome,
-  getConvertSearchData,
   getConvertTreeView,
 } from "@/utils/dashboardConvertData";
 import ReactECharts from "echarts-for-react";
-import { Box, Button, Typography, TextField, Autocomplete } from "@mui/material";
-import { useQuery } from "@tanstack/react-query";
-import { SearchService } from "@/services/SearchService";
-import Loader from "@/components/Loader";
-import TreeView from "./TreeView";
+import { Box, Typography, TextField, Autocomplete } from "@mui/material";
 
-const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
+const TreeViewRadial = ({ data, activeName, userLevel }: any) => {
   const [searchValue, setSearchValue] = useState<string | null>(null);
-  const [debouncedSearchValue, setDebouncedSearchValue] = useState("");
   const [clickTree, setClickTree] = useState(1);
-  const [allData, setAllData] = useState(false);
   const [dbSearchValue, setDbSearchValue] = useState<string | null>(null);
   
   const levelID = userLevel?.user_level;
   
+  const graphData: any[] = useMemo(() => {
   // Build graphData based on user level
   let graphData: any = [];
   if (levelID == 1) {
-    graphData = getConvertDataHome(data);
+    graphData = getConvertDataHome(data || []);
   } else {
     // For org admin, wrap databases in organization node
-    const databases = getConvertTreeView(data);
+    const databases = getConvertTreeView(data || []);
     graphData = [{
       name: activeName || "Байгууллага",
       children: databases,
@@ -50,18 +44,12 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
     }];
   }
 
+  return graphData;
+  }, [data, levelID, activeName]);
+
   const orgOptions = graphData.map((org: any) => org.name);
   const selectedOrg: any = graphData.find((org: any) => org.name === searchValue);
   const dbOptions = selectedOrg ? selectedOrg.children?.map((db: any) => db.name) || [] : [];
-
-  // Debounce search value
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearchValue(searchValue || "");
-    }, 500);
-
-    return () => clearTimeout(timer);
-  }, [searchValue]);
 
   // Auto-select organization for non-super admins
   React.useEffect(() => {
@@ -71,17 +59,11 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
     }
   }, [levelID, activeName]);
 
-  const { data: searchData, isLoading } = useQuery({
-    queryKey: ["search treeView", debouncedSearchValue],
-    queryFn: () => debouncedSearchValue != "" && SearchService(debouncedSearchValue.trim()),
-  });
-
-  const getFilteredData = () => {
-    if (!debouncedSearchValue) return graphData;
-    const lowerSearch = debouncedSearchValue.toLowerCase();
+  const filteredGraphData = useMemo(() => {
+    if (!searchValue) return graphData;
 
     const filtered = graphData.filter((org: any) =>
-      org.name.toLowerCase().includes(lowerSearch)
+      org.name === searchValue
     );
 
     return filtered.map((org: any) => {
@@ -109,32 +91,41 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
         },
       };
     });
+  }, [graphData, searchValue, dbSearchValue]);
+
+  const [resetVersion, setResetVersion] = useState(0);
+  const selectDepth = (depth: number) => {
+    setClickTree(depth);
+    setResetVersion(version => version + 1);
   };
 
-  const filteredGraphData = getFilteredData();
-
-  const indicator: any =
-    searchData?.indicator &&
-    searchData?.indicator.filter(
-      (e: { highlight: { indicator_name: any } }) => e.highlight.indicator_name
-    );
-
-  const searchIndicator = getConvertSearchData(indicator, allOrg, levelID);
-  const groupedData = searchIndicator ? searchIndicator.slice(0, 10) : [];
-
-  const onChartClick = (params: any) => {
-    // Indicator (үзүүлэлт) дээр дарахыг хориглох - тэдгээр нь улбар шар өнгөтэй (#F2BE7A)
-    const isIndicator = params.data.itemStyle?.color === "#D79034" || 
-                        params.data.label?.backgroundColor === "#F2BE7A";
-    
-    // Зөвхөн indicator биш бөгөөд children байхгүй үед л дарах боломжтой
-    if (!isIndicator && (!params.data.children || params.data.children.length === 0)) {
-      setSearchValue(params.data.name);
-      setAllData(false);
-    }
+  const scope = JSON.stringify([searchValue, dbSearchValue, clickTree, resetVersion]);
+  const [expansion, setExpansion] = useState<{
+    scope: string; collapsed: Record<string, boolean>; revision: number;
+  }>({ scope: "", collapsed: {}, revision: 0 });
+  const treeData = useMemo(() => {
+    const overrides = expansion.scope === scope ? expansion.collapsed : {};
+    const prepare = (node: any, id: string, depth: number): any => ({
+      ...node,
+      id,
+      collapsed: overrides[id] ?? depth >= clickTree,
+      children: node.children?.map((child: any, index: number) => prepare(child, `${id}/${index}`, depth + 1)),
+    });
+    return prepare({ name: "", children: filteredGraphData }, "root", 0);
+  }, [filteredGraphData, clickTree, scope, expansion]);
+  const onChartClick = (event: any) => {
+    const node = event.data;
+    if (!node?.children?.length || node.id === "root") return;
+    setExpansion(previous => ({
+      scope,
+      collapsed: { ...(previous.scope === scope ? previous.collapsed : {}), [node.id]: !node.collapsed },
+      revision: previous.revision + 1,
+    }));
   };
 
-  const option = {
+  const option = useMemo(() => ({
+    // Rebuild without exit animations: ECharts can retain descendant edges on collapse.
+    animation: false,
     tooltip: {
       trigger: "item",
       triggerOn: "mousemove",
@@ -151,7 +142,7 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
     series: [
       {
         type: "tree",
-        data: [{ name: "", children: filteredGraphData }],
+        data: [treeData],
         symbolSize: 8,
         emphasis: {
           focus: "descendant",
@@ -162,16 +153,12 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
         left: "10%",
         right: "10%",
         symbol: "emptyCircle",
-        expandAndCollapse: true,
-        animationDuration: 550,
-        animationDurationUpdate: 750,
+        expandAndCollapse: false,
         zoom: 1,
         initialTreeDepth: clickTree,
       },
     ],
-  };
-  
-  if (isLoading) return <Loader />;
+  }), [treeData, clickTree]);
   
   return (
     <Box>
@@ -182,18 +169,21 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
           alignItems: "center",
           justifyContent: "center",
           gap: 4,
+          flexWrap: "wrap",
           py: 1,
         }}
       >
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Box sx={{ width: 10, p: 1, bgcolor: "#A5C984" }}></Box>
           <Typography
+            component="button"
+            type="button"
             variant="body1"
             sx={{
               cursor: "pointer",
               ":hover": { textDecoration: "underline", backgroundColor: "#A5C984" },
             }}
-            onClick={() => setClickTree(1)}
+            onClick={() => selectDepth(1)}
           >
             Байгууллага
           </Typography>
@@ -201,12 +191,14 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Box sx={{ width: 10, p: 1, bgcolor: "#408FC9" }}></Box>
           <Typography
+            component="button"
+            type="button"
             variant="body1"
             sx={{
               cursor: "pointer",
               ":hover": { textDecoration: "underline", backgroundColor: "#408FC9" },
             }}
-            onClick={() => setClickTree(2)}
+            onClick={() => selectDepth(2)}
           >
             Өгөгдлийн сан
           </Typography>
@@ -214,24 +206,26 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Box sx={{ width: 10, p: 1, bgcolor: "#B9C5FC" }}></Box>
           <Typography
+            component="button"
+            type="button"
             variant="body1"
             sx={{
               cursor: "pointer",
               ":hover": { textDecoration: "underline", backgroundColor: "#B9C5FC" },
             }}
-            onClick={() => setClickTree(3)}
+            onClick={() => selectDepth(3)}
           >
             Хүснэгт
           </Typography>
         </Box>
         <Box sx={{ display: "flex", gap: 1, alignItems: "center" }}>
           <Box sx={{ width: 10, p: 1, bgcolor: "#F2BE7A" }}></Box>
-          <Typography variant="body1">Үзүүлэлт</Typography>
+          <Typography component="button" type="button" variant="body1" onClick={() => selectDepth(4)}>Үзүүлэлт</Typography>
         </Box>
       </Box>
       
       {/* Search Controls */}
-      <Box sx={{ display: 'flex', justifyContent: 'center', mb: 2, gap: 2, alignItems: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', mb: 2, gap: 2, alignItems: 'center' }}>
         {levelID == 1 && (
           <Autocomplete
             options={orgOptions}
@@ -250,10 +244,10 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
                 {...params}
                 label="Байгууллага хайх"
                 size="small"
-                sx={{ width: 400 }}
+                sx={{ width: "100%", maxWidth: 400 }}
               />
             )}
-            sx={{ width: 400 }}
+            sx={{ width: "100%", maxWidth: 400 }}
           />
         )}
         <Autocomplete
@@ -273,70 +267,30 @@ const TreeViewRadial = ({ data, activeName, userLevel, allOrg }: any) => {
               {...params}
               label="Өгөгдлийн сан хайх"
               size="small"
-              sx={{ width: 400 }}
+              sx={{ width: "100%", maxWidth: 400 }}
             />
           )}
-          sx={{ width: 400 }}
+          sx={{ width: "100%", maxWidth: 400 }}
         />
       </Box>
 
       <Box sx={{ display: "flex", flexDirection: "row", width: "100%", height: "100%" }}>
         <div className="w-full">
           <ReactECharts
+            key={`${scope}:${expansion.revision}`}
             option={option}
+            onEvents={{ click: onChartClick }}
             style={{ 
               width: "100%", 
               height: "100vh",
               minHeight: "500px",
               maxHeight: "1000px"
             }}
-            onEvents={{ click: onChartClick }}
           />
         </div>
-        {/* <div className="w-1/2 flex flex-col">
-          {searchValue && (
-            <TreeView data={groupedData} activeName={searchValue} />
-          )}
-          {searchValue && searchIndicator && searchIndicator.length > 10 && (
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "end",
-                justifyContent: "center",
-                gap: 1,
-                px: 2,
-              }}
-            >
-              <Button
-                variant="contained"
-                color={"info"}
-                size="small"
-                onClick={() => {
-                  setAllData(true);
-                }}
-              >
-                <Typography
-                  variant="caption"
-                  sx={{
-                    textTransform: "lowercase",
-                    ":first-letter": {
-                      textTransform: "capitalize",
-                    },
-                  }}
-                >
-                  Бүх үзүүлэлт харах
-                </Typography>
-              </Button>
-            </Box>
-          )}
-        </div> */}
+
       </Box>
-      <Box>
-        {allData && searchIndicator && searchIndicator.length > 10 && (
-          <TreeView data={searchIndicator} activeName={searchValue} />
-        )}
-      </Box>
+
     </Box>
   );
 };
