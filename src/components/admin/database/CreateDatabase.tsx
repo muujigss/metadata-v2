@@ -253,44 +253,44 @@ const CreateDatabase = ({
   };
 
   const initDB1 = {
-    tab0_id: dbActivityData?.id || 0,
-    tab0_name: dbActivityData?.name || "",
-    tab0_short_name: dbActivityData?.short_name || "",
-    tab0_domain_name: dbActivityData?.domain_name || "", // 5.11.1.3
-    tab0_purpose: dbActivityData?.purpose || "", // 5.11.1.4
-    tab0_activity: dbActivityData?.activity || "", // 5.11.1.4
-    tab0_scope: dbActivityData?.scope || "", // 5.11.1.4
+    tab0_id: Number(dbActivityData?.id || 0),
+    tab0_name: String(dbActivityData?.name || ""),
+    tab0_short_name: String(dbActivityData?.short_name || ""),
+    tab0_domain_name: String(dbActivityData?.domain_name || ""), // 5.11.1.3
+    tab0_purpose: String(dbActivityData?.purpose || ""), // 5.11.1.4
+    tab0_activity: String(dbActivityData?.activity || ""), // 5.11.1.4
+    tab0_scope: String(dbActivityData?.scope || ""), // 5.11.1.4
     tab0_regulation_file_id: dbActivityData?.regulation_file_id || null, // 5.11.1.5
-    tab0_status_description: dbActivityData?.status_description || "", // 5.11.1.6
-    tab0_change_description: dbActivityData?.change_description || "", //  5.11.1.7
-    tab0_service_list: dbActivityData?.service_list || "", //  5.11.1.8
-    tab0_other_info_list: dbActivityData?.other_info_list || "", //  5.11.1.9
-    tab0_full_org_info: dbActivityData?.full_org_info || "", //  5.11.1.10
-    tab0_full_user_info: dbActivityData?.full_user_info || "", //  5.11.1.11
-    tab0_copyright_description: dbActivityData?.copyright_description || "", //  5.11.1.12
+    tab0_status_description: String(dbActivityData?.status_description || ""), // 5.11.1.6
+    tab0_change_description: String(dbActivityData?.change_description || ""), //  5.11.1.7
+    tab0_service_list: (dbActivityData?.service_list || []) as string[], //  5.11.1.8
+    tab0_other_info_list: (dbActivityData?.other_info_list || []) as string[], //  5.11.1.9
+    tab0_full_org_info: String(dbActivityData?.full_org_info || ""), //  5.11.1.10
+    tab0_full_user_info: String(dbActivityData?.full_user_info || ""), //  5.11.1.11
+    tab0_copyright_description: String(dbActivityData?.copyright_description || ""), //  5.11.1.12
     tab0_copyright_file_id: dbActivityData?.copyright_file_id || null, //  5.11.1.12
-    tab0_is_active: dbActivityData?.is_active || false,
+    tab0_is_active: Boolean(dbActivityData?.is_active || false),
     tab0_createdUser: userId || 0,
   };
   const initDB2 = {
-    tab1_id: dbTechnologyData?.id || 0,
-    tab1_name: dbTechnologyData?.name || "",
-    tab1_short_name: dbTechnologyData?.short_name || "",
-    tab1_db_type: dbTechnologyData?.db_type || "", // 5.11.2.2
-    tab1_db_manage_system: dbTechnologyData?.db_manage_system || "", // 5.11.2.3
-    tab1_db_size: dbTechnologyData?.db_size || 0, // 5.11.2.4
-    tab1_db_rows_count: dbTechnologyData?.db_rows_count || 0, // 5.11.2.5
-    tab1_database_location: dbTechnologyData?.database_location || "", //  5.11.2.6
-    tab1_resource_location: dbTechnologyData?.resource_location || "", //  5.11.2.6
+    tab1_id: Number(dbTechnologyData?.id || 0),
+    tab1_name: String(dbTechnologyData?.name || ""),
+    tab1_short_name: String(dbTechnologyData?.short_name || ""),
+    tab1_db_type: String(dbTechnologyData?.db_type || ""), // 5.11.2.2
+    tab1_db_manage_system: String(dbTechnologyData?.db_manage_system || ""), // 5.11.2.3
+    tab1_db_size: Number(dbTechnologyData?.db_size || 0), // 5.11.2.4
+    tab1_db_rows_count: Number(dbTechnologyData?.db_rows_count || 0), // 5.11.2.5
+    tab1_database_location: String(dbTechnologyData?.database_location || ""), //  5.11.2.6
+    tab1_resource_location: String(dbTechnologyData?.resource_location || ""), //  5.11.2.6
     tab1_diagram_file_id: dbTechnologyData?.diagram_file_id || null, //  5.11.2.7
-    tab1_access_control_info: dbTechnologyData?.access_control_info || "", //  5.11.2.8
-    tab1_file_type_info: dbTechnologyData?.file_type_info || "", //  5.11.2.9
-    tab1_info_supply: dbTechnologyData?.info_supply || "", //  5.11.2.10
-    tab1_service_name: dbTechnologyData?.service_name || "", //  5.11.2.11
-    tab1_content_info_supply: dbTechnologyData?.content_info_supply || "", //  5.11.2.12
-    tab1_input_values: dbTechnologyData?.input_values || "", //  5.11.2.13
-    tab1_output_values: dbTechnologyData?.output_values || "", //  5.11.2.14
-    tab1_is_active: dbTechnologyData?.is_active || false,
+    tab1_access_control_info: String(dbTechnologyData?.access_control_info || ""), //  5.11.2.8
+    tab1_file_type_info: (dbTechnologyData?.file_type_info || []) as ItemFileInfo[], //  5.11.2.9
+    tab1_info_supply: String(dbTechnologyData?.info_supply || ""), //  5.11.2.10
+    tab1_service_name: String(dbTechnologyData?.service_name || ""), //  5.11.2.11
+    tab1_content_info_supply: String(dbTechnologyData?.content_info_supply || ""), //  5.11.2.12
+    tab1_input_values: String(dbTechnologyData?.input_values || ""), //  5.11.2.13
+    tab1_output_values: String(dbTechnologyData?.output_values || ""), //  5.11.2.14
+    tab1_is_active: Boolean(dbTechnologyData?.is_active || false),
     tab1_createdUser: userId || 0,
   };
   const initialValues = {
@@ -332,7 +332,9 @@ const CreateDatabase = ({
     }
   }, [dbTechnologyData?.file_type_info]);
 
-  const onSubmit = async (values: IDatabase) => {
+  type DatabaseFormValues = typeof initialValues;
+
+  const onSubmit = async (values: DatabaseFormValues) => {
     setLoading(true);
     try {
       const data = {
@@ -410,11 +412,13 @@ const CreateDatabase = ({
         if (!check_regulation_file.check) {
           setStatus('error');
           setWarningMessage(check_regulation_file?.message);
+          return;
         }
         const check_diagram_file = await checkFileSize(selectedTab1_diagram_file_id)
         if (!check_diagram_file.check) {
           setStatus('error');
           setWarningMessage(check_diagram_file?.message);
+          return;
         }
         regulationFileId = (await saveFile(selectedTab0_regulation_file_id))?.file?.id;
         diagramFileId = (await saveFile(selectedTab1_diagram_file_id))?.file?.id;
@@ -448,7 +452,7 @@ const CreateDatabase = ({
       console.log('-----err-----', err)
       setStatus('error');
       setAlert('error');
-      setWarningMessage(err.toString());
+      setWarningMessage(err instanceof Error ? err.message : String(err));
     } finally {
       setLoading(false);
     }
@@ -492,7 +496,10 @@ const CreateDatabase = ({
     const uploaded = await saveFile(newFile);
     return uploaded?.file?.id ?? oldFileId;
   };
-  const checkFileSize = (file: any) => {
+  const checkFileSize = (file: File | null): { check: true } | { check: false; message: string } => {
+    if (!file) {
+      return { check: false, message: "Файл заавал хавсаргах шаардлагатай." };
+    }
     if (file.size > MAX_UPLOAD_SIZE) {
       return { check: false, message: UPLOAD_SIZE_MESSAGE };
     }
@@ -526,7 +533,7 @@ const CreateDatabase = ({
             <Alert severity="success">Амжилттай хадгаллаа ... </Alert>
           ) : status == "error" ? (
             <Alert severity="error">
-              <span dangerouslySetInnerHTML={{ __html: warningMessage }} />
+              <span style={{ whiteSpace: "pre-line" }}>{warningMessage}</span>
             </Alert>
           ) : null}
         </Box>
@@ -560,13 +567,7 @@ const CreateDatabase = ({
                   const errors = await validateForm();
                   console.log('-----errors------', errors, Object.keys(errors).length)
                   if (Object.keys(errors).length > 0) {
-                    let txtErr = ''
-                    for (const key in errors) {
-                      if (errors.hasOwnProperty(key)) {
-                        txtErr += errors[key] + '<br />';
-                        console.log(`Field: ${key}, Error: ${errors[key]}`);
-                      }
-                    }
+                    const txtErr = Object.values(errors).flat().filter(Boolean).join('\n');
                     setStatus('error');
                     setWarningMessage(txtErr);
                     return;
@@ -1406,7 +1407,7 @@ const CreateDatabase = ({
                       </FormBox>
       
                       <Box sx={{ ml: "2rem" }}>
-                        {values.sector == "43" && (
+                        {values.sector === 43 && (
                           <FormBox>
                             <Box sx={{ display: "flex", alignItems: "center" }}>
                               <LabelComponent label="6.1. Салбар бусад:" />
