@@ -27,6 +27,8 @@ test('login sets secure session cookies; server-side user deletion uses DELETE w
   const requests = [];
   const originalFetch = global.fetch;
   const originalEnvironment = process.env.NODE_ENV;
+  const originalHttpLogin = process.env.ALLOW_INSECURE_HTTP_LOGIN;
+  delete process.env.ALLOW_INSECURE_HTTP_LOGIN;
   process.env.NODE_ENV = 'production';
   global.fetch = async (url, options) => {
     requests.push(options);
@@ -47,9 +49,19 @@ test('login sets secure session cookies; server-side user deletion uses DELETE w
     await service.deleteUserDetailService(12);
     assert.equal(requests[1].method, 'DELETE');
     assert.equal(requests[1].headers.Cookie, 'access-token=signed-session');
+    for (const [flag, secure] of [['true', false], ['false', true], ['TRUE', true], ['', true]]) {
+      process.env.ALLOW_INSECURE_HTTP_LOGIN = flag;
+      savedCookies.length = 0;
+      const login = await service.loginWithUser('user@example.test', 'password');
+      assert.equal(login.status, true);
+      for (const [, , options] of savedCookies) {
+        assert.deepEqual(options, { httpOnly: true, secure, sameSite: 'lax', path: '/', maxAge: 86400 });
+      }
+    }
   } finally {
     global.fetch = originalFetch;
     if (originalEnvironment === undefined) delete process.env.NODE_ENV; else process.env.NODE_ENV = originalEnvironment;
+    if (originalHttpLogin === undefined) delete process.env.ALLOW_INSECURE_HTTP_LOGIN; else process.env.ALLOW_INSECURE_HTTP_LOGIN = originalHttpLogin;
   }
 });
 

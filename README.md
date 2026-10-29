@@ -91,6 +91,16 @@ Kubernetes болон PM2-ийн файлуудад орчны placeholder-уу�
 Domain, image, secret, TLS termination/renewal болон proxy routing-ийг
 баталгаажуулсны дараа ашиглана. Production deployment автоматаар хийгдээгүй.
 
+### HTTPS бэлэн болоогүй үеийн түр нэвтрэлт
+
+Production cookie анхдагчаар `Secure` байна. Зөвхөн HTTP ашиглаж байгаа
+орчинд серверийн `.env` файлд `ALLOW_INSECURE_HTTP_LOGIN=true` тохируулж,
+шинэ кодыг build хийгээд application процессыг restart хийнэ.
+Энэ горимд нууц үг болон session сүлжээгээр шифрлэгдэхгүй.
+HTTPS идэвхжүүлсний дараа уг утгыг `false` болгож эсвэл устгаад restart
+хийнэ; хэрэглэгчид дахин нэвтэрнэ. JWT шалгалт, HttpOnly, SameSite болон
+хэрэглэгчийн эрхийн шалгалт энэ тохиргооноос үл хамааран хэвээр ажиллана.
+
 ## Бүтэц
 
 - `src/app/(site)`: нийтийн каталог, хайлт, chart.

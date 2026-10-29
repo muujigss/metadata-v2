@@ -27,7 +27,8 @@ const loginWithUser = async (username: string, password: string) => {
 
       const options = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        // Temporary opt-in for deployments awaiting HTTPS. Remove once TLS is enabled.
+        secure: process.env.NODE_ENV === "production" && process.env.ALLOW_INSECURE_HTTP_LOGIN !== "true",
         sameSite: "lax" as const,
         path: "/",
         maxAge: ACCESS_TOKEN_MAX_AGE,
