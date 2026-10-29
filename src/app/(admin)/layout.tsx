@@ -9,6 +9,7 @@ import Footer from "@/components/layout/Footer";
 import { Box, CssBaseline } from "@mui/material";
 import Header from "./Header";
 import UserProvider from "@/components/providers/UserProvider";
+import PasswordChangePrompt from "@/components/admin/PasswordChangePrompt";
 
 const AdminLayout = ({
   children,
@@ -36,6 +37,7 @@ const AdminLayout = ({
               >
                 <CssBaseline />
                 <Header />
+                <PasswordChangePrompt />
                 <Box
                   component={"main"}
                   className="admin-content"

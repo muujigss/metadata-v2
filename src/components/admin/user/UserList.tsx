@@ -1,4 +1,5 @@
 "use client";
+import ResetPasswordButton from "./ResetPasswordButton";
 import Loader from "@/components/Loader";
 import User from "@/components/user/User";
 import UserEditBar from "@/components/user/UserEditBar";
@@ -15,7 +16,6 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableFooter,
   TableHead,
   TablePagination,
   TableRow,
@@ -35,28 +35,28 @@ const UserList = () => {
   ) as ICurrentUserContext;
   const [openModal, setOpenModal] = React.useState(false);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [searchTerm, setSearchTerm] = useState("");
 
   const columns = [
-    { field: "id", headerName: "№", width: 10 },
-    { field: "user_level", headerName: "Хэрэглэгчийн түвшин", width: 400 },
-    { field: "org_id", headerName: "Байгууллагын нэр", width: 400 },
-    { field: "lastname", headerName: "Овог", width: 10 },
-    { field: "firstname", headerName: "Нэр", width: 10 },
-    { field: "department", headerName: "Хэлтэс", width: 10 },
-    { field: "position", headerName: "Албан тушаал", width: 10 },
-    { field: "phone_number", headerName: "Утасны дугаар", width: 10 },
-    { field: "mobile", headerName: "Гар утасны дугаар", width: 10 },
-    { field: "email", headerName: "И-мэйл хаяг", width: 10 },
-    { field: "roles", headerName: "Хэрэглэгчийн эрх", width: 10 },
-    { field: "Edit", headerName: "Засах", width: 10 },
-    // { field: "Delete", headerName: "Устгах", width: 10 },
+    { field: "id", headerName: "№", width: 55 },
+    { field: "user_level", headerName: "Хэрэглэгчийн түвшин", width: 150 },
+    { field: "org_id", headerName: "Байгууллагын нэр", width: 240 },
+    { field: "lastname", headerName: "Овог", width: 120 },
+    { field: "firstname", headerName: "Нэр", width: 120 },
+    { field: "department", headerName: "Хэлтэс", width: 170 },
+    { field: "position", headerName: "Албан тушаал", width: 180 },
+    { field: "phone_number", headerName: "Утасны дугаар", width: 130 },
+    { field: "mobile", headerName: "Гар утасны дугаар", width: 130 },
+    { field: "email", headerName: "И-мэйл хаяг", width: 230 },
+    { field: "roles", headerName: "Хэрэглэгчийн эрх", width: 180 },
+    { field: "Edit", headerName: "Засах", width: 85 },
+    { field: "reset", headerName: "Нууц үг", width: 170 },
   ];
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -132,13 +132,13 @@ const UserList = () => {
             theme={textSubInputTheme}
             placeholder="Хэрэглэгч хайх..."
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={(e) => { setSearchTerm(e.target.value); setPage(0); }}
           />
   
           <Button
             color="grey"
             size="xs"
-            onClick={() => setSearchTerm("")}
+            onClick={() => { setSearchTerm(""); setPage(0); }}
             className="absolute top-0 right-0 p-2 my-1"
           >
             {searchTerm ? <CloseLineIcon size={16} /> : <SearchLineIcon size={16} />}
@@ -146,8 +146,8 @@ const UserList = () => {
         </div>
       </div>
 
-      <TableContainer sx={{ maxHeight: 700 }}>
-        <Table stickyHeader>
+      <TableContainer sx={{ height: 620, overflow: "auto", scrollbarGutter: "stable" }}>
+        <Table stickyHeader sx={{ tableLayout: "fixed", minWidth: 1965, "& td": { overflowWrap: "anywhere", verticalAlign: "top" } }}>
           <TableHead>
             <TableRow>
               {columns?.map((column: any, i: number) => {
@@ -174,8 +174,8 @@ const UserList = () => {
                 ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 ?.map((item: IUser, i: number) => {
                   return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={i}>
-                      <TableCell>{i + 1}</TableCell>
+                    <TableRow hover role="checkbox" tabIndex={-1} key={item.id}>
+                      <TableCell>{page * rowsPerPage + i + 1}</TableCell>
                       <TableCell> {item.userLevel?.name}</TableCell>
                       <TableCell> {item.organization?.name}</TableCell>
                       <TableCell> {item.lastname}</TableCell>
@@ -189,9 +189,9 @@ const UserList = () => {
                       </TableCell>
                       <TableCell> {item.department}</TableCell>
                       <TableCell> {item.position}</TableCell>
-                      <TableCell> {item.email}</TableCell>
                       <TableCell> {item.phone_number}</TableCell>
                       <TableCell> {item.mobile}</TableCell>
+                      <TableCell> {item.email}</TableCell>
                       <TableCell>
                         {item?.roles &&
                           item?.roles?.map((item: any, i: number) => (
@@ -209,19 +209,21 @@ const UserList = () => {
                           ))}
                       </TableCell>
                       <TableCell>
-                        <UserEditBar userId={item?.id} type="list" />
+                        {item.id !== undefined && <UserEditBar userId={item.id} type="list" />}
                       </TableCell>
+                      <TableCell>{!!item.id && !!item.email && item.is_active && ((Number(userLevel) === 1 && [2, 3].includes(Number(item.user_level))) || (Number(userLevel) === 2 && Number(item.user_level) === 3 && item.org_id === Number(orgId))) && <ResetPasswordButton userId={item.id} email={item.email} />}</TableCell>
                     </TableRow>
                   );
                 })}
           </TableBody>
-          <TableFooter>
-            <TableRow>
-              <TablePagination
+
+        </Table>
+      </TableContainer>
+      <TablePagination
                 rowsPerPageOptions={[10, 25, 50]}
                 labelRowsPerPage={"Хуудас бүр дэх мөрийн тоо"}
-                colSpan={11}
-                count={userData && userData?.length}
+                component="div"
+                count={filteredUsers?.length || 0}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
@@ -231,10 +233,6 @@ const UserList = () => {
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 // ActionsComponent={TablePaginationActions}
               />
-            </TableRow>
-          </TableFooter>
-        </Table>
-      </TableContainer>
     </Box>
   );
 };

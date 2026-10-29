@@ -19,7 +19,7 @@ import EyeOffFillIcon from "remixicon-react/EyeOffLineIcon";
 import * as Yup from "yup";
 import Loader from "./Loader";
 
-const ChangePassword = () => {
+const ChangePassword = ({ initialOldPassword = "" }: { initialOldPassword?: string }) => {
   const { setUserInfo, userInfo } = useCurrentUser() as ICurrentUserContext;
   const router = useRouter();
   const [status, setStatus] = useState<string>();
@@ -84,7 +84,7 @@ const ChangePassword = () => {
 
       <Formik
         initialValues={{
-          oldPassword: "",
+          oldPassword: initialOldPassword,
           newPassword: "",
           confirmPassword: "",
         }}

@@ -32,21 +32,26 @@ function setup(login) {
 test('successful login navigates with the new session and stays pending until the page changes', async () => {
   const previousWindow = global.window;
   const previousStorage = Object.getOwnPropertyDescriptor(global, 'localStorage');
+  const previousSessionStorage = Object.getOwnPropertyDescriptor(global, 'sessionStorage');
+  const session = new Map();
+  Object.defineProperty(global, 'sessionStorage', { configurable: true, value: { setItem: (key, value) => session.set(key, value), removeItem: key => session.delete(key) } });
   const stored = new Map();
   let destination;
   global.window = { location: { replace: (path) => { destination = path; } } };
   Object.defineProperty(global, 'localStorage', { configurable: true, value: { setItem: (key, value) => stored.set(key, value) } });
   try {
     for (const [level, path] of [[1, '/admin/org-request'], ['2', '/admin/user'], [3, '/admin/database']]) {
-      const { form, states } = setup(async () => ({ status: true, user: { id: 5, user_level: level, roles: [], organization: { name: 'Example' } } }));
+      const { form, states } = setup(async () => ({ status: true, passwordChangeSuggested: level === 1, user: { id: 5, user_level: level, roles: [], organization: { name: 'Example' } } }));
       await form.props.onSubmit({ email: 'user@example.test', password: 'existing-password' });
       assert.equal(destination, path);
       assert.deepEqual(states[2], [true]);
       assert.equal(stored.get('user_id'), 5);
+      assert.equal(session.has('password-change-suggested'), level === 1);
     }
   } finally {
     if (previousWindow === undefined) delete global.window; else global.window = previousWindow;
     if (previousStorage) Object.defineProperty(global, 'localStorage', previousStorage); else delete global.localStorage;
+    if (previousSessionStorage) Object.defineProperty(global, 'sessionStorage', previousSessionStorage); else delete global.sessionStorage;
   }
 });
 

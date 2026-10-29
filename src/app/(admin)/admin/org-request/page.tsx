@@ -2,6 +2,8 @@
 
 import {
   Box,
+  Alert,
+  Snackbar,
   Button,
   Dialog,
   DialogActions,
@@ -19,7 +21,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CancelIcon from "@mui/icons-material/Cancel";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -39,6 +41,9 @@ const OrgRequestListPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [submitting, setSubmitting] = useState(false);
+  const submissionPending = useRef(false);
+  const [notice, setNotice] = useState<{ severity: "success" | "error"; message: string } | null>(null);
 
   const filteredRequests = requests.filter((req) =>
     req.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -59,9 +64,11 @@ const OrgRequestListPage = () => {
       setLoading(true);
       const res = await fetch("/api/admin/org-request");
       const data = await res.json();
+      if (!res.ok || !Array.isArray(data)) throw new Error("Хүсэлтүүдийг ачаалж чадсангүй.");
       setRequests(data);
     } catch (error) {
       console.error("Failed to fetch requests", error);
+      setNotice({ severity: "error", message: "Хүсэлтүүдийг ачаалж чадсангүй. Хуудсаа дахин шинэчилнэ үү." });
     } finally {
       setLoading(false);
     }
@@ -75,6 +82,7 @@ const OrgRequestListPage = () => {
     setSelectedRequest(request);
     setActionType(type);
     setRejectReason(""); // Reset reason
+    setDetailOpen(false);
     setOpenDialog(true);
   };
 
@@ -85,7 +93,14 @@ const OrgRequestListPage = () => {
   };
 
   const confirmAction = async () => {
-    if (!selectedRequest || !actionType) return;
+    if (!selectedRequest || !actionType || submissionPending.current) return;
+    if (actionType === "reject" && !rejectReason.trim()) {
+      setNotice({ severity: "error", message: "Татгалзах шалтгаанаа оруулна уу." });
+      return;
+    }
+    submissionPending.current = true;
+    setSubmitting(true);
+    setNotice(null);
 
     try {
       const res = await fetch("/api/admin/org-request", {
@@ -101,15 +116,24 @@ const OrgRequestListPage = () => {
       });
 
       if (res.ok) {
-        fetchRequests();
+        setRequests(previous => previous.filter(item => item.id !== selectedRequest.id));
+        setPage(0);
         setOpenDialog(false);
         setDetailOpen(false);
+        setNotice({ severity: "success", message: actionType === "approve"
+          ? "Байгууллагын хүсэлтийг амжилттай зөвшөөрлөө."
+          : "Байгууллагын хүсэлтээс амжилттай татгалзлаа." });
       } else {
-        alert("Алдаа гарлаа");
+        throw new Error(res.status === 401 ? "Нэвтрэх хугацаа дууссан байна. Дахин нэвтэрнэ үү."
+          : res.status === 403 ? "Танд энэ үйлдлийг хийх эрх байхгүй байна."
+          : "Хүсэлтийг шийдвэрлэж чадсангүй. Жагсаалтыг шинэчилж төлөвийг шалгана уу.");
       }
     } catch (error) {
       console.error("Error performing action----------", error);
-      alert("Алдаа гарлаа");
+      setNotice({ severity: "error", message: error instanceof Error ? error.message : "Холболтын алдаа гарлаа. Хүсэлтийн төлөвийг шалгана уу." });
+    } finally {
+      submissionPending.current = false;
+      setSubmitting(false);
     }
   };
 
@@ -134,6 +158,9 @@ const OrgRequestListPage = () => {
 
   return (
     <Box className="p-4">
+      <Snackbar open={!!notice} autoHideDuration={8000} onClose={(_, reason) => { if (reason !== "clickaway") setNotice(null); }} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+        <Alert severity={notice?.severity || "success"} variant="filled" onClose={() => setNotice(null)} sx={{ width: "100%" }}>{notice?.message}</Alert>
+      </Snackbar>
       <Typography variant="h5" className="mb-4 text-primary-main font-semibold">
         Байгууллагын хүсэлтүүд
       </Typography>
@@ -241,12 +268,12 @@ const OrgRequestListPage = () => {
       />
 
       {/* Confirmation Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+      <Dialog open={openDialog} onClose={() => { if (!submitting) setOpenDialog(false); }}>
         <DialogTitle>
           {actionType === "approve" ? "Хүсэлт зөвшөөрөх" : "Хүсэлт татгалзах"}
         </DialogTitle>
         <DialogContent>
-          <DialogContentText>
+          <DialogContentText component="div">
             Та <b>{selectedRequest?.name}</b> байгууллагын хүсэлтийг{" "}
             {actionType === "approve" ? "зөвшөөрөх" : "татгалзах"}дээ итгэлтэй байна уу?
             {actionType === "reject" && (
@@ -271,14 +298,15 @@ const OrgRequestListPage = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Болих</Button>
+          <Button disabled={submitting} onClick={() => setOpenDialog(false)}>Болих</Button>
           <Button
+            disabled={submitting}
             onClick={confirmAction}
             color={actionType === "approve" ? "success" : "error"}
             variant="contained"
             autoFocus
           >
-            {actionType === "approve" ? "Зөвшөөрөх" : "Татгалзах"}
+            {submitting ? "Шийдвэрлэж байна…" : actionType === "approve" ? "Зөвшөөрөх" : "Татгалзах"}
           </Button>
         </DialogActions>
       </Dialog>
@@ -416,14 +444,7 @@ const OrgRequestListPage = () => {
                     variant="contained" 
                     color="success"
                     startIcon={<CheckCircleIcon />}
-                    onClick={() => {
-                        setActionType("approve");
-                        setOpenDialog(true);
-                        // setDetailOpen(false); // Optional: close detail or keep it open? Let's keep detail open until confirmed? No, confirm dialog is separate.
-                        // Better UX: Close detail, open confirm.
-                        // setDetailOpen(false); 
-                        // Actually, let's just use the confirmAction directly if we want, but reusing the dialog is safer.
-                    }}
+                    onClick={() => handleAction(selectedRequest, "approve")}
                     disabled={loading || !selectedRequest.users[0]}
                   >
                     Зөвшөөрөх
@@ -432,11 +453,7 @@ const OrgRequestListPage = () => {
                     variant="contained" 
                     color="error"
                     startIcon={<CancelIcon />}
-                    onClick={() => {
-                        setActionType("reject");
-                        setOpenDialog(true);
-                        // setDetailOpen(false);
-                    }}
+                    onClick={() => handleAction(selectedRequest, "reject")}
                     disabled={loading}
                   >
                     Татгалзах

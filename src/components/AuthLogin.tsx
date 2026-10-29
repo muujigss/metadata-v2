@@ -51,6 +51,8 @@ const AuthLogin = () => {
         localStorage.setItem("org_name", response.user?.organization?.name);
 
         // Load the protected document with the newly saved session cookies.
+        if (response.passwordChangeSuggested) sessionStorage.setItem("password-change-suggested", "true");
+        else sessionStorage.removeItem("password-change-suggested");
         // Keep the pending state until navigation replaces this page.
         window.location.replace(destination);
       } else {

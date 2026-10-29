@@ -9,7 +9,7 @@
     "start": "next start -p 3001",
     "lint": "eslint src --ext .ts,.tsx",
     "typecheck": "tsc --noEmit --pretty false",
-    "test": "node --test tests",
+    "test": "node tests/run.cjs",
     "image:build": "run-script-os",
     "image:build:windows": "docker build -t IMAGE_URL .",
     "image:build:darwin:linux": "docker buildx build --platform linux/amd64 -t IMAGE_URL .",

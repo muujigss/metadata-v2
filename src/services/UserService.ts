@@ -41,7 +41,7 @@ const loginWithUser = async (username: string, password: string) => {
       cookieStore.set("roles", JSON.stringify(user.roles || []), options);
       cookieStore.set("user_level", String(user.user_level), options);
 
-      return { user, status: success };
+      return { user, status: success, passwordChangeSuggested: data.passwordChangeSuggested === true };
     }
   } catch (error) {
     console.log({ error });

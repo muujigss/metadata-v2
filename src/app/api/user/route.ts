@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       org_id: user.org_id ?? 0,
       roles: user.roles,
     });
-    return NextResponse.json({ user: safeUser, success: true, token });
+    return NextResponse.json({ user: safeUser, success: true, token, passwordChangeSuggested: body.password === "12345678" });
   } catch (error) {
     console.error("Login failed");
     return NextResponse.json({ success: false, message: "Unable to sign in" }, { status: 500 });
