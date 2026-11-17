@@ -60,5 +60,5 @@ test('failed login restores the existing form instead of unmounting and resettin
   assert.ok(form);
   await form.props.onSubmit({ email: 'user@example.test', password: 'invalid' });
   assert.deepEqual(states[2], [true, false]);
-  assert.equal(states[0].at(-1), 'error');
+  assert.equal(states[0].at(-1), 'credentials');
 });

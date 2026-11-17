@@ -13,8 +13,11 @@ const loginWithUser = async (username: string, password: string) => {
       body: JSON.stringify({ username, password }),
     });
 
+    // 401 = wrong credentials, 403 = account inactive; anything else is a server problem.
+    if (res.status === 401) return { success: false, reason: "credentials" };
+    if (res.status === 403) return { success: false, reason: "inactive" };
     if (!res.ok) {
-      throw new Error("Failed to fetch data");
+      throw new Error(`Login API returned HTTP ${res.status}`);
     }
 
     const data = await res.json();
@@ -44,8 +47,9 @@ const loginWithUser = async (username: string, password: string) => {
       return { user, status: success, passwordChangeSuggested: data.passwordChangeSuggested === true };
     }
   } catch (error) {
-    console.log({ error });
-    return { success: false };
+    // Network/TLS failures reaching BASE_URL land here; log them so they are not mistaken for bad passwords.
+    console.error("loginWithUser failed:", error);
+    return { success: false, reason: "server" };
   }
 };
 

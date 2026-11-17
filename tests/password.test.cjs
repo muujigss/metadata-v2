@@ -46,5 +46,6 @@ test('rejects anonymous password changes, short passwords and bcrypt truncation'
 });
 
 test('inactive accounts cannot sign in', async () => {
-  assert.equal(await setup().loginUserModel('inactive@example.test', 'previous-password'), null);
+  assert.equal(await setup().loginUserModel('inactive@example.test', 'previous-password'), 'inactive');
+  assert.equal(await setup().loginUserModel('inactive@example.test', 'wrong'), null);
 });

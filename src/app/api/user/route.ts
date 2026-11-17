@@ -16,6 +16,9 @@ export async function POST(request: Request) {
   }
   try {
     const user = await loginUserModel(body.username, body.password);
+    if (user === "inactive") {
+      return NextResponse.json({ success: false, reason: "inactive", message: "Account inactive" }, { status: 403 });
+    }
     if (!user || ![1, 2, 3].includes(user.user_level ?? 0) || (user.org_id === null && user.user_level !== 1)) {
       return NextResponse.json({ success: false, message: "Invalid credentials" }, { status: 401 });
     }

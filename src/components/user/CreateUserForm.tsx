@@ -88,7 +88,8 @@ const CreateUserForm = ({ userData }: { userData?: IUser }) => {
     phone_number: userData?.phone_number || "",
     mobile: userData?.mobile || "",
     profile_img_url: userData?.profile_img_url || "",
-    is_active: userData?.is_active || false,
+    // New users are active by default; login rejects inactive accounts.
+    is_active: userData ? userData.is_active === true : true,
     roles: userRolesData || [],
     last_login_date: new Date(),
     login_attempts: userData?.login_attempts || 0,

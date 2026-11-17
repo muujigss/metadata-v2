@@ -16,6 +16,12 @@ import { useState } from "react";
 import * as Yup from "yup";
 import Link from "next/link";
 
+const LOGIN_ERROR_MESSAGES: Record<string, string> = {
+  credentials: "Хэрэглэгчийн нэр эсвэл нууц үг буруу байна ...",
+  inactive: "Таны эрх идэвхгүй байна. Байгууллагын админд хандаж эрхээ идэвхжүүлүүлнэ үү.",
+  server: "Нэвтрэх үед серверийн алдаа гарлаа. Түр хүлээгээд дахин оролдоно уу.",
+};
+
 const AuthLogin = () => {
   const [status, setStatus] = useState<string>();
   const [show, setShow] = useState<boolean>(false);
@@ -56,12 +62,12 @@ const AuthLogin = () => {
         // Keep the pending state until navigation replaces this page.
         window.location.replace(destination);
       } else {
-        setStatus("error");
+        setStatus("reason" in response && response.reason ? response.reason : "credentials");
         setLoading(false);
       }
     } catch (error) {
-      console.log({ error });
-      setStatus("error");
+      console.error("Login failed:", error);
+      setStatus("server");
       setLoading(false);
     }
   };
@@ -80,9 +86,9 @@ const AuthLogin = () => {
               className="w-full flex flex-col items-center"
               onSubmit={handleSubmit}
             >
-              {status == "error" && (
+              {status && (
                 <Alert severity="error">
-                  Хэрэглэгчийн нэр эсвэл нууц үг буруу байна ...
+                  {LOGIN_ERROR_MESSAGES[status] ?? LOGIN_ERROR_MESSAGES.credentials}
                 </Alert>
               )}
               <div className="flex flex-col w-full gap-1 py-1">

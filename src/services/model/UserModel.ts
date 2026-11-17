@@ -79,14 +79,14 @@ const getUserModel = async (user_level: number, org_id: number) => {
 const loginUserModel = async (email: string, password: string) => {
   try {
     const user = await prisma.md_users.findFirst({
-      where: {
-        email,
-        is_active: true,
-      },
+      where: { email },
+      // Prefer the active row if an email was registered more than once.
+      orderBy: { is_active: { sort: "desc", nulls: "last" } },
       select: {
         id: true,
         roles: true,
         password: true,
+        is_active: true,
         email: true,
         phone_number: true,
         firstname: true,
@@ -110,6 +110,10 @@ const loginUserModel = async (email: string, password: string) => {
     const psResult = await bcrypt.compare(password, user?.password || "");
     if (!psResult) {
       return null;
+    }
+    // Reported only after the password matched, so it does not reveal which emails exist.
+    if (user.is_active !== true) {
+      return "inactive" as const;
     }
     const userLogin = await prisma.md_users.update({
       where: {
