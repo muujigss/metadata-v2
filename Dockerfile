@@ -14,6 +14,8 @@ RUN npm ci --legacy-peer-deps
 FROM base AS builder
 ARG HOST_BASE_URL
 ARG BASE_URL
+# The container serves on 3000 (see runner stage); baked into server-side API calls.
+ENV INTERNAL_BASE_URL=http://127.0.0.1:3000
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
@@ -36,4 +38,6 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
 EXPOSE 3000
 ENV PORT 3000
+# Listen on all interfaces so server-side calls to 127.0.0.1:3000 reach the app.
+ENV HOSTNAME 0.0.0.0
 CMD ["node", "server.js"]

@@ -3,7 +3,7 @@ const { test } = require('node:test');
 const config = require('../next.config.js');
 
 test('client configuration excludes database, signing and service credentials', () => {
-  const publicKeys = new Set(['BASE_URL', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_UPLOAD_PRESET', 'GOOGLE_ANALYTICS_MEASUREMENT_ID']);
+  const publicKeys = new Set(['BASE_URL', 'HOST_BASE_URL', 'CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_UPLOAD_PRESET', 'GOOGLE_ANALYTICS_MEASUREMENT_ID']);
   for (const key of Object.keys(config.env)) assert.ok(publicKeys.has(key), `Unexpected public environment key: ${key}`);
 });
 
