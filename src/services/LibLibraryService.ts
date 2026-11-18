@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getLibraryService = async (slug: string) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/library/${slug}`, {
+  const res = await fetch(`${API_BASE}/api/library/${slug}`, {
     cache: "default",
   });
 

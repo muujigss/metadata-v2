@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getDynamicService = async (slug: string) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/dynamic/${slug}`, {
+  const res = await fetch(`${API_BASE}/api/dynamic/${slug}`, {
     cache: "default",
   });
 
@@ -11,7 +12,7 @@ const getDynamicService = async (slug: string) => {
 };
 
 const createDynamicModel = async (mName: string, body: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/dynamic/${mName}`, {
+  const res = await fetch(`${API_BASE}/api/dynamic/${mName}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

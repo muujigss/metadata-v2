@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getSector = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/sector`, {
+  const res = await fetch(`${API_BASE}/api/sector`, {
     cache: "no-cache",
     next: { revalidate: 0 },
   });
@@ -12,7 +13,7 @@ const getSector = async () => {
 };
 
 const getSectorId = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/sector/${id}`, {
+  const res = await fetch(`${API_BASE}/api/sector/${id}`, {
     cache: "no-cache",
   });
 

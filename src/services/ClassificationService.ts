@@ -1,7 +1,8 @@
+import { API_BASE } from "@/utils/apiBase";
 import { IClassificationCode } from "@/interfaces/IClassificationCode";
 
 const getClassification = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/classification`, {
+  const res = await fetch(`${API_BASE}/api/classification`, {
     cache: "no-cache",
   });
 
@@ -13,7 +14,7 @@ const getClassification = async () => {
 };
 
 const getClassificationId = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/classification/${id}`, {
+  const res = await fetch(`${API_BASE}/api/classification/${id}`, {
     cache: "no-cache",
   });
 
@@ -25,7 +26,7 @@ const getClassificationId = async (id: number) => {
 };
 
 const createClassification = async (data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/classification/create`, {
+  const res = await fetch(`${API_BASE}/api/classification/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +39,7 @@ const createClassification = async (data: any) => {
   return res.json();
 };
 const insertClassificationCode = async (data: IClassificationCode[]) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/classification/code`, {
+  const res = await fetch(`${API_BASE}/api/classification/code`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -53,7 +54,7 @@ const insertClassificationCode = async (data: IClassificationCode[]) => {
 
 const getClassificationListByTblId = async (id: number) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/classification/table/${id}`,
+    `${API_BASE}/api/classification/table/${id}`,
     {
       cache: "no-cache",
     }

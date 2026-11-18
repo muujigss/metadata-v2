@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getDatabase = async (orgId: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database?org=${orgId}`, {
+  const res = await fetch(`${API_BASE}/api/database?org=${orgId}`, {
     cache: "no-cache",
   });
 
@@ -11,7 +12,7 @@ const getDatabase = async (orgId: number) => {
 };
 
 const getOneDatabaseAdmin = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database/admin/${id}`, {
+  const res = await fetch(`${API_BASE}/api/database/admin/${id}`, {
     cache: "no-cache",
   });
 
@@ -23,7 +24,7 @@ const getOneDatabaseAdmin = async (id: number) => {
 };
 
 const getOneDatabase = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database/${id}`, {
+  const res = await fetch(`${API_BASE}/api/database/${id}`, {
     cache: "no-cache",
   });
 
@@ -34,7 +35,7 @@ const getOneDatabase = async (id: number) => {
   return res.json();
 };
 const getOneDatabaseOther = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database-other/${id}`, {
+  const res = await fetch(`${API_BASE}/api/database-other/${id}`, {
     cache: "no-cache",
   });
 
@@ -46,7 +47,7 @@ const getOneDatabaseOther = async (id: number) => {
 };
 
 const getSpecification = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/specification`, {
+  const res = await fetch(`${API_BASE}/api/specification`, {
     cache: "no-cache",
   });
 
@@ -57,7 +58,7 @@ const getSpecification = async () => {
   return res.json();
 };
 const getDatabaseType = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database-type`, {
+  const res = await fetch(`${API_BASE}/api/database-type`, {
     cache: "no-cache",
   });
 
@@ -68,7 +69,7 @@ const getDatabaseType = async () => {
   return res.json();
 };
 const getDatabaseTypeSystem = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database-type-system`, {
+  const res = await fetch(`${API_BASE}/api/database-type-system`, {
     cache: "no-cache",
   });
 
@@ -80,7 +81,7 @@ const getDatabaseTypeSystem = async () => {
 };
 
 const getDatabaseCategory = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database-category`, {
+  const res = await fetch(`${API_BASE}/api/database-category`, {
     cache: "no-cache",
   });
 
@@ -92,7 +93,7 @@ const getDatabaseCategory = async () => {
 };
 
 const getDatabaseLocation = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database-location`, {
+  const res = await fetch(`${API_BASE}/api/database-location`, {
     cache: "no-cache",
   });
 
@@ -103,7 +104,7 @@ const getDatabaseLocation = async () => {
   return res.json();
 };
 const getLicence = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/licence`, {
+  const res = await fetch(`${API_BASE}/api/licence`, {
     cache: "no-cache",
   });
 
@@ -115,7 +116,7 @@ const getLicence = async () => {
 };
 
 const createDatabase = async (data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database/create`, {
+  const res = await fetch(`${API_BASE}/api/database/create`, {
     method: "POST",
     cache: "no-cache",
     headers: {
@@ -129,7 +130,7 @@ const createDatabase = async (data: any) => {
   return res.json();
 };
 const createDatabaseAll = async (data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/database/createAll`, {
+  const res = await fetch(`${API_BASE}/api/database/createAll`, {
     method: "POST",
     cache: "no-cache",
     headers: {

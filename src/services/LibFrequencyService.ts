@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getFrequencies = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/frequency`, {
+  const res = await fetch(`${API_BASE}/api/frequency`, {
     cache: "default",
   });
 

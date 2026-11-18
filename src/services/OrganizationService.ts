@@ -1,7 +1,8 @@
+import { API_BASE } from "@/utils/apiBase";
 export const dynamic = 'force-dynamic';
 
 const getOrganization = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/organization`, {
+  const res = await fetch(`${API_BASE}/api/organization`, {
     cache: "no-store",
     next: { revalidate: 0 }
   });
@@ -14,7 +15,7 @@ const getOrganization = async () => {
 };
 
 const getOrganizationById = async (id: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/organization/${id}`, {
+  const res = await fetch(`${API_BASE}/api/organization/${id}`, {
     cache: "no-cache",
   });
 
@@ -25,7 +26,7 @@ const getOrganizationById = async (id: any) => {
   return res.json();
 };
 const createOrganization = async (data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/organization/create`, {
+  const res = await fetch(`${API_BASE}/api/organization/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -37,7 +38,7 @@ const createOrganization = async (data: any) => {
 };
 
 const getOrgRoleCount = async (id: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/organization/role-count/${id}`, {
+  const res = await fetch(`${API_BASE}/api/organization/role-count/${id}`, {
     cache: "no-cache",
   });
 

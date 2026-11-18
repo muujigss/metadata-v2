@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getSecurityLevels = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/security-level`, {
+  const res = await fetch(`${API_BASE}/api/security-level`, {
     cache: "default",
   });
 

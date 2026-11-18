@@ -1,7 +1,8 @@
+import { API_BASE } from "@/utils/apiBase";
 import { IForm } from "@/interfaces/IForm";
 
 const getForms = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/form`, {
+  const res = await fetch(`${API_BASE}/api/form`, {
     cache: "no-cache",
   });
 
@@ -15,7 +16,7 @@ const getForms = async () => {
 export default getForms;
 
 const getForm = async (id: number): Promise<IForm> => {
-  const res = await fetch(`${process.env.BASE_URL}/api/form/${id}`, {
+  const res = await fetch(`${API_BASE}/api/form/${id}`, {
     cache: "no-cache",
   });
 
@@ -27,7 +28,7 @@ const getForm = async (id: number): Promise<IForm> => {
 };
 const getFormsByDbId = async (id: number, form_id: number, tbl_id: number) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/form/databases/${id}?form_id=${form_id}&tbl_id=${tbl_id}`,
+    `${API_BASE}/api/form/databases/${id}?form_id=${form_id}&tbl_id=${tbl_id}`,
     {
       cache: "no-cache",
     }
@@ -42,7 +43,7 @@ const getFormsByDbId = async (id: number, form_id: number, tbl_id: number) => {
 
 const uploadFormFile = async (id: number, data: any) => {
   try {
-    const res = await fetch(`${process.env.BASE_URL}/api/form/${id}`, {
+    const res = await fetch(`${API_BASE}/api/form/${id}`, {
       method: "POST",
       // cache: "no-cache",
       body: data,
@@ -59,7 +60,7 @@ const uploadFormFile = async (id: number, data: any) => {
 };
 
 const getFormsByNameService = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/form`, {
+  const res = await fetch(`${API_BASE}/api/form`, {
     cache: "no-cache",
   });
 
@@ -71,7 +72,7 @@ const getFormsByNameService = async () => {
 };
 
 const createForm = async (data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/form/create`, {
+  const res = await fetch(`${API_BASE}/api/form/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -84,7 +85,7 @@ const createForm = async (data: any) => {
   return res.json();
 };
 const updateFrom = async (form_id: number, data: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/form/${form_id}`, {
+  const res = await fetch(`${API_BASE}/api/form/${form_id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",

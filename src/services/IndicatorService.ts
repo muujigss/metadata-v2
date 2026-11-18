@@ -1,8 +1,9 @@
+import { API_BASE } from "@/utils/apiBase";
 import { IIndicator } from "@/interfaces/IIndicators";
 
 const getIndicators = async (page: number) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/indicator?page=${page}`,
+    `${API_BASE}/api/indicator?page=${page}`,
     {
       cache: "no-cache",
     }
@@ -16,7 +17,7 @@ const getIndicators = async (page: number) => {
 };
 
 const getIndicator = async (id: number): Promise<IIndicator> => {
-  const res = await fetch(`${process.env.BASE_URL}/api/indicator/${id}`, {
+  const res = await fetch(`${API_BASE}/api/indicator/${id}`, {
     cache: "no-cache",
   });
 
@@ -29,7 +30,7 @@ const getIndicator = async (id: number): Promise<IIndicator> => {
 
 // const getFormsByDbId = async (id: number, form_id: number, tbl_id: number) => {
 //   const res = await fetch(
-//     `${process.env.BASE_URL}/api/form/databases/${id}?form_id=${form_id}&tbl_id=${tbl_id}`,
+//     `${API_BASE}/api/form/databases/${id}?form_id=${form_id}&tbl_id=${tbl_id}`,
 //     {
 //       cache: "no-cache",
 //     }
@@ -43,7 +44,7 @@ const getIndicator = async (id: number): Promise<IIndicator> => {
 // };
 
 const createIndicatorService = async (data: IIndicator) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/indicator/create`, {
+  const res = await fetch(`${API_BASE}/api/indicator/create`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -59,7 +60,7 @@ const createIndicatorService = async (data: IIndicator) => {
 };
 
 const getIndicatorListByTblId = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/indicator/table/${id}`, {
+  const res = await fetch(`${API_BASE}/api/indicator/table/${id}`, {
     cache: "no-cache",
   });
 
@@ -71,7 +72,7 @@ const getIndicatorListByTblId = async (id: number) => {
 };
 const getPrevIndicator = async (id: number) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/indicator/table/prev/${id}`,
+    `${API_BASE}/api/indicator/table/prev/${id}`,
     {
       cache: "no-cache",
     }
@@ -85,7 +86,7 @@ const getPrevIndicator = async (id: number) => {
 };
 
 const getDuplicateIndicators = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/indicator/duplicate`, {
+  const res = await fetch(`${API_BASE}/api/indicator/duplicate`, {
     cache: "no-cache",
   });
 
@@ -98,7 +99,7 @@ const getDuplicateIndicators = async () => {
 
 const getDuplicateIndicatorDetails = async (name: string) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/indicator/duplicate/${name}`,
+    `${API_BASE}/api/indicator/duplicate/${name}`,
     {
       cache: "no-cache",
     }

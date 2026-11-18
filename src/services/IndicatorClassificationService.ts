@@ -1,10 +1,11 @@
+import { API_BASE } from "@/utils/apiBase";
 import { IIndicatorClassification } from "@/interfaces/IIndicatorsClassifications";
 
 export const insertIndicatorClassification = async (
   data: IIndicatorClassification
 ) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/indicator-classification`,
+    `${API_BASE}/api/indicator-classification`,
     {
       method: "POST",
       headers: {

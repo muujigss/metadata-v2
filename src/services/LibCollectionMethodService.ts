@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getCollectionMethods = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/collection-method`, {
+  const res = await fetch(`${API_BASE}/api/collection-method`, {
     cache: "default",
   });
 

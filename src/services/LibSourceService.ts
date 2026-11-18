@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 const getSources = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/source`, {
+  const res = await fetch(`${API_BASE}/api/source`, {
     cache: "default",
   });
 

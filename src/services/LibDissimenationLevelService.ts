@@ -1,5 +1,6 @@
+import { API_BASE } from "@/utils/apiBase";
 export const getDissimenationLevel = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/dissimenation`, {
+  const res = await fetch(`${API_BASE}/api/dissimenation`, {
     cache: "no-cache",
     next: { revalidate: 0 },
   });

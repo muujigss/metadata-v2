@@ -1,7 +1,8 @@
+import { API_BASE } from "@/utils/apiBase";
 import { ITable } from "@/interfaces/ITable";
 
 const getTables = async () => {
-  const res = await fetch(`${process.env.BASE_URL}/api/table`, {
+  const res = await fetch(`${API_BASE}/api/table`, {
     cache: "no-cache",
   });
 
@@ -13,7 +14,7 @@ const getTables = async () => {
 };
 
 const getTable = async (id: number) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/table/admin/${id}`, {
+  const res = await fetch(`${API_BASE}/api/table/admin/${id}`, {
     cache: "no-cache",
   });
 
@@ -25,7 +26,7 @@ const getTable = async (id: number) => {
 };
 
 const insertTable = async (data: ITable) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/table`, {
+  const res = await fetch(`${API_BASE}/api/table`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -42,7 +43,7 @@ const insertTable = async (data: ITable) => {
 
 const getTablesByUser = async (org_id: number, db_id: number, type: string) => {
   const res = await fetch(
-    `${process.env.BASE_URL}/api/admin?org=${org_id}&db=${db_id}&type=${type}`,
+    `${API_BASE}/api/admin?org=${org_id}&db=${db_id}&type=${type}`,
     {
       cache: "no-cache",
     }
@@ -54,7 +55,7 @@ const getTablesByUser = async (org_id: number, db_id: number, type: string) => {
   return res.json();
 };
 const updateTable = async (data: ITable, tblId: any) => {
-  const res = await fetch(`${process.env.BASE_URL}/api/table/admin/${tblId}`, {
+  const res = await fetch(`${API_BASE}/api/table/admin/${tblId}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -69,7 +70,7 @@ const updateTable = async (data: ITable, tblId: any) => {
 const getTablesByDB = async (db_id: number) => {
   try {
     const res = await fetch(
-      `${process.env.BASE_URL}/api/admin/tables/${db_id}`,
+      `${API_BASE}/api/admin/tables/${db_id}`,
       {
         cache: "no-cache",
       }
