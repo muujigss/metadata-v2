@@ -457,22 +457,21 @@ const forgotPasswordModel = async (email: any) => {
       if (userCheck?.id) {
         if (newPassword) {
           const ps = await bcrypt.hash(newPassword, 10);
+          const to = email;
+          const subject = "Нууц үг сэргээх";
+          const html = `Сайн байна уу, <br/><br/> Төрөлжсөн бүртгэлийн нэгдсэн санд хандах эрхийг илгээж байна. <br/><br/> Таны нэвтрэх нэр: <b>${email}</b> <br/><br/> Таны нууц үг:<b>${newPassword}</b> <br/><br/> Хандах холбоос:  <a href="${process.env.HOST_BASE_URL || process.env.BASE_URL}/login">Нэвтрэх</a> <br/><br/> Баярлалаа`;
+          // Send first: if mail fails, the old password must keep working.
+          await sendMail({ to, subject, html });
+
           user = await prisma.md_users.update({
             where: {
               id: userCheck?.id,
             },
             data: {
               password: ps,
-              // updated_user: Number(create_user_id),
               updated_date,
             },
           });
-          // send passwor to email
-
-          const to = email;
-          const subject = "Нууц үг сэргээх";
-          const html = `Сайн байна уу, <br/><br/> Төрөлжсөн бүртгэлийн нэгдсэн санд хандах эрхийг илгээж байна. <br/><br/> Таны нэвтрэх нэр: <b>${email}</b> <br/><br/> Таны нууц үг:<b>${newPassword}</b> <br/><br/> Хандах холбоос:  <a href="${process.env.HOST_BASE_URL || process.env.BASE_URL}/login">Нэвтрэх</a> <br/><br/> Баярлалаа`;
-          const mail = await sendMail({ to, subject, html });
 
           return {
             status: true,
@@ -486,7 +485,7 @@ const forgotPasswordModel = async (email: any) => {
       }
     }
   } catch (error) {
-    console.error("Error in createUserModel:", error);
+    console.error("Error in forgotPasswordModel:", error);
     throw new Error("Failed to forgotPasswordModel");
   }
 };

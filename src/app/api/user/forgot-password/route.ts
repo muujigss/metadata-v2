@@ -15,7 +15,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(resp);
   } catch (e) {
-    console.error("Password recovery failed");
-    return NextResponse.json({ status: false, message: "Unable to recover password" }, { status: 500 });
+    console.error("Password recovery failed:", e);
+    return NextResponse.json({ status: false, message: "Имэйл илгээж чадсангүй. Түр хүлээгээд дахин оролдоно уу." }, { status: 500 });
   }
 }

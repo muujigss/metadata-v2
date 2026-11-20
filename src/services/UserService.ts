@@ -108,11 +108,8 @@ const forgotPasswordService = async (data: any) => {
     body: JSON.stringify(data),
   });
 
-  if (!res.ok) {
-    throw new Error("Failed to forgorPasswordService user data");
-  }
-
-  return res.json();
+  // The route answers JSON with a user-facing message on 400/500 too.
+  return res.json().catch(() => ({ status: false }));
 };
 
 const getUserService = async (user_level: number, org_id: number) => {

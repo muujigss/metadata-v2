@@ -10,6 +10,9 @@ import { useState } from "react";
 import * as Yup from "yup";
 import Loader from "./Loader";
 
+const SUCCESS_MESSAGE = "Та и-мэйл хаягаа шалгана уу.";
+const GENERIC_ERROR = "Алдаа гарлаа. Түр хүлээгээд дахин оролдоно уу.";
+
 const ForgotPassword = () => {
   const { setUserInfo } = useCurrentUser() as ICurrentUserContext;
   const router = useRouter();
@@ -27,13 +30,13 @@ const ForgotPassword = () => {
       const response = await forgotPasswordService(values?.email);
 
       if (response.status) {
-        setStatus("Та и-мэйл хаягаа шалгана уу.");
+        setStatus(SUCCESS_MESSAGE);
       } else {
-        setStatus("error");
+        setStatus(response.message || GENERIC_ERROR);
       }
     } catch (error) {
-      console.log({ error });
-      setStatus("error");
+      console.error("Forgot password failed:", error);
+      setStatus(GENERIC_ERROR);
     } finally {
       setLoading(false);
     }
@@ -46,7 +49,7 @@ const ForgotPassword = () => {
   return (
     <>
       <Divider className="w-full" />
-      {status && status?.length > 0 && <Alert severity="error">{status}</Alert>}
+      {status && status?.length > 0 && <Alert severity={status === SUCCESS_MESSAGE ? "success" : "error"}>{status}</Alert>}
 
       <Formik
         initialValues={{ email: "" }}
