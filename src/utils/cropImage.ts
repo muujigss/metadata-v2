@@ -87,6 +87,11 @@ export default async function getCroppedImg(
   })
 }
 
+// The cropped canvas is always JPEG; the name must say so or upload validation rejects it.
+export function toJpegFileName(fileName: string): string {
+    return `${fileName.replace(/\.[^./\\]*$/, "") || "image"}.jpg`;
+}
+
 // Helper to create a File from Blob
 export async function getCroppedFile(
     imageSrc: string,
@@ -95,6 +100,6 @@ export async function getCroppedFile(
     rotation = 0
 ): Promise<File> {
     const blob = (await getCroppedImg(imageSrc, pixelCrop, rotation)) as any;
-    const file = new File([blob], fileName, { type: "image/jpeg" });
+    const file = new File([blob], toJpegFileName(fileName), { type: "image/jpeg" });
     return file;
 }

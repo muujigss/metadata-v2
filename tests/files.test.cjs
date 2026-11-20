@@ -52,3 +52,13 @@ test('download supports async params, Unicode names and missing files without le
     await fs.rm(root, { recursive: true, force: true });
   }
 });
+
+test('cropped logo (JPEG) keeps a name that passes upload validation', () => {
+  const crop = load('src/utils/cropImage.ts');
+  for (const [input, expected] of [['uv.png', 'uv.jpg'], ['logo.final.webp', 'logo.final.jpg'], ['photo.jpg', 'photo.jpg'], ['noext', 'noext.jpg']]) {
+    const name = crop.toJpegFileName(input);
+    assert.equal(name, expected);
+    assert.doesNotThrow(() => files.validateUpload({ name, size: 10, type: 'image/jpeg', arrayBuffer: async () => new ArrayBuffer(10) }));
+  }
+  assert.throws(() => files.validateUpload({ name: 'uv.png', size: 10, type: 'image/jpeg', arrayBuffer: async () => new ArrayBuffer(10) }), files.InvalidUploadError);
+});
