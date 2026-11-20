@@ -335,6 +335,7 @@ const RequestAccessPage = () => {
                         label="Вэб сайт"
                         value={values.org_website}
                         onChange={(e: any) => setFieldValue("org_website", e.target.value)}
+                        errors={touched.org_website && errors.org_website}
                       />
                     </Box>
                   </Grid>
@@ -403,6 +404,7 @@ const RequestAccessPage = () => {
                         label="Утас"
                         value={values.user_phone}
                         onChange={(e: any) => setFieldValue("user_phone", e.target.value)}
+                        errors={touched.user_phone && errors.user_phone}
                       />
                     </Box>
                   </Grid>
